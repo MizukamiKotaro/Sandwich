@@ -4,8 +4,6 @@
 
 void Collider::CreateCollider(ColliderShape shape, ColliderType type, ColliderMask mask, bool isBeDrived)
 {
-	collisionManager_ = CollisionManager::GetInstance();
-
 	shape_ = shape;
 	type_ = type;
 	mask_ = mask;
@@ -19,8 +17,12 @@ void Collider::CreateCollider(ColliderShape shape, ColliderType type, ColliderMa
 		shapeCircle_ = std::make_unique<ShapeCircle>();
 		break;
 	case ColliderShape::BOX2D:
+		shapeBox2D_ = std::make_unique<ShapeBox2D>();
 		break;
 	case ColliderShape::MAPCHIP2D:
+		break;
+	case ColliderShape::SIMPLE_LINE_Y:
+		shapeSimpleLineY_ = std::make_unique<ShapeLine>();
 		break;
 	default:
 		break;
@@ -34,12 +36,17 @@ void Collider::AddTargetMask(ColliderMask mask)
 	}
 }
 
-void Collider::SetCircle(const Vector2& position, const Vector2& radius, const float& rotate, const Vector2& velocity)
+void Collider::SetCircle(const Vector3& position, const float& radius)
 {
-	shapeCircle_->SetParameter(position, radius, rotate, velocity);
+	shapeCircle_->SetParameter(position, radius);
 }
 
-void Collider::SetCircle(const Vector2& position, const float& radius, const float& rotate, const Vector2& velocity)
+void Collider::SetBox2D(const Vector3& position, const Vector3& scale)
 {
-	shapeCircle_->SetParameter(position, radius, rotate, velocity);
+	shapeBox2D_->SetParameter(position, scale);
+}
+
+void Collider::SetSimpleLineY(const float& y)
+{
+	shapeSimpleLineY_->SetParameter(y);
 }

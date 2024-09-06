@@ -1,6 +1,8 @@
 #pragma once
 #include "CollisionSystem/CollisionConfig.h"
 #include "CollisionSystem/ColliderShapes/ShapeCircle/ShapeCircle.h"
+#include "CollisionSystem/ColliderShapes/ShapeBox2D/ShapeBox2D.h"
+#include "CollisionSystem/ColliderShapes/ShapeLine/ShapeLine.h"
 #include <list>
 #include <memory>
 
@@ -25,14 +27,17 @@ public:
 	void SetIsHit(bool isHit) { isHit_ = isHit; }
 
 	ShapeCircle* GetCircle() const { return shapeCircle_.get(); }
+	ShapeBox2D* GetBox2D() const { return shapeBox2D_.get(); }
+	ShapeLine* GetLine() const { return shapeSimpleLineY_.get(); }
 
-	void SetCircle(const Vector2& position, const Vector2& radius, const float& rotate = 0.0f, const Vector2& velocity = {});
-	void SetCircle(const Vector2& position, const float& radius, const float& rotate = 0.0f, const Vector2& velocity = {});
+	void SetCircle(const Vector3& position, const float& radius);
+	void SetBox2D(const Vector3& position, const Vector3& scale);
+	void SetSimpleLineY(const float& y);
 
-protected:
-	CollisionManager* collisionManager_;
-
+private:
 	std::unique_ptr<ShapeCircle> shapeCircle_;
+	std::unique_ptr<ShapeBox2D> shapeBox2D_;
+	std::unique_ptr<ShapeLine> shapeSimpleLineY_;
 
 	ColliderType type_;
 	bool isBeDrived_; // めり込み処理をするとき動くか

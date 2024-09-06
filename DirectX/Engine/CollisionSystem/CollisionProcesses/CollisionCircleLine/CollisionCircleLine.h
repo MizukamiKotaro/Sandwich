@@ -1,7 +1,7 @@
 #pragma once
 class Collider;
 
-class CollisionCircleCircle {
+class CollisionCircleLine {
 public:
 	static bool IsCollision(Collider* a, Collider* b);
 };

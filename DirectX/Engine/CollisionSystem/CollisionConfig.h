@@ -11,6 +11,7 @@ enum class ColliderShape
     CIRCLE,
     BOX2D,
     MAPCHIP2D,
+    SIMPLE_LINE_Y,
 };
 
 enum class ColliderMask {

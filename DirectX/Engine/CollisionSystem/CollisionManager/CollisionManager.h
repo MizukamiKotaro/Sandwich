@@ -7,12 +7,16 @@ class CollisionManager
 public:
 	static CollisionManager* GetInstance();
 	
+	// 初期化
 	void Initialize();
 
+	// コライダーのクリア
 	void Clear();
 
+	// コライダーのセット、毎フレームする
 	void SetCollider(Collider* collider);
 
+	// あたり判定
 	void CheckCollision();
 
 private:
