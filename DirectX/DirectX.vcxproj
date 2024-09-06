@@ -122,9 +122,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.cpp" />
     <ClCompile Include="Engine\Base\DirectXBase\DirectXBase.cpp" />
     <ClCompile Include="Engine\Base\WindowsInfo\WindowsInfo.cpp" />
+    <ClCompile Include="Engine\CollisionSystem\ColliderShapes\ShapeBox2D\ShapeBox2D.cpp" />
     <ClCompile Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.cpp" />
     <ClCompile Include="Engine\CollisionSystem\Collider\Collider.cpp" />
     <ClCompile Include="Engine\CollisionSystem\CollisionManager\CollisionManager.cpp" />
+    <ClCompile Include="Engine\CollisionSystem\CollisionProcesses\CollisionBox2DBox2D\CollisionBox2DBox2D.cpp" />
     <ClCompile Include="Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle\CollisionCircleCircle.cpp" />
     <ClCompile Include="Engine\ComputePipelineSystem\ComputePipelineFactory\ComputePipelineFactory.cpp" />
     <ClCompile Include="Engine\ComputePipelineSystem\ComputePipelineManager\ComputePipelineManager.cpp" />
@@ -294,10 +296,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\DirectXBase\DirectXBase.h" />
     <ClInclude Include="Engine\Base\ResourceLeakChecker.h" />
     <ClInclude Include="Engine\Base\WindowsInfo\WindowsInfo.h" />
+    <ClInclude Include="Engine\CollisionSystem\ColliderShapes\ShapeBox2D\ShapeBox2D.h" />
     <ClInclude Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.h" />
     <ClInclude Include="Engine\CollisionSystem\Collider\Collider.h" />
     <ClInclude Include="Engine\CollisionSystem\CollisionConfig.h" />
     <ClInclude Include="Engine\CollisionSystem\CollisionManager\CollisionManager.h" />
+    <ClInclude Include="Engine\CollisionSystem\CollisionProcesses\CollisionBox2DBox2D\CollisionBox2DBox2D.h" />
     <ClInclude Include="Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle\CollisionCircleCircle.h" />
     <ClInclude Include="Engine\ComputePipelineSystem\ComputePipelineFactory\ComputePipelineFactory.h" />
     <ClInclude Include="Engine\ComputePipelineSystem\ComputePipelineManager\ComputePipelineManager.h" />

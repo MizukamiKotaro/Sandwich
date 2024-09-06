@@ -463,6 +463,30 @@
     <Filter Include="Engine\Drawers\PostEffect\SpotLightAndOutline">
       <UniqueIdentifier>{4072ca5d-3295-4b14-bebb-5ee640099ebc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\CollisionSystem\ColliderShapes">
+      <UniqueIdentifier>{c3ef7d35-fc60-4675-be15-c813b7f46aa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle">
+      <UniqueIdentifier>{49743a0b-346f-4ac0-af77-e97b9a91b453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CollisionSystem\ColliderShapes\ShapeBox2D">
+      <UniqueIdentifier>{15844d39-39e4-4063-a3ae-b9337a3cbde1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CollisionSystem\Collider">
+      <UniqueIdentifier>{42f90567-5cd9-4bae-bd18-5eb763c6fbed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CollisionSystem\CollisionManager">
+      <UniqueIdentifier>{27f82ea3-aa4e-4591-bb9f-0c121a80de8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CollisionSystem\CollisionProcesses">
+      <UniqueIdentifier>{16155b99-7c7a-42e6-a880-3d59b54a0320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle">
+      <UniqueIdentifier>{d7882ecb-b290-448e-a8ad-d416bea4e04d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CollisionSystem\CollisionProcesses\CollisionBox2DBox2D">
+      <UniqueIdentifier>{ada4f5f3-dd3f-49f1-b364-8bf7b604d945}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -729,18 +753,6 @@
     <ClCompile Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.cpp">
       <Filter>Game\GameElement\Live\SpotLightBox</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\CollisionSystem\Collider\Collider.cpp">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CollisionSystem\CollisionManager\CollisionManager.cpp">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle\CollisionCircleCircle.cpp">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.cpp">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\InstancingModelGraphicsPipline\InstancingModelGraphicsPipline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\InstancingModelGraphicsPipeline</Filter>
     </ClCompile>
@@ -959,6 +971,24 @@
     </ClCompile>
     <ClCompile Include="Engine\Drawers\PostEffect\SpotLightAndOutline\SpotLightAndOutline.cpp">
       <Filter>Engine\Drawers\PostEffect\SpotLightAndOutline</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.cpp">
+      <Filter>Engine\CollisionSystem\ColliderShapes\ShapeCircle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CollisionSystem\ColliderShapes\ShapeBox2D\ShapeBox2D.cpp">
+      <Filter>Engine\CollisionSystem\ColliderShapes\ShapeBox2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CollisionSystem\Collider\Collider.cpp">
+      <Filter>Engine\CollisionSystem\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CollisionSystem\CollisionManager\CollisionManager.cpp">
+      <Filter>Engine\CollisionSystem\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle\CollisionCircleCircle.cpp">
+      <Filter>Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CollisionSystem\CollisionProcesses\CollisionBox2DBox2D\CollisionBox2DBox2D.cpp">
+      <Filter>Engine\CollisionSystem\CollisionProcesses\CollisionBox2DBox2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1274,19 +1304,7 @@
     <ClInclude Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.h">
       <Filter>Game\GameElement\Live\SpotLightBox</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\CollisionSystem\Collider\Collider.h">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\CollisionSystem\CollisionConfig.h">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\CollisionSystem\CollisionManager\CollisionManager.h">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle\CollisionCircleCircle.h">
-      <Filter>Engine\CollisionSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.h">
       <Filter>Engine\CollisionSystem</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\InstancingModelGraphicsPipline\InstancingModelGraphicsPipline.h">
@@ -1534,6 +1552,24 @@
     </ClInclude>
     <ClInclude Include="Engine\Drawers\PostEffect\SpotLightAndOutline\SpotLightAndOutline.h">
       <Filter>Engine\Drawers\PostEffect\SpotLightAndOutline</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.h">
+      <Filter>Engine\CollisionSystem\ColliderShapes\ShapeCircle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CollisionSystem\ColliderShapes\ShapeBox2D\ShapeBox2D.h">
+      <Filter>Engine\CollisionSystem\ColliderShapes\ShapeBox2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CollisionSystem\Collider\Collider.h">
+      <Filter>Engine\CollisionSystem\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CollisionSystem\CollisionManager\CollisionManager.h">
+      <Filter>Engine\CollisionSystem\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle\CollisionCircleCircle.h">
+      <Filter>Engine\CollisionSystem\CollisionProcesses\CollisionCircleCircle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CollisionSystem\CollisionProcesses\CollisionBox2DBox2D\CollisionBox2DBox2D.h">
+      <Filter>Engine\CollisionSystem\CollisionProcesses\CollisionBox2DBox2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
