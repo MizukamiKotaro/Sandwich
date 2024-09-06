@@ -17,6 +17,7 @@ Game::Game(Camera* camera)
 
 void Game::Initialize()
 {
+
 }
 
 void Game::Update()
