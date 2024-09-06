@@ -20,7 +20,8 @@ private://プライベート関数
 	//左右移動
 	void Move();
 
-	void AutoJump();
+	void AutoJumpSystem();
+	void Jump();
 
 	//当たり判定の更新
 	void ColliderUpdate();
@@ -33,8 +34,12 @@ private://プライベート変数
 	std::unique_ptr<Object> object_;
 
 	//AutoJump
-	//
+	//ジャンプのインターバル
+	const float kJumpInterval = 2;//2秒
+	//ジャンプの
+	float jumpFlame;
 
+	//Globalvariables
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
 #pragma endregion

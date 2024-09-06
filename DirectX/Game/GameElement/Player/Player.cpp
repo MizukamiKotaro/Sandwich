@@ -46,7 +46,19 @@ void Player::Move()
 	//}
 }
 
-void Player::AutoJump()
+void Player::AutoJumpSystem()
+{
+	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
+	//ジャンプをしない
+	if (jumpFlame < kJumpInterval) {
+
+	}
+	else {
+
+	}
+}
+
+void Player::Jump()
 {
 
 }
