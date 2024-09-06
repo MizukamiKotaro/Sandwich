@@ -585,50 +585,11 @@
     <ClCompile Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.cpp">
       <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\Score\Score.cpp">
-      <Filter>Game\GameElement\Score</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Pause\Pause.cpp">
-      <Filter>Game\GameElement\Pause</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Notes\Notes.cpp">
-      <Filter>Game\GameElement\Notes</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\Live.cpp">
-      <Filter>Game\GameElement\Live</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\Dome\Dome.cpp">
-      <Filter>Game\GameElement\Live\Dome</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\Screen\Screen.cpp">
-      <Filter>Game\GameElement\Live\Screen</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\Stage\Stage.cpp">
-      <Filter>Game\GameElement\Live\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\StageLights\StageLights.cpp">
-      <Filter>Game\GameElement\Live\StageLights</Filter>
-    </ClCompile>
     <ClCompile Include="Game\GameElement\Game.cpp">
       <Filter>Game\GameElement\Game</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipeline\GraphicsPipeline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\HitSystem\HitSystem.cpp">
-      <Filter>Game\GameElement\HitSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\StageUI\StageUI.cpp">
-      <Filter>Game\GameElement\StageUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\ScoreManager\ScoreManager.cpp">
-      <Filter>Game\GameElement\ScoreManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\ClearUI\ClearUI.cpp">
-      <Filter>Game\GameElement\ClearUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Charactor\Charactor.cpp">
-      <Filter>Game\GameElement\Charactor</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utils\RandomGenerator\RandomGenerator.cpp">
       <Filter>Engine\Utils\RandomGenerator</Filter>
@@ -717,17 +678,8 @@
     <ClCompile Include="Engine\Audio\VolumeManager\VolumeManager.cpp">
       <Filter>Engine\Audio\VolumeManager</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\SpotLightBox\SpotLightBox.cpp">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\MultipleScreen\MultipleScreen.cpp">
-      <Filter>Game\GameElement\Live\MultipleScreen</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GlobalVariables\GlobalVariableUser.cpp">
       <Filter>Engine\GlobalVariables</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.cpp">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
     </ClCompile>
     <ClCompile Include="Engine\CollisionSystem\Collider\Collider.cpp">
       <Filter>Engine\CollisionSystem</Filter>
@@ -777,17 +729,11 @@
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\CopyGraphicsPipeline\CopyGraphicsPipeline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\CopyGraphicsPipeline</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\SpotLightBoxAnimation\SpotLightBoxAnimation.cpp">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\GrayscaleGraphicsPipeline\GrayscaleGraphicsPipeline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\GrayscaleGraphicsPipeline</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Drawers\PostEffect\Grayscale\Grayscale.cpp">
       <Filter>Engine\Drawers\PostEffect\Grayscale</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\DancingIdol\DancingIdol.cpp">
-      <Filter>Game\GameElement\Live\DancingIdol</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\VignetteGraphicsPipeline\VignetteGraphicsPipeline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\VignetteGraphicsPipeline</Filter>
@@ -864,12 +810,6 @@
     <ClCompile Include="Engine\Drawers\PostEffect\RadialBlur\RadialBlur.cpp">
       <Filter>Engine\Drawers\PostEffect\RadialBlur</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\LiveMusics\LiveMusics.cpp">
-      <Filter>Game\GameElement\Live\LiveMusics</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\FinishLive\FinishLive.cpp">
-      <Filter>Game\GameElement\Live\FinishLive</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ComputePipelineSystem\ComputePipelines\ParticleInitializeComputePipeline\ParticleInitializeComputePipeline.cpp">
       <Filter>Engine\PipelineSystems\ComputePipelineSystem\ComputePipelines\ParticleInitializeComputePipeline</Filter>
     </ClCompile>
@@ -878,45 +818,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Drawers\GPUParticle\IParticle.cpp\IParticle.cpp">
       <Filter>Engine\Drawers\GPUParticle\IParticle.cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\SpotLightBoxAnimation\TwinSpotLightBoxAnimation.cpp">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\IStageObject\IStageObject.cpp">
-      <Filter>Game\GameElement\IStageEditorObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\IStageObject\IStageObjectManager.cpp">
-      <Filter>Game\GameElement\IStageEditorObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\IStageObject\StageObjectFactory\StageObjectFactory.cpp">
-      <Filter>Game\GameElement\IStageEditorObject\StageObjectFactory</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\LiveEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\DancingIdolEditor\DancingIdolEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\DancingIdolEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\MultipleScreenEditor\MultipleScreenEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\MultipleScreenEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\ScreenEditor\ScreenEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\ScreenEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor\SpotLightBoxAnimationEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor\TwinSpotLightBoxAnimationEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\DomeEditor\DomeEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\DomeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\StageFloorEditor\StageFloorEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\StageFloorEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\CameraEditor\CameraEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor\CameraEditor</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ImGuiManager\Guizmo.cpp">
       <Filter>Engine\ImGuiManager</Filter>
@@ -941,9 +842,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\GPUParticleGraphicsPipeline\GPUParticleGraphicsPipeline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\GPUParticleGraphicsPipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\GameElement\LiveEditor\FireParticleEditor\FireParticleEditor.cpp">
-      <Filter>Game\GameElement\LiveEditor</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Drawers\PostEffect\MemoDepth\MemoDepth.cpp">
       <Filter>Engine\Drawers\PostEffect\MemoDepth</Filter>
@@ -1091,53 +989,14 @@
     <ClInclude Include="Engine\Base\DescriptorHeapManager\DescriptorHeap\DescriptorHeap.h">
       <Filter>Engine\Base\DescriptorHeapManager\DescriptorHeap</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameElement\Score\Score.h">
-      <Filter>Game\GameElement\Score</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Pause\Pause.h">
-      <Filter>Game\GameElement\Pause</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Notes\Notes.h">
-      <Filter>Game\GameElement\Notes</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\TextureManager\Texture\Texture.h">
       <Filter>Engine\TextureManager\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\Live.h">
-      <Filter>Game\GameElement\Live</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\Dome\Dome.h">
-      <Filter>Game\GameElement\Live\Dome</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\Screen\Screen.h">
-      <Filter>Game\GameElement\Live\Screen</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\Stage\Stage.h">
-      <Filter>Game\GameElement\Live\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\StageLights\StageLights.h">
-      <Filter>Game\GameElement\Live\StageLights</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\Game.h">
       <Filter>Game\GameElement\Game</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelineSystem\GraphicsPipeline\GraphicsPipeline.h">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\HitSystem\HitSystem.h">
-      <Filter>Game\GameElement\HitSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\StageUI\StageUI.h">
-      <Filter>Game\GameElement\StageUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\ScoreManager\ScoreManager.h">
-      <Filter>Game\GameElement\ScoreManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\ClearUI\ClearUI.h">
-      <Filter>Game\GameElement\ClearUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Charactor\Charactor.h">
-      <Filter>Game\GameElement\Charactor</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\RandomGenerator\RandomGenerator.h">
       <Filter>Engine\Utils\RandomGenerator</Filter>
@@ -1262,17 +1121,8 @@
     <ClInclude Include="Engine\Audio\SoundData.h">
       <Filter>Engine\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\SpotLightBox\SpotLightBox.h">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\MultipleScreen\MultipleScreen.h">
-      <Filter>Game\GameElement\Live\MultipleScreen</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GlobalVariables\GlobalVariableUser.h">
       <Filter>Engine\GlobalVariables</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.h">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
     </ClInclude>
     <ClInclude Include="Engine\CollisionSystem\Collider\Collider.h">
       <Filter>Engine\CollisionSystem</Filter>
@@ -1331,9 +1181,6 @@
     <ClInclude Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\CopyGraphicsPipeline\CopyGraphicsPipeline.h">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\CopyGraphicsPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\SpotLightBoxAnimation\SpotLightBoxAnimation.h">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\GrayscaleGraphicsPipeline\GrayscaleGraphicsPipeline.h">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\GrayscaleGraphicsPipeline</Filter>
     </ClInclude>
@@ -1345,9 +1192,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Drawers\Model\ModelData\SkinClustr.h">
       <Filter>Engine\Drawers\Model\ModelData</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\DancingIdol\DancingIdol.h">
-      <Filter>Game\GameElement\Live\DancingIdol</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\VignetteGraphicsPipeline\VignetteGraphicsPipeline.h">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\VignetteGraphicsPipeline</Filter>
@@ -1430,12 +1274,6 @@
     <ClInclude Include="Engine\Drawers\PostEffect\RadialBlur\RadialBlur.h">
       <Filter>Engine\Drawers\PostEffect\RadialBlur</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\LiveMusics\LiveMusics.h">
-      <Filter>Game\GameElement\Live\LiveMusics</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\FinishLive\FinishLive.h">
-      <Filter>Game\GameElement\Live\FinishLive</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\ComputePipelineSystem\ComputePipelines\ParticleInitializeComputePipeline\ParticleInitializeComputePipeline.h">
       <Filter>Engine\PipelineSystems\ComputePipelineSystem\ComputePipelines\ParticleInitializeComputePipeline</Filter>
     </ClInclude>
@@ -1447,48 +1285,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Drawers\GPUParticle\IParticle.cpp\IParticle.h">
       <Filter>Engine\Drawers\GPUParticle\IParticle.cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\SpotLightBoxAnimation\TwinSpotLightBoxAnimation.h">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\IStageObject\IStageObject.h">
-      <Filter>Game\GameElement\IStageEditorObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\IStageObject\IStageObjectManager.h">
-      <Filter>Game\GameElement\IStageEditorObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\IStageObject\StageObjectConfig.h">
-      <Filter>Game\GameElement\IStageEditorObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\IStageObject\StageObjectFactory\StageObjectFactory.h">
-      <Filter>Game\GameElement\IStageEditorObject\StageObjectFactory</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\LiveEditor.h">
-      <Filter>Game\GameElement\LiveEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\DancingIdolEditor\DancingIdolEditor.h">
-      <Filter>Game\GameElement\LiveEditor\DancingIdolEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\MultipleScreenEditor\MultipleScreenEditor.h">
-      <Filter>Game\GameElement\LiveEditor\MultipleScreenEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\ScreenEditor\ScreenEditor.h">
-      <Filter>Game\GameElement\LiveEditor\ScreenEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor\SpotLightBoxAnimationEditor.h">
-      <Filter>Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor\TwinSpotLightBoxAnimationEditor.h">
-      <Filter>Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\DomeEditor\DomeEditor.h">
-      <Filter>Game\GameElement\LiveEditor\DomeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\StageFloorEditor\StageFloorEditor.h">
-      <Filter>Game\GameElement\LiveEditor\StageFloorEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\CameraEditor\CameraEditor.h">
-      <Filter>Game\GameElement\LiveEditor\CameraEditor</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ImGuiManager\Guizmo.h">
       <Filter>Engine\ImGuiManager</Filter>
@@ -1516,9 +1312,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\GPUParticleGraphicsPipeline\GPUParticleGraphicsPipeline.h">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\GPUParticleGraphicsPipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\GameElement\LiveEditor\FireParticleEditor\FireParticleEditor.h">
-      <Filter>Game\GameElement\LiveEditor</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Drawers\PostEffect\MemoDepth\MemoDepth.h">
       <Filter>Engine\Drawers\PostEffect\MemoDepth</Filter>

@@ -4,14 +4,12 @@
 #include "Input.h"
 #include "FrameInfo/FrameInfo.h"
 #include "ImGuiManager/ImGuiManager.h"
-#include "GameElement/ScoreManager/ScoreManager.h"
 #include "SceneSystem/SceneFactory/SceneFactory.h"
 
 FrameInfo* frameInfo = nullptr;
 
 SceneManager::SceneManager()
 {
-	ScoreManager::GetInstance()->Initialize();
 
 	IScene::sceneNo_ = TITLE;
 

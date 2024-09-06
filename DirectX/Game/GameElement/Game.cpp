@@ -1,8 +1,6 @@
 #include "Game.h"
 #include "Camera.h"
 #include "FrameInfo/FrameInfo.h"
-#include "GameElement/HitSystem/HitSystem.h"
-#include "GameElement/ScoreManager/ScoreManager.h"
 
 #ifdef _DEBUG
 #include "ImGuiManager/ImGuiManager.h"
@@ -11,7 +9,9 @@
 
 Game::Game(Camera* camera)
 {
+	// 入力マネージャ
 	input_ = Input::GetInstance();
+	// カメラの参照
 	camera_ = camera;
 }
 
@@ -21,7 +21,8 @@ void Game::Initialize()
 
 void Game::Update()
 {
-	float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	// 時間差分
+	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 }
 
 void Game::Draw()

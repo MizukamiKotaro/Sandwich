@@ -1,11 +1,5 @@
 #pragma once
 #include <memory>
-#include "GameElement/LiveEditor/LiveEditor.h"
-#include "GameElement/Notes/Notes.h"
-#include "GameElement/Score/Score.h"
-#include "GameElement/StageUI/StageUI.h"
-#include "GameElement/Live/LiveMusics/LiveMusics.h"
-#include "GameElement/Live/FinishLive/FinishLive.h"
 #include "Camera.h"
 #include "Audio.h"
 #include "Input.h"
@@ -18,6 +12,7 @@ public:
 	void Update();
 	void Draw();
 	void FirstUpdate();
+	const bool& GetIsClear() const { return IsClear; }
 
 private:
 
@@ -25,5 +20,7 @@ private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
 
+
 private:
+	bool IsClear = false;
 };
