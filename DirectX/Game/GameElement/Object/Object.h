@@ -1,13 +1,13 @@
 #pragma once
 #include "Model.h"
+#include "TextureManager.h"
+#include "Camera.h"
 
 class Object {
 public:
-	Object() {
+	Object(const std::string& textureName);
 
-		model->SetTexture();
-	}
-
+	void Draw(const Camera& camera);
 
 private://プライベート関数
 	//Planeモデル

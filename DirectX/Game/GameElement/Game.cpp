@@ -17,7 +17,7 @@ Game::Game(Camera* camera)
 
 void Game::Initialize()
 {
-
+	object_ = new Object("circle.png");
 }
 
 void Game::Update()
@@ -28,7 +28,7 @@ void Game::Update()
 
 void Game::Draw()
 {
-
+	object_->Draw(*camera_);
 }
 
 void Game::FirstUpdate()
