@@ -11,7 +11,7 @@ FrameInfo* frameInfo = nullptr;
 SceneManager::SceneManager()
 {
 
-	IScene::sceneNo_ = TITLE;
+	IScene::sceneNo_ = STAGE;
 
 	sceneFactory_ = std::make_unique<SceneFactory>();
 
