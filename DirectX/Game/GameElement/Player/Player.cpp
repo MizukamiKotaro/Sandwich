@@ -21,10 +21,15 @@ void Player::Init()
 void Player::Update()
 {
 #ifdef _DEBUG
-	ApplyGlobalVariables();
+	//ApplyGlobalVariables();
 #endif
 
 	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+
+	AutoJumpSystem();
+	if (jumpFlag) {
+		Jump();
+	}
 
 	object_->Update();
 
@@ -51,22 +56,44 @@ void Player::AutoJumpSystem()
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
 	//ジャンプをしない
 	if (jumpFlame < kJumpInterval) {
-
 	}
+	//ジャンプをする
 	else {
-
+		jumpFlame = 0;
+		jumpFlag = true;
+		JumpInit();
 	}
 }
 
 void Player::JumpInit()
 {
-	jumpForce = 1.0f;
+	jumpForce = 6.0f;
+	jumpForceVec.x = 0.0f;
+	jumpForceVec.y = jumpForce;
 }
 
 void Player::Jump()
 {
+
+	global->AddItem("ベクトル", jumpForceVec, "ジャンプ");
+	global->AddItem("ちから", jumpForce, "ジャンプ");
+
+	jumpForceVec.y = jumpForce;
+
+	if (input_->PressedKey(DIK_A)) {
+		jumpForceVec.x = -5.0f;
+		jumpForceVec.y = jumpForce / 3;
+	}
+	else if (input_->PressedKey(DIK_D)) {
+		jumpForceVec.x = 5.0f;
+		jumpForceVec.y = jumpForce / 3;
+	}
+	jumpForceVec.Length();
+
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
-	object_->model->transform_.translate_.y -= jumpForce * deltaTime;
+	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
+	jumpForce -= 0.1f;
+
 }
 
 void Player::ColliderUpdate()
@@ -85,6 +112,7 @@ void Player::SetGlobalVariables()
 	global->AddItem("拡縮",object_->GetWorldTransform().scale_,"トランスフォーム");
 	global->AddItem("回転",object_->GetWorldTransform().rotate_,"トランスフォーム");
 	global->AddItem("座標",object_->GetWorldTransform().translate_,"トランスフォーム");
+
 	ApplyGlobalVariables();
 }
 
