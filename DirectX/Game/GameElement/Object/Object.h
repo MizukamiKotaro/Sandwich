@@ -13,9 +13,9 @@ public:
 	const EulerTransform& GetWorldTransform() const { return model->transform_; };
 
 	void SetTranslate(Vector3 pos) { model->transform_.translate_ = pos; };
-
-private://プライベート関数
 	//Planeモデル
 	std::unique_ptr<Model> model;
+private://プライベート関数
+
 
 };

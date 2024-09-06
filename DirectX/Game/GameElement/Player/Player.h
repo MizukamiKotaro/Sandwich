@@ -21,6 +21,7 @@ private://プライベート関数
 	void Move();
 
 	void AutoJumpSystem();
+	void JumpInit();
 	void Jump();
 
 	//当たり判定の更新
@@ -38,6 +39,8 @@ private://プライベート変数
 	const float kJumpInterval = 2;//2秒
 	//ジャンプの
 	float jumpFlame;
+	//ジャンプの力
+	float jumpForce;
 
 	//Globalvariables
 	void SetGlobalVariables();

@@ -58,9 +58,15 @@ void Player::AutoJumpSystem()
 	}
 }
 
+void Player::JumpInit()
+{
+	jumpForce = 1.0f;
+}
+
 void Player::Jump()
 {
-
+	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	object_->model->transform_.translate_.y -= jumpForce * deltaTime;
 }
 
 void Player::ColliderUpdate()
