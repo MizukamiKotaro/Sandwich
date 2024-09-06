@@ -67,7 +67,7 @@ void Player::AutoJumpSystem()
 
 void Player::JumpInit()
 {
-	jumpForce = 6.0f;
+	jumpForce = 10.0f;
 	jumpForceVec.x = 0.0f;
 	jumpForceVec.y = jumpForce;
 }
@@ -75,19 +75,21 @@ void Player::JumpInit()
 void Player::Jump()
 {
 
-	global->AddItem("ベクトル", jumpForceVec, "ジャンプ");
-	global->AddItem("ちから", jumpForce, "ジャンプ");
-
 	jumpForceVec.y = jumpForce;
 
-	if (input_->PressedKey(DIK_A)) {
+	if (input_->PressingKey(DIK_A)) {
 		jumpForceVec.x = -5.0f;
-		jumpForceVec.y = jumpForce / 3;
+		jumpForce -= 0.05f;
 	}
-	else if (input_->PressedKey(DIK_D)) {
+	else if (input_->PressingKey(DIK_D)) {
 		jumpForceVec.x = 5.0f;
-		jumpForceVec.y = jumpForce / 3;
+		jumpForce -= 0.05f;
 	}
+
+	ImGui::Begin("Player");
+	ImGui::Text("%f", object_->GetWorldTransform().translate_.y);
+	ImGui::End();
+
 	jumpForceVec.Length();
 
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();

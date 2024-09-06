@@ -5,8 +5,10 @@
 StageScene::StageScene()
 {
 	FirstInit();
-
+	camera_->transform_.translate_.z = -100.0f;
+	camera_->Update();
 	game_ = std::make_unique<Game>(camera_.get());
+
 }
 
 void StageScene::Initialize()
@@ -29,7 +31,7 @@ void StageScene::Update()
 		Audio::AllStop();
 	}
 #endif // _DEBUG
-
+	camera_->Update();
 	game_->Update();
 }
 

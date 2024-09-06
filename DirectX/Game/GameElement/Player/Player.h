@@ -4,6 +4,8 @@
 #include "Input.h"
 #include "GlobalVariables/GlobalVariableUser.h"
 
+#include "ImGuiManager/ImGuiManager.h"
+
 class Player : public Collider{
 public://パブリック関数
 #pragma region
@@ -24,8 +26,6 @@ private://プライベート関数
 	void JumpInit();
 	void Jump();
 
-
-
 	//当たり判定の更新
 	void ColliderUpdate();
 	//当たり判定
@@ -38,7 +38,7 @@ private://プライベート変数
 
 	//AutoJump
 	//ジャンプのインターバル
-	const float kJumpInterval = 2.2f;//2秒
+	const float kJumpInterval = 2.0f;//2秒
 	//ジャンプの
 	float jumpFlame;
 	//ジャンプの力
