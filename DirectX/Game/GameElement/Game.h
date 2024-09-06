@@ -18,7 +18,6 @@ public:
 	void Update();
 	void Draw();
 	void FirstUpdate();
-	const bool& GetIsClear() const { return finishLive_->IsClear(); }
 
 private:
 
@@ -27,17 +26,4 @@ private:
 	Camera* camera_ = nullptr;
 
 private:
-	
-	std::unique_ptr<LiveEditor> live_;
-	std::unique_ptr<Score> score_;
-	std::unique_ptr<StageUI> stageUI_;
-	std::unique_ptr<LiveMusics> music_;
-	std::unique_ptr<FinishLive> finishLive_;
-	NotesList* notesList_ = nullptr;
-
-	float time_;
-#ifdef _DEBUG
-	bool isEdit_;
-#endif // _DEBUG
-
 };
