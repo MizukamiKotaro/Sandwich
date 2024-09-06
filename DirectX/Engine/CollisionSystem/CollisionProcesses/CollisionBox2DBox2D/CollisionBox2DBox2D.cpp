@@ -1,12 +1,11 @@
 #include "CollisionBox2DBox2D.h"
 #include "CollisionSystem/Collider/Collider.h"
-#include "CollisionSystem/ColliderShapes/ShapeBox2D/ShapeBox2D.h"
 #include "Vector2.h"
 
 bool CollisionBox2DBox2D::IsCollision(Collider* a, Collider* b)
 {
-	ShapeBox2D* aBox = a->GetBos2D();
-	ShapeBox2D* bBox = b->GetBos2D();
+	ShapeBox2D* aBox = a->GetBox2D();
+	ShapeBox2D* bBox = b->GetBox2D();
 
 	Vector2 min0 = { aBox->position_.x - aBox->scale_.x,aBox->position_.y - aBox->scale_.y };
 	Vector2 max0 = { aBox->position_.x + aBox->scale_.x,aBox->position_.y + aBox->scale_.y };

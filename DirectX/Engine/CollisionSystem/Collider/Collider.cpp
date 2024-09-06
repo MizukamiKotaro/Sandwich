@@ -21,6 +21,9 @@ void Collider::CreateCollider(ColliderShape shape, ColliderType type, ColliderMa
 		break;
 	case ColliderShape::MAPCHIP2D:
 		break;
+	case ColliderShape::SIMPLE_LINE_Y:
+		shapeSimpleLineY_ = std::make_unique<ShapeLine>();
+		break;
 	default:
 		break;
 	}
@@ -41,4 +44,9 @@ void Collider::SetCircle(const Vector3& position, const float& radius)
 void Collider::SetBox2D(const Vector3& position, const Vector3& scale)
 {
 	shapeBox2D_->SetParameter(position, scale);
+}
+
+void Collider::SetSimpleLineY(const float& y)
+{
+	shapeSimpleLineY_->SetParameter(y);
 }

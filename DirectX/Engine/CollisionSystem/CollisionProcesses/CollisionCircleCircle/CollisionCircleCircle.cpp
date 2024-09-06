@@ -1,6 +1,5 @@
 #include "CollisionCircleCircle.h"
 #include "CollisionSystem/Collider/Collider.h"
-#include "CollisionSystem/ColliderShapes/ShapeCircle/ShapeCircle.h"
 #include <cmath>
 
 bool CollisionCircleCircle::IsCollision(Collider* a, Collider* b)

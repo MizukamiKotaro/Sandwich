@@ -1,5 +1,8 @@
 #include "CollisionManager.h"
 #include "CollisionSystem/CollisionProcesses/CollisionCircleCircle/CollisionCircleCircle.h"
+#include "CollisionSystem/CollisionProcesses/CollisionBox2DBox2D/CollisionBox2DBox2D.h"
+#include "CollisionSystem/CollisionProcesses/CollisionCircleLine/CollisionCircleLine.h"
+#include "CollisionSystem/CollisionProcesses/CollisionBox2DLine/CollisionBox2DLine.h"
 
 CollisionManager* CollisionManager::GetInstance()
 {
@@ -76,6 +79,36 @@ bool CollisionManager::IsCollision(Collider* a, Collider* b)
 {
 	if (a->GetShape() == ColliderShape::CIRCLE && b->GetShape() == ColliderShape::CIRCLE) {
 		if (CollisionCircleCircle::IsCollision(a,b)) {
+			return true;
+		}
+		return false;
+	}
+	else if (a->GetShape() == ColliderShape::CIRCLE && b->GetShape() == ColliderShape::SIMPLE_LINE_Y) {
+		if (CollisionCircleLine::IsCollision(a, b)) {
+			return true;
+		}
+		return false;
+	}
+	else if (b->GetShape() == ColliderShape::CIRCLE && a->GetShape() == ColliderShape::SIMPLE_LINE_Y) {
+		if (CollisionCircleLine::IsCollision(b, a)) {
+			return true;
+		}
+		return false;
+	}
+	else if (a->GetShape() == ColliderShape::BOX2D && b->GetShape() == ColliderShape::BOX2D) {
+		if (CollisionBox2DBox2D::IsCollision(a, b)) {
+			return true;
+		}
+		return false;
+	}
+	else if (a->GetShape() == ColliderShape::BOX2D && b->GetShape() == ColliderShape::SIMPLE_LINE_Y) {
+		if (CollisionBox2DLine::IsCollision(a, b)) {
+			return true;
+		}
+		return false;
+	}
+	else if (b->GetShape() == ColliderShape::BOX2D && a->GetShape() == ColliderShape::SIMPLE_LINE_Y) {
+		if (CollisionBox2DLine::IsCollision(b, a)) {
 			return true;
 		}
 		return false;
