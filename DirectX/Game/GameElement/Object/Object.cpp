@@ -6,6 +6,11 @@ Object::Object(const std::string& textureName) {
 	model->SetTexture(TextureManager::GetInstance()->LoadTexture(textureName));
 }
 
+void Object::Update()
+{
+	model->Update();
+}
+
 void Object::Draw(const Camera& camera)
 {
 	model->Draw(camera);

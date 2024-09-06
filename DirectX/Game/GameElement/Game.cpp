@@ -13,6 +13,8 @@ Game::Game(Camera* camera)
 	input_ = Input::GetInstance();
 	// カメラの参照
 	camera_ = camera;
+
+	collisionManager_ = CollisionManager::GetInstance();
 }
 
 void Game::Initialize()
@@ -23,9 +25,12 @@ void Game::Initialize()
 
 void Game::Update()
 {
+	collisionManager_->Clear();
 	// 時間差分
 	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	player_->Update();
+
+	collisionManager_->CheckCollision();
 }
 
 void Game::Draw()

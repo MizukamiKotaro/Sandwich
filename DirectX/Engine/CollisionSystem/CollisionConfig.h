@@ -17,13 +17,5 @@ enum class ColliderShape
 enum class ColliderMask {
     UNKNOWN = 0,
     PLAYER,
-    WATER,
-    GRAVITY_AREA,
-    PLANET,
-    GRAVITY_AREA_SEARCH,
-    CLIENT,
-    ITEM,
-    GOAL,
-    BABY,
     ENEMY,
 };

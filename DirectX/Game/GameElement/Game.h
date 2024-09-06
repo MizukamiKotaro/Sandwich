@@ -3,7 +3,9 @@
 #include "Camera.h"
 #include "Audio.h"
 #include "Input.h"
+#include "CollisionSystem/CollisionManager/CollisionManager.h"
 #include "Player/Player.h"
+
 
 class Game {
 public: 
@@ -20,7 +22,7 @@ private:
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
-
+	CollisionManager* collisionManager_ = nullptr;
 
 private:
 	bool IsClear = false;

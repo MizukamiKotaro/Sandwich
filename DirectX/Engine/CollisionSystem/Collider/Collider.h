@@ -14,6 +14,8 @@ public:
 
 	virtual void OnCollision(const Collider& collider) = 0;
 
+	void SetCollider();
+
 	void CreateCollider(ColliderShape shape, ColliderType type, ColliderMask mask, bool isBeDrived = false);
 
 	void AddTargetMask(ColliderMask mask);
@@ -35,6 +37,8 @@ public:
 	void SetSimpleLineY(const float& y);
 
 private:
+	CollisionManager* manager_ = nullptr;
+
 	std::unique_ptr<ShapeCircle> shapeCircle_;
 	std::unique_ptr<ShapeBox2D> shapeBox2D_;
 	std::unique_ptr<ShapeLine> shapeSimpleLineY_;

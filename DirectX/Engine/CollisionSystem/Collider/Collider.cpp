@@ -2,12 +2,19 @@
 #include <algorithm>
 #include "CollisionSystem/CollisionManager/CollisionManager.h"
 
+void Collider::SetCollider()
+{
+	manager_->SetCollider(this);
+}
+
 void Collider::CreateCollider(ColliderShape shape, ColliderType type, ColliderMask mask, bool isBeDrived)
 {
 	shape_ = shape;
 	type_ = type;
 	mask_ = mask;
 	isBeDrived_ = isBeDrived;
+
+	manager_ = CollisionManager::GetInstance();
 
 	switch (shape)
 	{
