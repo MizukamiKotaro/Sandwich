@@ -861,6 +861,9 @@
     <ClCompile Include="Game\GameElement\Object\Object.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Player\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utils\Math\calc.h">
@@ -1332,6 +1335,9 @@
       <Filter>Engine\Drawers\PostEffect\SpotLightAndOutline</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\Object\Object.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Player\Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

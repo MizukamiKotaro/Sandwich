@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "Audio.h"
 #include "Input.h"
-#include "Object/Object.h"
+#include "Player/Player.h"
 
 class Game {
 public: 
@@ -16,7 +16,7 @@ public:
 	const bool& GetIsClear() const { return IsClear; }
 
 private:
-	Object* object_;
+	std::unique_ptr<Player> player_;
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;

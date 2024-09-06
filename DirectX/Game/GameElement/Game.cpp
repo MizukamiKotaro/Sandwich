@@ -17,18 +17,20 @@ Game::Game(Camera* camera)
 
 void Game::Initialize()
 {
-	object_ = new Object("circle.png");
+	player_ = std::make_unique<Player>();
+	player_->Init();
 }
 
 void Game::Update()
 {
 	// 時間差分
 	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	player_->Update();
 }
 
 void Game::Draw()
 {
-	object_->Draw(*camera_);
+	player_->Draw(camera_);
 }
 
 void Game::FirstUpdate()
