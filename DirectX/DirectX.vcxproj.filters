@@ -94,53 +94,14 @@
     <Filter Include="Game\GameElement">
       <UniqueIdentifier>{11d71cdf-0a7d-4dfd-bb29-1e2571632408}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameElement\Score">
-      <UniqueIdentifier>{ddea225d-8c06-4482-9672-5393f986e70c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Pause">
-      <UniqueIdentifier>{d62e42e8-2980-44a7-a607-0efd3d948a91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Notes">
-      <UniqueIdentifier>{24e02324-6b01-4e75-a744-09f2543bda73}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\TextureManager\Texture">
       <UniqueIdentifier>{463e904d-2b48-47c8-a525-e5e10063094e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live">
-      <UniqueIdentifier>{16b956d7-d216-4166-bfb4-641a3efa38c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live\Dome">
-      <UniqueIdentifier>{e698f7de-6f82-4747-af58-896a5d0fb367}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live\Screen">
-      <UniqueIdentifier>{63062d91-384a-46ce-98a4-778f14094bf9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live\Stage">
-      <UniqueIdentifier>{98beaa94-b472-486a-a19c-1fc3483fcc9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live\StageLights">
-      <UniqueIdentifier>{29fb222b-5f5f-49fb-aaf9-6e4a5730d7bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\GameElement\Game">
       <UniqueIdentifier>{b62ba53c-214c-4b0d-8fdd-cf6a835a99f1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\GlobalVariables">
       <UniqueIdentifier>{0a592cc4-062e-46c2-9959-23f4ade47001}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\HitSystem">
-      <UniqueIdentifier>{d16ca458-babf-46cd-b895-58db3de3f10d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\StageUI">
-      <UniqueIdentifier>{7bac8e11-8f42-4480-b59b-fae6f1114358}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\ScoreManager">
-      <UniqueIdentifier>{56106861-2199-4701-8013-ddae4760b656}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\ClearUI">
-      <UniqueIdentifier>{d7b47301-01d0-488d-b602-f02b7231750e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Charactor">
-      <UniqueIdentifier>{aef80c23-6a51-48fd-8a00-8ec79c1849aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Utils\RandomGenerator">
       <UniqueIdentifier>{f44f0203-caba-4b5b-9d47-6fe2fb704a31}</UniqueIdentifier>
@@ -166,20 +127,11 @@
     <Filter Include="Engine\Audio\VolumeManager">
       <UniqueIdentifier>{ba55635d-5f98-4afc-a3ed-88bb8ac98dde}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameElement\Live\SpotLightBox">
-      <UniqueIdentifier>{2ee7dc59-8aa1-4600-aabf-6472a93e6894}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live\MultipleScreen">
-      <UniqueIdentifier>{8e1db68e-49b1-4067-8579-3d8a5a61bd58}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Utils\Collision">
       <UniqueIdentifier>{27227e56-f856-4b67-b9e9-02e2c9ee02ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\CollisionSystem">
       <UniqueIdentifier>{6de3343b-1909-4957-8526-18606937db2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live\DancingIdol">
-      <UniqueIdentifier>{9ea3ad42-012d-4474-98a5-21b3755a566b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\LevelDataLoader">
       <UniqueIdentifier>{a2d95825-0f85-43f4-ace5-5975c2cfaaeb}</UniqueIdentifier>
@@ -388,12 +340,6 @@
     <Filter Include="Engine\Drawers\PostEffect\RadialBlur">
       <UniqueIdentifier>{07b36b12-f5b7-4896-a0e7-c0caa70eb453}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameElement\Live\LiveMusics">
-      <UniqueIdentifier>{9bf042b9-e50a-4aa2-acfd-ccadb8bb5543}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\Live\FinishLive">
-      <UniqueIdentifier>{40f6caee-f436-44bc-a7ae-ccb3c49c2fee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\PipelineSystems\ComputePipelineSystem\ComputePipelines\ParticleInitializeComputePipeline">
       <UniqueIdentifier>{bf1ffbc4-18e9-425d-8949-5aac31891334}</UniqueIdentifier>
     </Filter>
@@ -402,36 +348,6 @@
     </Filter>
     <Filter Include="Engine\Drawers\GPUParticle\IParticle.cpp">
       <UniqueIdentifier>{eb6c6b6b-51f4-4d20-8a0e-b0f2b210fb30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\IStageEditorObject">
-      <UniqueIdentifier>{a5b5c285-b99d-4172-98d1-909df46a0ac4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\IStageEditorObject\StageObjectFactory">
-      <UniqueIdentifier>{1eda677c-125f-4bf8-9bfb-bbc18e725cc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor">
-      <UniqueIdentifier>{860ee303-93d9-4a34-adcc-d3cf8726fc8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor\DancingIdolEditor">
-      <UniqueIdentifier>{6e61f964-b581-49c5-a2e9-36abaf280a6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor\MultipleScreenEditor">
-      <UniqueIdentifier>{7f3b21e3-e1aa-4b50-966b-3cebb2f2e2bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor\ScreenEditor">
-      <UniqueIdentifier>{bb2fcbb5-6bfc-4689-9a0d-698e9459f1d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor\SpotLightBoxAnimationEditor">
-      <UniqueIdentifier>{d7720bc1-0778-41a7-9316-2ac817d1ed0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor\DomeEditor">
-      <UniqueIdentifier>{6998bd07-1242-4d9c-89de-d557ddada5f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor\StageFloorEditor">
-      <UniqueIdentifier>{3669c61b-d169-4465-ab25-ca8f19129468}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\GameElement\LiveEditor\CameraEditor">
-      <UniqueIdentifier>{d9ac6021-6499-4041-b040-ba058b5ca8c2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Drawers\PostEffect\HSVFilter">
       <UniqueIdentifier>{0fe368f8-7e6c-454f-9702-0b68281f1bd7}</UniqueIdentifier>
@@ -495,6 +411,9 @@
     </Filter>
     <Filter Include="Engine\CollisionSystem\CollisionProcesses\CollisionBox2DLine">
       <UniqueIdentifier>{78cb7315-1b24-4bfd-9f7e-1960cfecd9df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameElement\Equipment">
+      <UniqueIdentifier>{d1c6c1f1-6d47-4852-b263-34416141cd3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -726,9 +645,6 @@
     <ClCompile Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.cpp">
       <Filter>Engine\CollisionSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.cpp">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\InstancingModelGraphicsPipline\InstancingModelGraphicsPipline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\InstancingModelGraphicsPipeline</Filter>
     </ClCompile>
@@ -926,6 +842,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\Player\Player.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\Equipment\Equipment.cpp">
+      <Filter>Game\GameElement\Equipment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1196,9 +1115,6 @@
     <ClInclude Include="Engine\CollisionSystem\Collider\Collider.h">
       <Filter>Engine\CollisionSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.h">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\CollisionSystem\CollisionConfig.h">
       <Filter>Engine\CollisionSystem</Filter>
     </ClInclude>
@@ -1423,6 +1339,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\Player\Player.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Equipment\Equipment.h">
+      <Filter>Game\GameElement\Equipment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -223,6 +223,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\TextureManager\Texture\Texture.cpp" />
     <ClCompile Include="Engine\Utils\Camera\DebugCamera\DebugCamera.cpp" />
     <ClCompile Include="Engine\Utils\Transform\QuaternionTransform.cpp" />
+    <ClCompile Include="Game\GameElement\Equipment\Equipment.cpp" />
     <ClCompile Include="Game\GameElement\Game.cpp" />
     <ClCompile Include="Game\GameElement\Object\Object.cpp" />
     <ClCompile Include="Game\GameElement\Player\Player.cpp" />
@@ -405,6 +406,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utils\Shape\Triangle.h" />
     <ClInclude Include="Engine\Utils\Transform\QuaternionTransform.h" />
     <ClInclude Include="Engine\Utils\Transform\Transform.h" />
+    <ClInclude Include="Game\GameElement\Equipment\Equipment.h" />
     <ClInclude Include="Game\GameElement\Game.h" />
     <ClInclude Include="Game\GameElement\Object\Object.h" />
     <ClInclude Include="Game\GameElement\Player\Player.h" />
