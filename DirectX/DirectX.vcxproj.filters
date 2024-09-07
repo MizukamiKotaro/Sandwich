@@ -726,9 +726,6 @@
     <ClCompile Include="Engine\CollisionSystem\ColliderShapes\ShapeCircle\ShapeCircle.cpp">
       <Filter>Engine\CollisionSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.cpp">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GraphicsPipelineSystem\GraphicsPipelines\InstancingModelGraphicsPipline\InstancingModelGraphicsPipline.cpp">
       <Filter>Engine\PipelineSystems\GraphicsPipelineSystem\GraphicsPipelines\InstancingModelGraphicsPipeline</Filter>
     </ClCompile>
@@ -925,6 +922,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Game\GameElement\Player\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\Floor\Floor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1196,9 +1196,6 @@
     <ClInclude Include="Engine\CollisionSystem\Collider\Collider.h">
       <Filter>Engine\CollisionSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameElement\Live\SpotLightBox\TwinSpotLightBox.h">
-      <Filter>Game\GameElement\Live\SpotLightBox</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\CollisionSystem\CollisionConfig.h">
       <Filter>Engine\CollisionSystem</Filter>
     </ClInclude>
@@ -1422,6 +1419,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\Player\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Floor\Floor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,6 +29,7 @@ void Player::Update()
 	AutoJumpSystem();
 	if (jumpFlag) {
 		Jump();
+
 	}
 
 	object_->Update();
@@ -95,6 +96,11 @@ void Player::Jump()
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
 	jumpForce -= 0.1f;
+
+}
+
+void Player::CreateFloor()
+{
 
 }
 

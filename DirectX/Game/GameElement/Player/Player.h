@@ -22,9 +22,13 @@ private://プライベート関数
 	//左右移動
 	void Move();
 
+	//ジャンプ関連
 	void AutoJumpSystem();
 	void JumpInit();
 	void Jump();
+
+	//床関連
+	void CreateFloor();
 
 	//当たり判定の更新
 	void ColliderUpdate();
