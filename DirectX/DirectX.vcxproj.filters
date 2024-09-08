@@ -846,6 +846,9 @@
     <ClCompile Include="Game\GameElement\Equipment\Equipment.cpp">
       <Filter>Game\GameElement\Equipment</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Equipment\EquipmentManager.cpp">
+      <Filter>Game\GameElement\Equipment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utils\Math\calc.h">
@@ -1341,6 +1344,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\Equipment\Equipment.h">
+      <Filter>Game\GameElement\Equipment</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Equipment\EquipmentManager.h">
       <Filter>Game\GameElement\Equipment</Filter>
     </ClInclude>
   </ItemGroup>
