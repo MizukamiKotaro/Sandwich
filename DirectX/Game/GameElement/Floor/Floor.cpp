@@ -10,13 +10,14 @@ Floor::Floor(const std::string& textureName,Vector3 position) {
 	object_->Update();
 
 	//当たり判定
-	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::PLAYER);
-	AddTargetMask(ColliderMask::FLOOR);
+	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::FLOOR);
+	//AddTargetMask(ColliderMask::FLOOR);
 }
 
 void Floor::Update()
 {
 	object_->Update();
+	ColliderUpdate();
 }
 
 void Floor::Draw(const Camera* camera)
@@ -26,7 +27,8 @@ void Floor::Draw(const Camera* camera)
 
 void Floor::ColliderUpdate()
 {
-
+	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_);
+	SetCollider();
 }
 
 void Floor::OnCollision(const Collider& collider)

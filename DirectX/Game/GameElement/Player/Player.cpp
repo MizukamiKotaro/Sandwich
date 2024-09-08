@@ -1,22 +1,19 @@
 #include "Player.h"
 #include "FrameInfo/FrameInfo.h"
 
-
-
 void Player::Init()
 {
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>("circle.png");
 	//当たり判定
 	CreateCollider(ColliderShape::BOX2D,ColliderType::COLLIDER,ColliderMask::PLAYER);
-	AddTargetMask(ColliderMask::ENEMY);
+	AddTargetMask(ColliderMask::FLOOR);
 
 	input_ = Input::GetInstance();
 
 	global = std::make_unique<GlobalVariableUser>("Character","Player");
 	SetGlobalVariables();
 	object_->Update();
-
 
 }
 
@@ -26,7 +23,15 @@ void Player::Update()
 	//ApplyGlobalVariables();
 #endif
 
+#pragma region ImGui
+	ImGui::Begin("Play");
+	if (ImGui::Button("clear")) {
+		floor_.clear();
+	}
+	ImGui::End();
+#pragma endregion
 	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+
 	//天井の判定の代わり
 	if (object_->model->transform_.translate_.y > 20.0f) {
 		isHitCeiling = true;
@@ -40,16 +45,26 @@ void Player::Update()
 		object_->Update();
 		return;
 	}
+	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
+	//ジャンプをしない
+	if (jumpFlame > kJumpInterval) {
+		//スペースでジャンプ
+		if (input_->PressedKey(DIK_SPACE)) {
+			JumpInit();
+			CreateFloor();
+		}
+	}
 
-	AutoJumpSystem();
 	if (jumpFlag) {
 		Jump();
 	}
-	ImGui::Begin("Play");
-	if (ImGui::Button("clear")) {
-		floor_.clear();
+
+	//床描画
+	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++)
+	{
+		(*it)->Update();
 	}
-	ImGui::End();
+
 	object_->Update();
 
 	ColliderUpdate();
@@ -146,7 +161,9 @@ void Player::ColliderUpdate()
 
 void Player::OnCollision(const Collider& collider)
 {
-	collider;
+	/*if (collider.GetMask() ==) {
+
+	}*/
 }
 
 void Player::SetGlobalVariables()
