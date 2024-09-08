@@ -1,9 +1,12 @@
 #include "Floor.h"
 
-void Floor::Init()
-{
+Floor::Floor(Vector3 position) {
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>("circle.png");
+
+	object_->model->transform_.translate_ = position;
+	object_->model->transform_.scale_ = { 100.0f,0.1f,1.0f };
+
 	object_->Update();
 }
 

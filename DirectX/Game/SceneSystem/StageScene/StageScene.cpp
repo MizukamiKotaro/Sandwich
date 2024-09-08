@@ -25,7 +25,7 @@ void StageScene::Update()
 	}
 
 #ifdef _DEBUG
-	if (input_->PressedKey(DIK_SPACE)) {
+	if (input_->PressedKey(DIK_1)) {
 		// シーン切り替え
 		ChangeScene(CLEAR);
 		Audio::AllStop();

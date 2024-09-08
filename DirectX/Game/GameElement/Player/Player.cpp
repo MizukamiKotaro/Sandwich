@@ -16,6 +16,8 @@ void Player::Init()
 	global = std::make_unique<GlobalVariableUser>("Character","Player");
 	SetGlobalVariables();
 	object_->Update();
+
+
 }
 
 void Player::Update()
@@ -25,13 +27,29 @@ void Player::Update()
 #endif
 
 	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	//天井の判定の代わり
+	if (object_->model->transform_.translate_.y > 20.0f) {
+		isHitCeiling = true;
+	}
+	if (isHitCeiling) {
+		HitCeiling();
+		floor_.clear();
+		if (object_->model->transform_.translate_.y < -15.0f) {
+			HitBottom();
+		}
+		object_->Update();
+		return;
+	}
 
 	AutoJumpSystem();
 	if (jumpFlag) {
 		Jump();
-
 	}
-
+	ImGui::Begin("Play");
+	if (ImGui::Button("clear")) {
+		floor_.clear();
+	}
+	ImGui::End();
 	object_->Update();
 
 	ColliderUpdate();
@@ -40,34 +58,37 @@ void Player::Update()
 void Player::Draw(const Camera* camera)
 {
 	object_->Draw(*camera);
-}
 
-void Player::Move()
-{
-	//if (input_->PressedKey(DIK_A)) {
-
-	//}
-	//else if (input_->PressedKey(DIK_D)) {
-
-	//}
+	//床描画
+	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++)
+	{
+		(*it)->Draw(camera);
+	}
 }
 
 void Player::AutoJumpSystem()
 {
+	//スペースでジャンプ
+	if (input_->PressedKey(DIK_SPACE)) {
+		JumpInit();
+		CreateFloor();
+	}
+
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
 	//ジャンプをしない
 	if (jumpFlame < kJumpInterval) {
+		//スペースでジャンプ
 	}
 	//ジャンプをする
 	else {
-		jumpFlame = 0;
-		jumpFlag = true;
 		JumpInit();
 	}
 }
 
 void Player::JumpInit()
 {
+	jumpFlame = 0;
+	jumpFlag = true;
 	jumpForce = 10.0f;
 	jumpForceVec.x = 0.0f;
 	jumpForceVec.y = jumpForce;
@@ -101,6 +122,19 @@ void Player::Jump()
 
 void Player::CreateFloor()
 {
+	floor_.push_back(std::unique_ptr<Floor>(new Floor(object_->model->transform_.translate_)));
+}
+
+void Player::HitCeiling()
+{
+
+	object_->model->transform_.translate_.y -= 2.5f;
+}
+
+void Player::HitBottom()
+{
+
+	isHitCeiling = false;
 
 }
 
