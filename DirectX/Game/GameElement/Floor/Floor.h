@@ -4,7 +4,7 @@
 
 class Floor : public Collider {
 public:
-	Floor(Vector3 position);
+	Floor(const std::string& textureName,Vector3 position);
 	//void Init();
 	void Update();
 	void Draw(const Camera* camera);

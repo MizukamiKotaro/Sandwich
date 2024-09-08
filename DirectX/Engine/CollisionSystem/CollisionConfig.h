@@ -18,4 +18,5 @@ enum class ColliderMask {
     UNKNOWN = 0,
     PLAYER,
     ENEMY,
+    FLOOR,
 };

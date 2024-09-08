@@ -1,8 +1,8 @@
 #include "Floor.h"
 
-Floor::Floor(Vector3 position) {
+Floor::Floor(const std::string& textureName,Vector3 position) {
 	//板ポリに画像を貼り付ける
-	object_ = std::make_unique<Object>("circle.png");
+	object_ = std::make_unique<Object>(textureName);
 
 	object_->model->transform_.translate_ = position;
 	object_->model->transform_.scale_ = { 100.0f,0.1f,1.0f };
@@ -11,7 +11,7 @@ Floor::Floor(Vector3 position) {
 
 	//当たり判定
 	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::PLAYER);
-	AddTargetMask(ColliderMask::ENEMY);
+	AddTargetMask(ColliderMask::FLOOR);
 }
 
 void Floor::Update()

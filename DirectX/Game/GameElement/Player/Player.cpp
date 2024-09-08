@@ -122,7 +122,7 @@ void Player::Jump()
 
 void Player::CreateFloor()
 {
-	floor_.push_back(std::unique_ptr<Floor>(new Floor(object_->model->transform_.translate_)));
+	floor_.push_back(std::unique_ptr<Floor>(new Floor("circle.png", object_->model->transform_.translate_)));
 }
 
 void Player::HitCeiling()
