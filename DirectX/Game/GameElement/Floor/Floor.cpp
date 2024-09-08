@@ -31,5 +31,5 @@ void Floor::ColliderUpdate()
 
 void Floor::OnCollision(const Collider& collider)
 {
-
+	collider;
 }

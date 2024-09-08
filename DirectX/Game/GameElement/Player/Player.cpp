@@ -127,8 +127,8 @@ void Player::CreateFloor()
 
 void Player::HitCeiling()
 {
-
-	object_->model->transform_.translate_.y -= 2.5f;
+	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	object_->model->transform_.translate_.y -= 100.0f * deltaTime;
 }
 
 void Player::HitBottom()
