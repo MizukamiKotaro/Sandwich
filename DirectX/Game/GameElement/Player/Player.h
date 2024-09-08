@@ -63,6 +63,9 @@ private://プライベート変数
 	//HitCeiling
 	bool isHitCeiling = false;
 
+	float topLimit = 20.0f;
+	float bottomLimit = -15.0f;
+
 	//Globalvariables
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
