@@ -15,10 +15,14 @@ Game::Game(Camera* camera)
 	camera_ = camera;
 
 	collisionManager_ = CollisionManager::GetInstance();
+	equipmentManager_ = EquipmentManager::GetInstance();
+	equipmentManager_->FirstInitialize();
+	instancingModelManager_ = InstancingModelManager::GetInstance();
 }
 
 void Game::Initialize()
 {
+	equipmentManager_->Initialize();
 	player_ = std::make_unique<Player>();
 	player_->Init();
 }
@@ -27,7 +31,9 @@ void Game::Update()
 {
 	collisionManager_->Clear();
 	// 時間差分
-	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	equipmentManager_->Update(deltaTime);
+
 	player_->Update();
 
 	collisionManager_->CheckCollision();
@@ -35,7 +41,11 @@ void Game::Update()
 
 void Game::Draw()
 {
+	instancingModelManager_->Clear();
+
+	equipmentManager_->Draw();
 	player_->Draw(camera_);
+	instancingModelManager_->Draw(*camera_);
 }
 
 void Game::FirstUpdate()

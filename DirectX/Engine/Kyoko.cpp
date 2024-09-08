@@ -24,6 +24,7 @@
 #include "Drawers/IDrawManager/IDrawManager.h"
 #include "LevelDataLoader/LevelDataLoader.h"
 #include "ComputePipelineSystem/ComputePipelineManager/ComputePipelineManager.h"
+#include "InstancingModelManager.h"
 
 static ResourceLeackChecker leakCheck;
 
@@ -68,6 +69,7 @@ void Kyoko::Engine::Initialize(const char* windowName, int width, int height)
 	drawManager = DrawManager::GetInstance();
 	drawManager->Initialize();
 	SkinningModel::StaticInitialize();
+	InstancingModelManager::GetInstance()->FirstInitialize();
 
 	LevelDataLoader::GetInstance()->LoadFiles();
 

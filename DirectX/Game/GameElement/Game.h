@@ -5,7 +5,7 @@
 #include "Input.h"
 #include "CollisionSystem/CollisionManager/CollisionManager.h"
 #include "Player/Player.h"
-
+#include "Equipment/EquipmentManager.h"
 
 class Game {
 public: 
@@ -19,6 +19,8 @@ public:
 
 private:
 	std::unique_ptr<Player> player_;
+	EquipmentManager* equipmentManager_;
+	InstancingModelManager* instancingModelManager_;
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;

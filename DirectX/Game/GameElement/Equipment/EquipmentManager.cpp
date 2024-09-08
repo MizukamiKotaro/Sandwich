@@ -75,17 +75,17 @@ void EquipmentManager::DropEquipment(const float& deltaTime)
 			num = rand->RandInt(0, divisionNum_);
 		}
 		dropNum_ = num;
-		Vector3 pos = { -0.5f * width_ + (1.0f / (divisionNum_ * 2.0f)) * width_ + (1.0f / divisionNum_) * num ,dropY_,0.0f };
+		Vector3 pos = { -0.5f * width_ + (width_ / (divisionNum_ * 2.0f)) + (width_ / divisionNum_) * num ,dropY_,0.0f };
 		AddEquipment(pos);
 	}
 }
 
 void EquipmentManager::SetGlobalVariables()
 {
-	stageEditor_->AddItem("生成間隔", 0.5f, "生成関係");
+	stageEditor_->AddItem("生成間隔", 1.5f, "生成関係");
 	global_->AddItem("ステージの幅", 10.0f, "生成関係");
 	global_->AddItem("ステージの分割数", 10, "生成関係");
-	global_->AddItem("初期のy座標", 10.0f, "生成関係");
+	global_->AddItem("初期のy座標", 6.0f, "生成関係");
 	ApplyGlobalVariables();
 }
 
