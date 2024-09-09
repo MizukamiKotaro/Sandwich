@@ -111,7 +111,7 @@ void Player::JumpInit()
 
 void Player::Jump()
 {
-
+	jumpForceVec.x = 0.0f;
 	jumpForceVec.y = jumpForce;
 
 	if (input_->PressingKey(DIK_A)) {
@@ -163,7 +163,8 @@ void Player::OnCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
 		collider;
-
+		jumpForce = 10.0f;
+		jumpForceVec.x = 0.0f;
 	}
 }
 

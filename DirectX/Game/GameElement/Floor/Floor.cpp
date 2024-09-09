@@ -11,13 +11,18 @@ Floor::Floor(const std::string& textureName,Vector3 position) {
 
 	//当たり判定
 	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::FLOOR);
-	//AddTargetMask(ColliderMask::FLOOR);
 }
 
 void Floor::Update()
 {
+	kColliderFlame += 1.0f;
+	if (kColliderFlame >= kColliderInterval) {
+		ColliderUpdate();
+	}
+
+
 	object_->Update();
-	ColliderUpdate();
+
 }
 
 void Floor::Draw(const Camera* camera)

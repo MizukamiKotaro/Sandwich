@@ -17,4 +17,9 @@ public:
 private:
 	//3Dモデル
 	std::unique_ptr<Object> object_;
+
+	//当たり判定発生のための
+	float kColliderFlame = 0.0f;
+	//当たり判定が発生するまでの時間
+	const float kColliderInterval = 10.0f;
 };
