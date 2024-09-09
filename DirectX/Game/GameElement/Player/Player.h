@@ -1,10 +1,11 @@
 #pragma once
+#include <iostream>
+#include <algorithm>
 #include "GameElement/Object/Object.h"
 #include "GameElement/Floor/Floor.h"
 #include "CollisionSystem/Collider/Collider.h"
 #include "Input.h"
 #include "GlobalVariables/GlobalVariableUser.h"
-
 #include "ImGuiManager/ImGuiManager.h"
 
 class Player : public Collider{

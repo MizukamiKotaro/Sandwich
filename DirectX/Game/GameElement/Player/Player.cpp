@@ -71,6 +71,9 @@ void Player::Update()
 	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
 	jumpForce -= 0.1f;
 
+	//移動制御
+	object_->SetTranslate({ std::clamp(object_->GetWorldTransform().translate_.x, -18.0f, 18.0f) ,object_->GetWorldTransform().translate_.y,0.0f });
+
 	//床更新
 	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++)
 	{
@@ -126,7 +129,7 @@ void Player::Jump()
 	}
 
 	ImGui::Begin("Player");
-	ImGui::Text("%f", object_->GetWorldTransform().translate_.y);
+	ImGui::Text("%f", object_->GetWorldTransform().translate_.x);
 	ImGui::End();
 
 	jumpForceVec.Length();
