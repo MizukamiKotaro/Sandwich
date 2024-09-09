@@ -5,8 +5,10 @@
 StageScene::StageScene()
 {
 	FirstInit();
-
+	camera_->transform_.translate_.z = -100.0f;
+	camera_->Update();
 	game_ = std::make_unique<Game>(camera_.get());
+
 }
 
 void StageScene::Initialize()
@@ -23,13 +25,13 @@ void StageScene::Update()
 	}
 
 #ifdef _DEBUG
-	if (input_->PressedKey(DIK_SPACE)) {
+	if (input_->PressedKey(DIK_1)) {
 		// シーン切り替え
 		ChangeScene(CLEAR);
 		Audio::AllStop();
 	}
 #endif // _DEBUG
-
+	camera_->Update();
 	game_->Update();
 }
 

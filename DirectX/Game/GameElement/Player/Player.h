@@ -1,8 +1,11 @@
 #pragma once
 #include "GameElement/Object/Object.h"
+#include "GameElement/Floor/Floor.h"
 #include "CollisionSystem/Collider/Collider.h"
 #include "Input.h"
 #include "GlobalVariables/GlobalVariableUser.h"
+
+#include "ImGuiManager/ImGuiManager.h"
 
 class Player : public Collider{
 public://パブリック関数
@@ -17,10 +20,20 @@ public://パブリック変数
 #pragma endregion
 private://プライベート関数
 #pragma region
-	//左右移動
-	void Move();
 
-	void AutoJump();
+	//ジャンプ関連
+	void AutoJumpSystem();
+	void JumpInit();
+	void Jump();
+
+	//床関連
+	//床を作る
+	void CreateFloor();
+
+	//天井に当たったら
+	void HitCeiling();
+	//床に当たったら
+	void HitBottom();
 
 	//当たり判定の更新
 	void ColliderUpdate();
@@ -32,9 +45,28 @@ private://プライベート変数
 	//3Dモデル
 	std::unique_ptr<Object> object_;
 
-	//AutoJump
-	//
+	//床をまとめた物
+	std::list<std::unique_ptr<Floor>> floor_;
 
+	//AutoJump
+	//ジャンプのインターバル
+	const float kJumpInterval = 2.0f;//2秒
+	//ジャンプのフレーム
+	float jumpFlame;
+	//ジャンプの力
+	float jumpForce;
+	//ジャンプの力
+	Vector3 jumpForceVec;
+	//ジャンプのフラグ
+	bool jumpFlag = false;
+
+	//HitCeiling
+	bool isHitCeiling = false;
+
+	float topLimit = 20.0f;
+	float bottomLimit = -15.0f;
+
+	//Globalvariables
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
 #pragma endregion
