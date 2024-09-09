@@ -19,4 +19,5 @@ enum class ColliderMask {
     PLAYER,
     ENEMY,
     FLOOR,
+    EQUIPMENT,
 };

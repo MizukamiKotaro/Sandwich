@@ -79,8 +79,8 @@ Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& te
 		data_->isRotateRight = false;
 	}
 
-	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::PLAYER);
-	AddTargetMask(ColliderMask::ENEMY);
+	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::EQUIPMENT);
+	AddTargetMask(ColliderMask::FLOOR);
 }
 
 void Equipment::Update(const float& deltaTime)
@@ -140,8 +140,17 @@ void Equipment::ColliderUpdate()
 
 void Equipment::OnCollision(const Collider& collider)
 {
-	if (collider.GetMask() == ColliderMask::ENEMY) {
-		float y = collider.GetLine()->y_;
+	if (collider.GetMask() == ColliderMask::FLOOR) {
+		ColliderShape::BOX2D;
+		ShapeBox2D* box = collider.GetBox2D();
+		float y = 0.0f;
+		if (data_->vect.y >= 0.0f) {
+			y = box->position_.y - box->scale_.y;
+		}
+		else {
+			y = box->position_.y + box->scale_.y;
+		}
+
 		Vector3 translate = data_->position;
 
 		data_->reflecteNum++;
