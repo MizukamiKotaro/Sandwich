@@ -15,6 +15,10 @@ void Player::Init()
 	SetGlobalVariables();
 	object_->Update();
 
+	panTop = std::make_unique<Floor>("circle.png", Vector3{ 0.0f,topLimit ,0.0f }, Vector3{ 100.0f,0.1f,1.0f });
+
+	panBottom = std::make_unique<Floor>("circle.png", Vector3{ 0.0f,bottomLimit ,0.0f }, Vector3{ 100.0f,0.1f,1.0f });
+
 }
 
 void Player::Update()
@@ -31,16 +35,18 @@ void Player::Update()
 	ImGui::End();
 #pragma endregion
 	//天井の判定の代わり
-	if (object_->model->transform_.translate_.y > 20.0f) {
+	if (object_->model->transform_.translate_.y > topLimit) {
 		isHitCeiling = true;
 	}
 	if (isHitCeiling) {
 		HitCeiling();
 		floor_.clear();
-		if (object_->model->transform_.translate_.y < -15.0f) {
+		if (object_->model->transform_.translate_.y < bottomLimit) {
+
 			HitBottom();
 		}
 		object_->Update();
+		panTop->Update();
 		return;
 	}
 
@@ -48,13 +54,13 @@ void Player::Update()
 	//ジャンプをしない
 
 	jumpForceVec.y = jumpForce;
-
-	if (jumpFlame > kJumpInterval) {
-		//スペースでジャンプ初期化
 		if (input_->PressedKey(DIK_SPACE)) {
 			JumpInit();
 			CreateFloor();
 		}
+	if (jumpFlame > kJumpInterval) {
+		//スペースでジャンプ初期化
+
 	}
 	//ジャンプの処理
 	if (jumpFlag) {
@@ -74,6 +80,10 @@ void Player::Update()
 	object_->Update();
 
 	ColliderUpdate();
+
+	//パンの更新
+	panTop->Update();
+	panBottom->Update();
 }
 
 void Player::Draw(const Camera* camera)
@@ -85,6 +95,11 @@ void Player::Draw(const Camera* camera)
 	{
 		(*it)->Draw(camera);
 	}
+	//パンの描画
+	if (isHitCeiling) {
+		panTop->Draw(camera);
+	}
+	panBottom->Draw(camera);
 }
 
 void Player::JumpInit()
@@ -116,9 +131,6 @@ void Player::Jump()
 
 	jumpForceVec.Length();
 
-
-
-
 }
 
 void Player::CreateFloor()
@@ -129,12 +141,13 @@ void Player::CreateFloor()
 void Player::HitCeiling()
 {
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
-	object_->model->transform_.translate_.y -= 100.0f * deltaTime;
+	object_->model->transform_.translate_.y -= 50.0f * deltaTime;
+	panTop->Move(object_->model->transform_.translate_ - Vector3{0.0f,1.0f,0.0f});
 }
 
 void Player::HitBottom()
 {
-
+	panTop->Move({ 0.0f,topLimit ,0.0f });
 	isHitCeiling = false;
 
 }

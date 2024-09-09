@@ -66,8 +66,13 @@ private://プライベート変数
 	//HitCeiling
 	bool isHitCeiling = false;
 
-	float topLimit = 20.0f;
-	float bottomLimit = -15.0f;
+	const float topLimit = 20.0f;
+	float panTopY;
+
+	const float bottomLimit = -15.0f;
+
+	std::unique_ptr<Floor> panTop;
+	std::unique_ptr<Floor> panBottom;
 
 #pragma endregion
 

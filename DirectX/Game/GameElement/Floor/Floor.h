@@ -4,20 +4,22 @@
 
 class Floor : public Collider {
 public:
-	Floor(const std::string& textureName,Vector3 position, Vector3 scale);
+	Floor(const std::string& textureName,Vector3 position, Vector3 scale, float offset = 0);
 	//void Init();
 	void Update();
 	void Draw(const Camera* camera);
 
+	void Move(Vector3 position);
 	//当たり判定の更新
 	void ColliderUpdate();
 	//当たり判定
 	void OnCollision(const Collider& collider)override;
 
-	bool isDraw = true;
 private:
 	//3Dモデル
 	std::unique_ptr<Object> object_;
+
+	Vector3 offset_;
 
 	//当たり判定発生のための
 	float kColliderFlame = 0.0f;
