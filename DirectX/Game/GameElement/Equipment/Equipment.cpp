@@ -22,9 +22,9 @@ void Equipment::StaticInitialize()
 
 		TextureManager* tm = TextureManager::GetInstance();
 		texture[0] = tm->LoadTexture("egg.png");
-		texture[1] = tm->LoadTexture("egg.png");
-		texture[2] = tm->LoadTexture("egg.png");
-		texture[3] = tm->LoadTexture("egg.png");
+		texture[1] = tm->LoadTexture("ham.png");
+		texture[2] = tm->LoadTexture("lettuce.png");
+		texture[3] = tm->LoadTexture("tomato.png");
 		
 		rand_ = RandomGenerator::GetInstance();
 
@@ -138,8 +138,48 @@ void Equipment::OnCollision(const Collider& collider)
 	if (collider.GetMask() == ColliderMask::ENEMY) {
 		float y = collider.GetLine()->y_;
 		Vector3 translate = data_->position;
-		translate.y = y + data_->scale.y;
-		data_->position = translate;
+
+		data_->reflecteNum++;
+		if (data_->reflecteNum == staticData_->reflectNum) {
+			//反射の分裂の処理
+			data_->reflecteNum = 0;
+
+			float t;
+			Vector3 rp = translate - data_->move;
+
+			if (data_->vect.y >= 0.0f) {
+				t = std::fabsf(y - data_->scale.y - rp.y) / data_->move.y;
+				rp += data_->move * t;
+			}
+			else {
+				t = std::fabsf(y + data_->scale.y - rp.y) / data_->move.y;
+				rp += data_->move * t;
+			}
+
+			data_->vect.y *= -1.0f;
+			data_->speed *= staticData_->reflectCoefficient;
+			data_->scale *= 0.7f;
+
+			Vector3 v = {};
+			Rotate(v, 0.526f, data_->vect);
+
+			eMana->AddEquipment(rp + v * data_->moveSpeed * t, data_->texNum, data_->scale, v, data_->speed);
+
+			Rotate(v, -0.526f, data_->vect);
+			data_->position = rp + v * data_->moveSpeed * t;
+			data_->vect = v;
+		}
+		else {
+			if (data_->vect.y >= 0.0f) {
+				translate.y = y - data_->scale.y - std::fabsf(translate.y + data_->scale.y - y);
+			}
+			else {
+				translate.y = y + data_->scale.y + std::fabsf(translate.y - data_->scale.y - y);
+			}
+			data_->position = translate;
+			data_->speed *= staticData_->reflectCoefficient;
+			data_->vect.y *= -1;
+		}
 	}
 }
 

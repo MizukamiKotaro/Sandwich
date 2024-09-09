@@ -236,7 +236,7 @@ void DirectXBase::InitializeDebugController()
 		//デバッグレイヤーを有効にする
 		debugController_->EnableDebugLayer();
 		//さらにGPU側でもチェックを行うようにする
-		debugController_->SetEnableGPUBasedValidation(TRUE);
+		debugController_->SetEnableGPUBasedValidation(FALSE);
 	}
 #endif // DEBUG
 }
