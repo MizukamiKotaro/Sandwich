@@ -12,7 +12,7 @@ public:
 	void Draw();
 
 	void Clear();
-	void AddEquipment(const Vector3& pos);
+	void AddEquipment(const Vector3& pos, const int32_t& tex, const Vector3& scale = {0.5f,0.5f,0.5f}, const Vector3& vect = {0.0f,-1.0f,0.0f}, const float& speed = -1.0f);
 
 private:
 	EquipmentManager() = default;
