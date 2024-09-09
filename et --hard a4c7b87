@@ -1,0 +1,28 @@
+[33mc59f54f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mkorone[m[33m)[m HEAD@{0}: reset: moving to c59f54f
+[33m3613286[m[33m ([m[1;31morigin/korone[m[33m)[m HEAD@{1}: reset: moving to 3613286
+[33ma4c7b87[m[33m ([m[1;31morigin/Develop[m[33m, [m[1;32mDevelop[m[33m)[m HEAD@{2}: reset: moving to a4c7b87
+[33ma4c7b87[m[33m ([m[1;31morigin/Develop[m[33m, [m[1;32mDevelop[m[33m)[m HEAD@{3}: merge Develop: Fast-forward
+[33m3613286[m[33m ([m[1;31morigin/korone[m[33m)[m HEAD@{4}: checkout: moving from player to korone
+[33m632750a[m[33m ([m[1;31morigin/player[m[33m, [m[1;32mplayer[m[33m)[m HEAD@{5}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33mc59f54f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mkorone[m[33m)[m HEAD@{6}: checkout: moving from korone to player
+[33m3613286[m[33m ([m[1;31morigin/korone[m[33m)[m HEAD@{7}: checkout: moving from Develop to korone
+[33ma4c7b87[m[33m ([m[1;31morigin/Develop[m[33m, [m[1;32mDevelop[m[33m)[m HEAD@{8}: commit: 具材ふりふり
+[33m223e7e4[m HEAD@{9}: commit: 具材降らせる処理
+[33m3613286[m[33m ([m[1;31morigin/korone[m[33m)[m HEAD@{10}: merge korone: Fast-forward
+[33m05af728[m HEAD@{11}: checkout: moving from korone to Develop
+[33m3613286[m[33m ([m[1;31morigin/korone[m[33m)[m HEAD@{12}: commit: あたり判定の確認と修正
+[33m05af728[m HEAD@{13}: checkout: moving from Develop to korone
+[33m05af728[m HEAD@{14}: checkout: moving from korone to Develop
+[33m05af728[m HEAD@{15}: merge Develop: Fast-forward
+[33maf6969b[m HEAD@{16}: checkout: moving from Develop to korone
+[33m05af728[m HEAD@{17}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m9ddc3ba[m HEAD@{18}: checkout: moving from korone to Develop
+[33maf6969b[m HEAD@{19}: checkout: moving from Develop to korone
+[33m9ddc3ba[m HEAD@{20}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m7855880[m HEAD@{21}: commit (merge): マージ
+[33m731a111[m HEAD@{22}: checkout: moving from korone to Develop
+[33maf6969b[m HEAD@{23}: commit: あたり判定試してないけど完成
+[33m46a46e1[m HEAD@{24}: commit: 円同士四角同士のはできちゃ
+[33ma744ebc[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{25}: checkout: moving from master to korone
+[33ma744ebc[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{26}: commit: プロジェクト ファイルを追加します。
+[33m8a2aaf6[m HEAD@{27}: commit (initial): .gitattributes を追加します。

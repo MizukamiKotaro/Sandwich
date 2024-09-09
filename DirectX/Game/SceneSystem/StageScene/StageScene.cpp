@@ -1,12 +1,14 @@
 #include "StageScene.h"
 #include "ImGuiManager/ImGuiManager.h"
 #include "Kyoko.h"
+#include "FrameInfo/FrameInfo.h"
 
 StageScene::StageScene()
 {
 	FirstInit();
 
 	game_ = std::make_unique<Game>(camera_.get());
+	backGround_ = std::make_unique<BackGround>();
 }
 
 void StageScene::Initialize()
@@ -29,14 +31,16 @@ void StageScene::Update()
 		Audio::AllStop();
 	}
 #endif // _DEBUG
+	float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 
+	backGround_->Update(deltaTime);
 	game_->Update();
 }
 
 void StageScene::Draw()
 {
 	Kyoko::Engine::PreDraw();
-
+	backGround_->Draw(*camera_.get());
 	game_->Draw();
 
 	BlackDraw();
