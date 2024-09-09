@@ -36,6 +36,7 @@ private:
 		int32_t reflectNum;
 		float reflectCoefficient;
 		float acceleration;
+		float scale;
 	};
 	static std::unique_ptr<StaticData> staticData_;
 

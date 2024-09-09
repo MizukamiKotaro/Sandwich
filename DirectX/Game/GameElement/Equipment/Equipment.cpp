@@ -56,7 +56,12 @@ Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& te
 
 	data_->position = pos;
 	data_->rotate = {};
-	data_->scale = scale;
+	if (scale.x == 0.0f) {
+		data_->scale = Vector3{ staticData_->scale ,staticData_->scale ,staticData_->scale };
+	}
+	else {
+		data_->scale = scale;
+	}
 	if (speed == -1.0f) {
 		data_->speed = staticData_->downSpeed;
 	}
@@ -190,6 +195,7 @@ void Equipment::StaticSetGlobalVariables()
 	global_->AddItem("最大速度", 5.65f, "落下関係");
 	global_->AddItem("反発係数", 1.0f, "落下関係");
 	global_->AddItem("分裂までの反射回数", 5, "落下関係");
+	global_->AddItem("スケール", 2.0f, "生成関係");
 	StaticApplyGlobalVariables();
 }
 
@@ -200,4 +206,5 @@ void Equipment::StaticApplyGlobalVariables()
 	staticData_->reflectCoefficient = global_->GetFloatValue("反発係数", "落下関係");
 	staticData_->acceleration = global_->GetFloatValue("落下の加速度", "落下関係");
 	staticData_->reflectNum = global_->GetIntValue("分裂までの反射回数", "落下関係");
+	staticData_->scale = global_->GetFloatValue("スケール", "生成関係");
 }
