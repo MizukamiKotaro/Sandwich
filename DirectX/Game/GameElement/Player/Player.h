@@ -22,7 +22,6 @@ private://プライベート関数
 #pragma region
 
 	//ジャンプ関連
-	void AutoJumpSystem();
 	void JumpInit();
 	void Jump();
 
@@ -37,8 +36,12 @@ private://プライベート関数
 
 	//当たり判定の更新
 	void ColliderUpdate();
-	//当たり判定
+	//当たった時の処理
 	void OnCollision(const Collider& collider)override;
+
+	//Globalvariables
+	void SetGlobalVariables();
+	void ApplyGlobalVariables();
 #pragma endregion
 private://プライベート変数
 #pragma region
@@ -66,9 +69,6 @@ private://プライベート変数
 	float topLimit = 20.0f;
 	float bottomLimit = -15.0f;
 
-	//Globalvariables
-	void SetGlobalVariables();
-	void ApplyGlobalVariables();
 #pragma endregion
 
 private://基本機能たち

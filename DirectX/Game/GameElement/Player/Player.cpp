@@ -30,8 +30,6 @@ void Player::Update()
 	}
 	ImGui::End();
 #pragma endregion
-	//const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
-
 	//天井の判定の代わり
 	if (object_->model->transform_.translate_.y > 20.0f) {
 		isHitCeiling = true;
@@ -45,21 +43,29 @@ void Player::Update()
 		object_->Update();
 		return;
 	}
+
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
 	//ジャンプをしない
+
+	jumpForceVec.y = jumpForce;
+
 	if (jumpFlame > kJumpInterval) {
-		//スペースでジャンプ
+		//スペースでジャンプ初期化
 		if (input_->PressedKey(DIK_SPACE)) {
 			JumpInit();
 			CreateFloor();
 		}
 	}
-
+	//ジャンプの処理
 	if (jumpFlag) {
 		Jump();
 	}
 
-	//床描画
+	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
+	jumpForce -= 0.1f;
+
+	//床更新
 	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++)
 	{
 		(*it)->Update();
@@ -78,25 +84,6 @@ void Player::Draw(const Camera* camera)
 	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++)
 	{
 		(*it)->Draw(camera);
-	}
-}
-
-void Player::AutoJumpSystem()
-{
-	//スペースでジャンプ
-	if (input_->PressedKey(DIK_SPACE)) {
-		JumpInit();
-		CreateFloor();
-	}
-
-	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
-	//ジャンプをしない
-	if (jumpFlame < kJumpInterval) {
-		//スペースでジャンプ
-	}
-	//ジャンプをする
-	else {
-		JumpInit();
 	}
 }
 
@@ -129,15 +116,14 @@ void Player::Jump()
 
 	jumpForceVec.Length();
 
-	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
-	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
-	jumpForce -= 0.1f;
+
+
 
 }
 
 void Player::CreateFloor()
 {
-	floor_.push_back(std::unique_ptr<Floor>(new Floor("circle.png", object_->model->transform_.translate_)));
+	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", object_->model->transform_.translate_, { 5.0f,0.1f,1.0f })));
 }
 
 void Player::HitCeiling()

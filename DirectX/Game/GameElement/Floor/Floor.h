@@ -4,7 +4,7 @@
 
 class Floor : public Collider {
 public:
-	Floor(const std::string& textureName,Vector3 position);
+	Floor(const std::string& textureName,Vector3 position, Vector3 scale);
 	//void Init();
 	void Update();
 	void Draw(const Camera* camera);
@@ -14,6 +14,7 @@ public:
 	//当たり判定
 	void OnCollision(const Collider& collider)override;
 
+	bool isDraw = true;
 private:
 	//3Dモデル
 	std::unique_ptr<Object> object_;
