@@ -161,9 +161,10 @@ void Player::ColliderUpdate()
 
 void Player::OnCollision(const Collider& collider)
 {
-	/*if (collider.GetMask() ==) {
+	if (collider.GetMask() == ColliderMask::FLOOR) {
+		collider;
 
-	}*/
+	}
 }
 
 void Player::SetGlobalVariables()
