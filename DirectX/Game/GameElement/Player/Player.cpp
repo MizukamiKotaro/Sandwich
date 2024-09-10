@@ -32,12 +32,12 @@ void Player::Init()
 	AddTargetMask(ColliderMask::FLOOR);
 	AddTargetMask(ColliderMask::PAN);
 
-	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, ColliderMask::PAN);
+	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, this, ColliderMask::PAN);
 
-	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize);
+	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize, this);
 
 	//キャラクターのサイズ変更
-	object_->model->transform_.scale_ = {2.0f,2.0f,1.0f};
+	object_->model->transform_.scale_ = { 2.0f,2.0f,1.0f };
 	object_->Update();
 }
 
@@ -53,13 +53,17 @@ void Player::Update()
 	//天井に当たった時の処理
 	if (isHitCeiling) {
 		HitCeiling();
-		floor_.clear();
 		if (object_->model->transform_.translate_.y < bottomLimit) {
 
 			HitBottom();
 		}
 		object_->Update();
 		panTop->Update();
+
+		//床更新
+		for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++) {
+			(*it)->Update();
+		}
 		return;
 	}
 
@@ -120,7 +124,7 @@ void Player::Draw(const Camera* camera)
 		panTop->Draw(camera);
 	}
 #ifdef _DEBUG
-	if (IsDraw){
+	if (IsDraw) {
 		panTop->Draw(camera);
 	}
 #endif
@@ -183,7 +187,7 @@ void Player::CreateFloor()
 
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 
-	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", object_->model->transform_.translate_, { std::abs(jumpXmovement),0.1f,1.0f })));
+	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", object_->model->transform_.translate_, { std::abs(jumpXmovement),0.1f,1.0f }, this)));
 }
 
 void Player::HitCeiling()
@@ -196,6 +200,7 @@ void Player::HitCeiling()
 
 void Player::HitBottom()
 {
+	floor_.clear();
 	panTop->Move({ 0.0f,topLimit ,0.0f });
 	isHitCeiling = false;
 
@@ -230,27 +235,23 @@ void Player::SetGlobalVariables()
 	global->AddItem("ジャンプ力", kJumpForce, "ジャンプ");
 	global->AddItem("横移動の大きさ", kJumpForceX, "ジャンプ");
 	global->AddItem("ジャンプのインターバル", kJumpInterval, "ジャンプ");
-	
+
 	global->AddItem("左右の制限", Xlimit, "移動制御");
 
 	global->AddItem("上のパンの位置", topLimit, "パン");
 	global->AddItem("下のパンの位置", bottomLimit, "パン");
-
-	global->AddItem("上のパンの描画", IsDraw, "パン");
 
 	ApplyGlobalVariables();
 }
 
 void Player::ApplyGlobalVariables()
 {
-	kDropSpeed = global->GetFloatValue("落下速度","落下関連");
+	kDropSpeed = global->GetFloatValue("落下速度", "落下関連");
 
-	kJumpForce = global->GetFloatValue("ジャンプ力","ジャンプ");
+	kJumpForce = global->GetFloatValue("ジャンプ力", "ジャンプ");
 	kJumpForceX = global->GetFloatValue("横移動の大きさ", "ジャンプ");
 	kJumpInterval = global->GetFloatValue("ジャンプのインターバル", "ジャンプ");
 
 	topLimit = global->GetFloatValue("上のパンの位置", "パン");
 	bottomLimit = global->GetFloatValue("下のパンの位置", "パン");
-	
-	IsDraw = global->GetBoolValue("上のパンの描画","パン");
 }

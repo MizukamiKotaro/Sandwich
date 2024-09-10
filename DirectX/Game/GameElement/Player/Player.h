@@ -17,6 +17,7 @@ public://パブリック関数
 	void Update();
 	void Draw(const Camera* camera);
 
+	Vector3 GetTlanslate() { return object_->model->transform_.translate_; };
 	//trueなら落下中
 	bool GetIsDrop() const { return isHitCeiling; };
 	float GetIsDropSpeed()const { return dropSpeed_; };
@@ -108,7 +109,7 @@ private://プライベート変数
 	std::unique_ptr<Floor> panTop;
 	std::unique_ptr<Floor> panBottom;
 	//パンのサイズ
-	Vector3 panSize = {20.0f,1.0f,1.0f};
+	Vector3 panSize = { 20.0f,1.0f,1.0f };
 	//上のパンを描画
 #ifdef _DEBUG
 	bool IsDraw = false;
