@@ -16,23 +16,23 @@ void Player::Init()
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>(jumpTexture[0]);
 	//右と左のアフィン行列
-	lookLeftMatrix = Matrix4x4::MakeAffinMatrix(Vector3{1.0f,1.0f,1.0},Vector3{0.0f,3.14f,0.0f},Vector3{});
-	lookRightMatrix = Matrix4x4::MakeAffinMatrix(Vector3{1.0f,1.0f,1.0},Vector3{0.0f,0.0f,0.0f},Vector3{});
+	lookLeftMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,3.14f,0.0f }, Vector3{});
+	lookRightMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,0.0f,0.0f }, Vector3{});
 
 	//当たり判定
-	CreateCollider(ColliderShape::BOX2D,ColliderType::COLLIDER,ColliderMask::PLAYER);
+	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::PLAYER);
 	AddTargetMask(ColliderMask::FLOOR);
 	AddTargetMask(ColliderMask::PAN);
 
 	input_ = Input::GetInstance();
 
-	global = std::make_unique<GlobalVariableUser>("Character","Player");
+	global = std::make_unique<GlobalVariableUser>("Character", "Player");
 	SetGlobalVariables();
 	object_->Update();
 
-	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize,ColliderMask::PAN);
+	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, ColliderMask::PAN);
 
-	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f },panSize);
+	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize);
 
 }
 
@@ -42,13 +42,6 @@ void Player::Update()
 	//ApplyGlobalVariables();
 #endif
 
-#pragma region ImGui
-	ImGui::Begin("Play");
-	if (ImGui::Button("clear")) {
-		floor_.clear();
-	}
-	ImGui::End();
-#pragma endregion
 	//天井の判定の代わり
 	if (isHitCeiling) {
 		HitCeiling();
@@ -87,7 +80,7 @@ void Player::Update()
 	object_->SetTranslate({ std::clamp(object_->GetWorldTransform().translate_.x, -18.0f, 18.0f) ,object_->GetWorldTransform().translate_.y,0.0f });
 
 	//床更新
-	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++){
+	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++) {
 		(*it)->Update();
 	}
 
@@ -151,10 +144,6 @@ void Player::Jump()
 		object_->model->GetMaterialData()->uvTransform = lookRightMatrix;
 	}
 
-	ImGui::Begin("Player");
-	ImGui::Text("%f", object_->GetWorldTransform().translate_.x);
-	ImGui::End();
-
 	jumpForceVec.Length();
 
 }
@@ -174,7 +163,7 @@ void Player::CreateFloor()
 
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 
-	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png",object_->model->transform_.translate_, {std::abs(jumpXmovement),0.1f,1.0f})));
+	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", object_->model->transform_.translate_, { std::abs(jumpXmovement),0.1f,1.0f })));
 }
 
 void Player::HitCeiling()
@@ -182,7 +171,7 @@ void Player::HitCeiling()
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	dropSpeed_ = 50.0f * deltaTime;
 	object_->model->transform_.translate_.y -= dropSpeed_;
-	panTop->Move(object_->model->transform_.translate_ - Vector3{0.0f,2.0f,0.0f});
+	panTop->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,2.0f,0.0f });
 }
 
 void Player::HitBottom()
@@ -193,8 +182,8 @@ void Player::HitBottom()
 }
 
 void Player::ColliderUpdate()
-{	
-	SetBox2D(object_->GetWorldTransform().translate_,object_->GetWorldTransform().scale_);
+{
+	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_);
 	SetCollider();
 }
 
@@ -210,14 +199,14 @@ void Player::OnCollision(const Collider& collider)
 
 void Player::SetGlobalVariables()
 {
-	global->AddItem("拡縮",object_->GetWorldTransform().scale_,"トランスフォーム");
-	global->AddItem("回転",object_->GetWorldTransform().rotate_,"トランスフォーム");
-	global->AddItem("座標",object_->GetWorldTransform().translate_,"トランスフォーム");
+	global->AddItem("拡縮", object_->GetWorldTransform().scale_, "トランスフォーム");
+	global->AddItem("回転", object_->GetWorldTransform().rotate_, "トランスフォーム");
+	global->AddItem("座標", object_->GetWorldTransform().translate_, "トランスフォーム");
 
 	ApplyGlobalVariables();
 }
 
 void Player::ApplyGlobalVariables()
 {
-	object_->SetTranslate(global->GetVector3Value("座標","トランスフォーム"));
+	object_->SetTranslate(global->GetVector3Value("座標", "トランスフォーム"));
 }
