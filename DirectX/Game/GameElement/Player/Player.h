@@ -8,6 +8,7 @@
 #include "GlobalVariables/GlobalVariableUser.h"
 #include "ImGuiManager/ImGuiManager.h"
 #include "RandomGenerator/RandomGenerator.h"
+#include "Audio/Audio.h"
 
 class Player : public Collider {
 public://パブリック関数
@@ -31,24 +32,19 @@ private://プライベート関数
 	void JumpInit();
 	void CommonJumpInit();
 	void Jump();
-
 	//プレイヤーのテクスチャをランダムで選択する(かぶりなし)
 	int randomTextureSelect(int PreTextture);
-
 	//床関連
 	//床を作る
 	void CreateFloor();
-
 	//天井に当たったら
 	void HitCeiling();
 	//床に当たったら
 	void HitBottom();
-
 	//当たり判定の更新
 	void ColliderUpdate();
 	//当たった時の処理
 	void OnCollision(const Collider& collider)override;
-
 	//Globalvariables
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
@@ -85,19 +81,24 @@ private://プライベート変数
 	float jumpXCenter = 0.0f;
 	//ジャンプのテクスチャ
 	std::vector<std::string> jumpTexture;
+	//左右を反転させるための行列
 	Matrix4x4 lookLeftMatrix;
 	Matrix4x4 lookRightMatrix;
+	//ジャンプのSE
+	std::unique_ptr<Audio> jumpSE;
+	//ひとつ前で選択されたテクスチャ
 	int preTexture = 0;
+	//現在のテクスチャ
 	int currentTexture;
-	//HitCeiling
+	//天井に当たったかのフラグ
 	bool isHitCeiling = false;
-
+	//落下速度
 	float kDropSpeed = 50.0f;
 	float dropSpeed_;
-
+	//上側のパンの位置(Y)
 	const float topLimit = 20.0f;
 	float panTopY;
-
+	//下側のパンの位置(Y)
 	const float bottomLimit = -15.0f;
 
 	//パンのインスタンス
@@ -105,6 +106,7 @@ private://プライベート変数
 	std::unique_ptr<Floor> panBottom;
 	//パンのサイズ
 	Vector3 panSize = {20.0f,1.0f,1.0f};
+
 
 #pragma endregion
 

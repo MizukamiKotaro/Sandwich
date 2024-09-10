@@ -3,7 +3,7 @@
 
 void Player::Init()
 {
-
+	//ジャンプのテクスチャ
 	jumpTexture.push_back("player1.png");
 	jumpTexture.push_back("player2.png");
 	jumpTexture.push_back("player3.png");
@@ -11,6 +11,10 @@ void Player::Init()
 	for (std::string tex : jumpTexture) {
 		TextureManager::GetInstance()->LoadTexture(tex);
 	}
+
+	jumpSE = std::make_unique<Audio>();
+	jumpSE->Load("jump.mp3", "プレイヤーのジャンプの音");
+
 	random = RandomGenerator::GetInstance();
 
 	//板ポリに画像を貼り付ける
@@ -122,10 +126,12 @@ void Player::CommonJumpInit()
 	jumpForce = kJumpForce;
 	jumpForceVec.x = 0.0f;
 	jumpForceVec.y = jumpForce;
-
+	//テクスチャをランダムに変える
 	currentTexture = randomTextureSelect(preTexture);
 	preTexture = currentTexture;
 	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(jumpTexture[currentTexture]));
+	//jumpSEを再生
+	jumpSE->Play();
 }
 
 void Player::Jump()
