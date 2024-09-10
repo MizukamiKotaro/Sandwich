@@ -77,7 +77,7 @@ void EquipmentManager::DropEquipment(const float& deltaTime)
 			num = rand->RandInt(0, divisionNum_);
 		}
 		dropNum_ = num;
-		Vector3 pos = { -0.5f * width_ + (width_ / (divisionNum_ * 2.0f)) + (width_ / divisionNum_) * num ,dropY_,0.0f };
+		Vector3 pos = { -0.5f * width_ + (width_ / (divisionNum_ * 2.0f)) + (width_ / divisionNum_) * num ,dropY_,0.001f };
 
 		AddEquipment(pos, rand->RandInt(0, 4));
 	}
