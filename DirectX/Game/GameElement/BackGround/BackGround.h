@@ -15,12 +15,30 @@ public:
 	void Draw(const Camera& camera);
 
 private:
+	void Create();
 	void DrawSprites();
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
 
-private://プライベート関数
-	//Planeモデル
+private:
+	enum SpriteNames {
+		kTitle,
+		kStartUI,
+		kSpaceUI,
+		kEnd,
+	};
+	std::vector<std::unique_ptr<Sprite>> sprites_;
+	std::vector<std::string> names_;
+
+	struct PutData
+	{
+		Vector2 basePos;
+		Vector2 baseScale;
+		float scale;
+	};
+	std::vector<PutData> putDatas_;
+
+private:
 	std::unique_ptr<Model> model_;
 	std::unique_ptr<PostEffect> postEffect_;
 	std::unique_ptr<PostEffect> postEffect2_;

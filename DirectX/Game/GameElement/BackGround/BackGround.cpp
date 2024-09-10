@@ -23,6 +23,8 @@ BackGround::BackGround()
 	back_->size_ = screenSize_;
 	back_->Update();
 
+	Create();
+
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "BackGround");
 	SetGlobalVariables();
 	DrawSprites();
@@ -59,6 +61,29 @@ void BackGround::Draw(const Camera& camera)
 	model_->Draw(camera);
 }
 
+void BackGround::Create()
+{
+	Vector2 pos = screenSize_ * 0.5f;
+
+	sprites_.resize(SpriteNames::kEnd);
+	sprites_[SpriteNames::kTitle] = std::make_unique<Sprite>("title.png", pos);
+	sprites_[SpriteNames::kStartUI] = std::make_unique<Sprite>("startUi.png", pos);
+	sprites_[SpriteNames::kSpaceUI] = std::make_unique<Sprite>("SPACEUi.png", pos);
+
+	names_.resize(SpriteNames::kEnd);
+	names_[SpriteNames::kTitle] = "さんどうぃっち";
+	names_[SpriteNames::kStartUI] = "スタート";
+	names_[SpriteNames::kSpaceUI] = "スペース";
+
+	putDatas_.resize(SpriteNames::kEnd);
+
+	for (int32_t i = 0; i < SpriteNames::kEnd; i++) {
+		putDatas_[i].basePos = pos;
+		putDatas_[i].baseScale = sprites_[i]->size_;
+		putDatas_[i].scale = 1.0f;
+	}
+}
+
 void BackGround::DrawSprites()
 {
 	postEffect2_->PreDrawScene();
@@ -67,6 +92,10 @@ void BackGround::DrawSprites()
 		sp->Draw();
 	}
 	for (const std::unique_ptr<Sprite>& sp : horizontals_) {
+		sp->Draw();
+	}
+
+	for (const std::unique_ptr<Sprite>& sp : sprites_) {
 		sp->Draw();
 	}
 	postEffect2_->PostDrawScene();
@@ -86,6 +115,12 @@ void BackGround::SetGlobalVariables()
 	global_->AddItem("幅", 30.0f, "チェック");
 	global_->AddItemColor("色", { 1.0f,1.0f,1.0f,0.4f }, "チェック");
 	global_->AddItem("移動", Vector2{ 0.0f,0.0f }, "チェック");
+
+	for (int32_t i = 0; i < SpriteNames::kEnd; i++) {
+		global_->AddItem(names_[i] + "の座標", putDatas_[i].basePos, "タイトル", names_[i]);
+		global_->AddItem(names_[i] + "のスケール", putDatas_[i].scale, "タイトル", names_[i]);
+	}
+
 	ApplyGlobalVariables();
 }
 
@@ -163,5 +198,14 @@ void BackGround::ApplyGlobalVariables()
 	}
 
 	size2_ = size * 2.0f;
+
+
+	for (int32_t i = 0; i < SpriteNames::kEnd; i++) {
+		putDatas_[i].basePos = global_->GetVector2Value(names_[i] + "の座標", "タイトル", names_[i]);
+		putDatas_[i].scale = global_->GetFloatValue(names_[i] + "のスケール", "タイトル", names_[i]);
+		sprites_[i]->pos_ = putDatas_[i].basePos;
+		sprites_[i]->size_ = putDatas_[i].baseScale * putDatas_[i].scale;
+		sprites_[i]->Update();
+	}
 }
 
