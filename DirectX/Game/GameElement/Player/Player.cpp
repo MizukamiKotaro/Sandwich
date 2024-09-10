@@ -148,7 +148,7 @@ void Player::CreateFloor()
 
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 
-	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", { jumpXCenter,object_->model->transform_.translate_.y,0.0f }, {std::abs(jumpXmovement),0.1f,1.0f})));
+	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png",object_->model->transform_.translate_, {std::abs(jumpXmovement),0.1f,1.0f})));
 }
 
 void Player::HitCeiling()
