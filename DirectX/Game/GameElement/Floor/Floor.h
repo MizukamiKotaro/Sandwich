@@ -4,7 +4,7 @@
 
 class Floor : public Collider {
 public:
-	Floor(const std::string& textureName,Vector3 position, Vector3 scale, float offset = 0);
+	Floor(const std::string& textureName,Vector3 position, Vector3 scale,ColliderMask ColliderMask = ColliderMask::FLOOR);
 	//void Init();
 	void Update();
 	void Draw(const Camera* camera);
@@ -18,8 +18,6 @@ public:
 private:
 	//3Dモデル
 	std::unique_ptr<Object> object_;
-
-	Vector3 offset_;
 
 	//当たり判定発生のための
 	float kColliderFlame = 0.0f;

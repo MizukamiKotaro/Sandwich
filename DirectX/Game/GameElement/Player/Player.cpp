@@ -15,7 +15,7 @@ void Player::Init()
 	SetGlobalVariables();
 	object_->Update();
 
-	panTop = std::make_unique<Floor>("circle.png", Vector3{ 0.0f,topLimit ,0.0f }, Vector3{ 100.0f,0.1f,1.0f });
+	panTop = std::make_unique<Floor>("circle.png", Vector3{ 0.0f,topLimit ,0.0f }, Vector3{ 100.0f,0.1f,1.0f },ColliderMask::PAN);
 
 	panBottom = std::make_unique<Floor>("circle.png", Vector3{ 0.0f,bottomLimit ,0.0f }, Vector3{ 100.0f,0.1f,1.0f });
 
@@ -141,7 +141,8 @@ void Player::CreateFloor()
 void Player::HitCeiling()
 {
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
-	object_->model->transform_.translate_.y -= 50.0f * deltaTime;
+	dropSpeed_ = 50.0f * deltaTime;
+	object_->model->transform_.translate_.y -= dropSpeed_;
 	panTop->Move(object_->model->transform_.translate_ - Vector3{0.0f,1.0f,0.0f});
 }
 

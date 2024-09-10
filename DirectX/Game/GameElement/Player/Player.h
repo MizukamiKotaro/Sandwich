@@ -7,12 +7,16 @@
 
 #include "ImGuiManager/ImGuiManager.h"
 
-class Player : public Collider{
+class Player : public Collider {
 public://パブリック関数
 #pragma region
 	void Init();
 	void Update();
 	void Draw(const Camera* camera);
+
+	//trueなら落下中
+	bool GetIsDrop() const { return isHitCeiling; };
+	float GetIsDropSpeed()const { return dropSpeed_; };
 #pragma endregion
 public://パブリック変数
 #pragma region 
@@ -65,6 +69,7 @@ private://プライベート変数
 
 	//HitCeiling
 	bool isHitCeiling = false;
+	float dropSpeed_;
 
 	const float topLimit = 20.0f;
 	float panTopY;
