@@ -2,6 +2,7 @@
 #include "EquipmentManager.h"
 #include "calc.h"
 #include "GameElement/Player/Player.h"
+#include "Audio/Audio.h"
 
 std::unique_ptr<StageEditor> Equipment::stageEditor_;
 std::unique_ptr<GlobalVariableUser> Equipment::global_;
@@ -11,6 +12,7 @@ const Player* Equipment::player_;
 
 Vector4 kDrawColor = { 1.0f,1.0f,1.0f,1.0f };
 const Texture* texture[4];
+std::unique_ptr<Audio> seReflect;
 
 RandomGenerator* rand_;
 EquipmentManager* eMana;
@@ -24,6 +26,9 @@ void Equipment::StaticInitialize()
 {
 	if (!instancingManager_) {
 		instancingManager_ = InstancingModelManager::GetInstance();
+
+		seReflect = std::make_unique<Audio>();
+		seReflect->Load("reflect.mp3", "具材の反射");
 
 		eMana = EquipmentManager::GetInstance();
 
@@ -111,6 +116,7 @@ void Equipment::Update(const float& deltaTime)
 
 void Equipment::Draw()
 {
+	data_->position.z = -0.001f;
 	Matrix4x4 matrix = Matrix4x4::MakeAffinMatrix(data_->scale, data_->rotate, data_->position);
 	instancingManager_->AddBox(modelData_, InstancingModelData{ matrix, Matrix4x4::MakeIdentity4x4(), kDrawColor });
 }
@@ -174,9 +180,26 @@ void Equipment::OnCollision(const Collider& collider)
 	}
 }
 
+bool IsCollision(const Vector3& pos0, const Vector3& scale0, const Vector3& pos1, const Vector3& scale1)
+{
+
+	Vector2 min0 = { pos0.x - scale0.x,pos0.y - scale0.y };
+	Vector2 max0 = { pos0.x + scale0.x,pos0.y + scale0.y };
+	Vector2 min1 = { pos1.x - scale1.x,pos1.y - scale1.y };
+	Vector2 max1 = { pos1.x + scale1.x,pos1.y + scale1.y };
+
+	if (min0.x <= max1.x && max0.x >= min1.x &&
+		min0.y <= max1.y && max0.y >= min1.y) {
+		return true;
+	}
+
+	return false;
+}
+
 void Equipment::NotDropCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
+		seReflect->Play();
 		ColliderShape::BOX2D;
 		ShapeBox2D* box = collider.GetBox2D();
 		float y = 0.0f;
@@ -188,6 +211,18 @@ void Equipment::NotDropCollision(const Collider& collider)
 		}
 
 		Vector3 translate = data_->position;
+
+		if (IsCollision(box->position_, box->scale_, data_->position - data_->move, data_->scale)) {
+			data_->reflecteNum = 0;
+
+			if (data_->vect.y < 0.0f) {
+				data_->vect.y *= -1;
+			}
+
+			data_->position.y = box->position_.y + box->scale_.y + data_->scale.y + data_->vect.y;
+
+			return;
+		}
 
 		data_->reflecteNum++;
 		if (data_->reflecteNum == staticData_->reflectNum) {
@@ -207,7 +242,7 @@ void Equipment::NotDropCollision(const Collider& collider)
 			}
 
 			data_->vect.y *= -1.0f;
-			data_->speed *= staticData_->reflectCoefficient;
+			data_->speed += staticData_->reflectCoefficient;
 			data_->scale *= 0.7f;
 
 			Vector3 v = {};
@@ -227,7 +262,7 @@ void Equipment::NotDropCollision(const Collider& collider)
 				translate.y = y + data_->scale.y + std::fabsf(translate.y - data_->scale.y - y);
 			}
 			data_->position = translate;
-			data_->speed *= staticData_->reflectCoefficient;
+			data_->speed += staticData_->reflectCoefficient;
 			data_->vect.y *= -1;
 		}
 	}
