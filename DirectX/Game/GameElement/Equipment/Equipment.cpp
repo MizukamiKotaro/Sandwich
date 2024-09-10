@@ -101,11 +101,11 @@ void Equipment::Update(const float& deltaTime)
 		MoveUpdate(deltaTime);
 	}
 
-	if (!data_->isSand) {
-		ColliderUpdate();
-	}
-	else if (!player_->GetIsDrop()) {
+	if (data_->isSand && !player_->GetIsDrop()) {
 		data_->isDelete = true;
+	}
+	else {
+		ColliderUpdate();
 	}
 }
 
