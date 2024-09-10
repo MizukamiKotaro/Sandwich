@@ -7,6 +7,7 @@ class EquipmentManager {
 public:
 	static EquipmentManager* GetInstance();
 	void FirstInitialize();
+	void SetPlayer(const Player* player);
 	void Initialize();
 	void Update(const float& deltaTime);
 	void Draw();
@@ -29,6 +30,8 @@ private:
 	std::unique_ptr<GlobalVariableUser> global_;
 	std::unique_ptr<StageEditor> stageEditor_;
 	std::list<std::unique_ptr<Equipment>> equipments_;
+
+	const Player* player_;
 
 	float time_;
 	float coolTime_;

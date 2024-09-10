@@ -1,4 +1,5 @@
 #include "EquipmentManager.h"
+#include "GameElement/Player/Player.h"
 
 Vector3 scale3_ = { 0.5f,0.5f,0.5f };
 
@@ -14,6 +15,12 @@ void EquipmentManager::FirstInitialize()
 	stageEditor_->Initialize();
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Equipment");
 	rand = RandomGenerator::GetInstance();
+}
+
+void EquipmentManager::SetPlayer(const Player* player)
+{
+	player_ = player;
+	Equipment::SetPlayer(player);
 }
 
 void EquipmentManager::Initialize()
@@ -43,7 +50,13 @@ void EquipmentManager::Update(const float& deltaTime)
 		}
 		else {
 			(*it)->Update(deltaTime);
-			it++;
+			if ((*it)->GetIsDelete()) {
+				(*it).reset(nullptr);
+				it = equipments_.erase(it);
+			}
+			else {
+				it++;
+			}
 		}
 	}
 }

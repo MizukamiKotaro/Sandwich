@@ -43,6 +43,11 @@ void Collider::AddTargetMask(ColliderMask mask)
 	}
 }
 
+void Collider::ClearTarget()
+{
+	targetMasks_.clear();
+}
+
 void Collider::SetCircle(const Vector3& position, const float& radius)
 {
 	shapeCircle_->SetParameter(position, radius);

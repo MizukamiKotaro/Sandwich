@@ -25,6 +25,7 @@ void Game::Initialize()
 	equipmentManager_->Initialize();
 	player_ = std::make_unique<Player>();
 	player_->Init();
+	equipmentManager_->SetPlayer(player_.get());
 }
 
 void Game::Update()

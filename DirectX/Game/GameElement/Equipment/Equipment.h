@@ -4,9 +4,11 @@
 #include "Editor/StageEditor.h"
 #include "InstancingModelManager.h"
 
+class Player;
+
 class Equipment : public Collider{
 public:
-
+	static void SetPlayer(const Player* player);
 	static void StaticInitialize();
 	static void StaticUpdate();
 
@@ -18,13 +20,17 @@ public:
 
 private:
 	void MoveUpdate(const float& deltaTime);
+	void DropUpdate();
 	void ColliderUpdate();
 	void OnCollision(const Collider& collider)override;
+	void NotDropCollision(const Collider& collider);
+	void DropCollision(const Collider& collider);
 private:
 	static void StaticSetGlobalVariables();
 	static void StaticApplyGlobalVariables();
 
 private:
+	static const Player* player_;
 	static std::unique_ptr<StageEditor> stageEditor_;
 	static std::unique_ptr<GlobalVariableUser> global_;
 	static InstancingModelManager* instancingManager_;
@@ -53,6 +59,7 @@ private:
 		bool isDelete;
 		int32_t texNum;
 		bool isRotateRight;
+		bool isSand;
 	};
 	std::unique_ptr<EquipmentData> data_;
 };

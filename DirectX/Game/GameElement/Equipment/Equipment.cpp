@@ -1,17 +1,24 @@
 #include "Equipment.h"
 #include "EquipmentManager.h"
 #include "calc.h"
+#include "GameElement/Player/Player.h"
 
 std::unique_ptr<StageEditor> Equipment::stageEditor_;
 std::unique_ptr<GlobalVariableUser> Equipment::global_;
 InstancingModelManager* Equipment::instancingManager_ = nullptr;
 std::unique_ptr<Equipment::StaticData> Equipment::staticData_;
+const Player* Equipment::player_;
 
 Vector4 kDrawColor = { 1.0f,1.0f,1.0f,1.0f };
 const Texture* texture[4];
 
 RandomGenerator* rand_;
 EquipmentManager* eMana;
+
+void Equipment::SetPlayer(const Player* player) 
+{
+	player_ = player;
+}
 
 void Equipment::StaticInitialize()
 {
@@ -78,16 +85,28 @@ Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& te
 	else {
 		data_->isRotateRight = false;
 	}
+	data_->isSand = false;
 
 	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::EQUIPMENT);
 	AddTargetMask(ColliderMask::FLOOR);
+	AddTargetMask(ColliderMask::PAN);
 }
 
 void Equipment::Update(const float& deltaTime)
 {
-	MoveUpdate(deltaTime);
+	if (player_->GetIsDrop()) {
+		DropUpdate();
+	}
+	else {
+		MoveUpdate(deltaTime);
+	}
 
-	ColliderUpdate();
+	if (!data_->isSand) {
+		ColliderUpdate();
+	}
+	else if (!player_->GetIsDrop()) {
+		data_->isDelete = true;
+	}
 }
 
 void Equipment::Draw()
@@ -132,6 +151,13 @@ void Equipment::MoveUpdate(const float& deltaTime)
 	}
 }
 
+void Equipment::DropUpdate()
+{
+	if (data_->isSand) {
+		data_->position.y -= player_->GetIsDropSpeed();
+	}
+}
+
 void Equipment::ColliderUpdate()
 {	
 	SetBox2D(data_->position, data_->scale);
@@ -139,6 +165,16 @@ void Equipment::ColliderUpdate()
 }
 
 void Equipment::OnCollision(const Collider& collider)
+{
+	if (player_->GetIsDrop()) {
+		DropCollision(collider);
+	}
+	else {
+		NotDropCollision(collider);
+	}
+}
+
+void Equipment::NotDropCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
 		ColliderShape::BOX2D;
@@ -194,6 +230,14 @@ void Equipment::OnCollision(const Collider& collider)
 			data_->speed *= staticData_->reflectCoefficient;
 			data_->vect.y *= -1;
 		}
+	}
+}
+
+void Equipment::DropCollision(const Collider& collider)
+{
+	if (!data_->isSand) {
+		collider;
+		data_->isSand = true;
 	}
 }
 

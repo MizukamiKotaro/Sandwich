@@ -19,6 +19,7 @@ public:
 	void CreateCollider(ColliderShape shape, ColliderType type, ColliderMask mask, bool isBeDrived = false);
 
 	void AddTargetMask(ColliderMask mask);
+	void ClearTarget();
 
 	const ColliderType GetType() const { return type_; }
 	const ColliderShape GetShape() const { return shape_; }
