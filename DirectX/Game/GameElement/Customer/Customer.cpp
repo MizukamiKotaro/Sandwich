@@ -35,7 +35,6 @@ void Customer::SetGlobalVariables()
 {
 	global->AddItem("大きさ", scale_, "お客さん");
 	global->AddItem("移動", translate_, "お客さん");
-	global->AddItem("描画", isDraw, "お客さん");
 
 	ApplyGlobalVariables();
 }
@@ -44,5 +43,4 @@ void Customer::ApplyGlobalVariables()
 {
 	scale_ = global->GetVector3Value("大きさ", "お客さん");
 	translate_ = global->GetVector3Value("移動", "お客さん");
-	isDraw = global->GetBoolValue("描画", "お客さん");
 }

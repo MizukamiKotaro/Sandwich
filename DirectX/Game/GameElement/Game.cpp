@@ -39,6 +39,7 @@ void Game::Update()
 		gameManager_->ChangeScene(GameManager::kGame);
 		// これ仮置き
 		gameManager_->CompletedTransition();
+		customer_->isDraw = true;
 	}
 
 	collisionManager_->Clear();
