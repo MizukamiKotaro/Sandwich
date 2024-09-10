@@ -11,6 +11,7 @@
 #include "Bloom/Bloom.h"
 #include "PostEffect/PostEffect.h"
 #include "GameElement/Game.h"
+#include "GameElement/BackGround/BackGround.h"
 
 class StageScene : public IScene
 {
@@ -26,4 +27,5 @@ public:
 private:
 
 	std::unique_ptr<Game> game_;
+	std::unique_ptr<BackGround> backGround_;
 };

@@ -53,6 +53,17 @@ const InstancingMeshTexData* InstancingModelManager::GetDrawData(const std::stri
 	return drawDatas_.back().get();
 }
 
+const InstancingMeshTexData* InstancingModelManager::GetDrawData(const Texture* texture, const BlendMode& blendMode)
+{
+	for (const std::unique_ptr<InstancingMeshTexData>& dataPtr : drawDatas_) {
+		if (dataPtr->modelData_ == plane_ && dataPtr->texture_ == texture && dataPtr->blendMode_ == blendMode) {
+			return dataPtr.get();
+		}
+	}
+	drawDatas_.push_back(std::make_unique<InstancingMeshTexData>(InstancingMeshTexData{ plane_,texture,blendMode }));
+	return drawDatas_.back().get();
+}
+
 InstancingModelData* const InstancingModelManager::AddBox(const InstancingMeshTexData* modelData, InstancingModelData&& model)
 {
 	if (instancingModelMap_.find(modelData) == instancingModelMap_.end()) {

@@ -27,6 +27,7 @@ public:
 	const InstancingMeshTexData* GetDrawData(const InstancingMeshTexData& data);
 	// 板ポリの場合
 	const InstancingMeshTexData* GetDrawData(const std::string& texturePath, const BlendMode& blendMode = BlendMode::kBlendModeNormal);
+	const InstancingMeshTexData* GetDrawData(const Texture* texture, const BlendMode& blendMode = BlendMode::kBlendModeNormal);
 
 	InstancingModelData* const AddBox(const InstancingMeshTexData* modelData, InstancingModelData&& model);
 
