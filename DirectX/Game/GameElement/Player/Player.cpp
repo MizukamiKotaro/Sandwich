@@ -55,8 +55,8 @@ void Player::Update()
 
 	jumpForceVec.y = jumpForce;
 		if (input_->PressedKey(DIK_SPACE)) {
-			JumpInit();
 			CreateFloor();
+			JumpInit();
 		}
 	if (jumpFlame > kJumpInterval) {
 		//スペースでジャンプ初期化
@@ -108,7 +108,13 @@ void Player::Draw(const Camera* camera)
 void Player::JumpInit()
 {
 	jumpFlame = 0;
+	CommonJumpInit();
+}
+
+void Player::CommonJumpInit()
+{
 	jumpFlag = true;
+	jumpXCenter = object_->model->transform_.translate_.x;
 	jumpForce = 10.0f;
 	jumpForceVec.x = 0.0f;
 	jumpForceVec.y = jumpForce;
@@ -138,7 +144,11 @@ void Player::Jump()
 
 void Player::CreateFloor()
 {
-	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", object_->model->transform_.translate_, { 5.0f,0.1f,1.0f })));
+	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
+
+	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
+
+	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", { jumpXCenter,object_->model->transform_.translate_.y,0.0f }, {std::abs(jumpXmovement),0.1f,1.0f})));
 }
 
 void Player::HitCeiling()
@@ -165,9 +175,7 @@ void Player::ColliderUpdate()
 void Player::OnCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
-		collider;
-		jumpForce = 10.0f;
-		jumpForceVec.x = 0.0f;
+		CommonJumpInit();
 	}
 }
 

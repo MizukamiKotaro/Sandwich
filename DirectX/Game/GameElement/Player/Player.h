@@ -28,6 +28,7 @@ private://プライベート関数
 
 	//ジャンプ関連
 	void JumpInit();
+	void CommonJumpInit();
 	void Jump();
 
 	//床関連
@@ -67,6 +68,10 @@ private://プライベート変数
 	Vector3 jumpForceVec;
 	//ジャンプのフラグ
 	bool jumpFlag = false;
+	//ジャンプした時のXの移動量
+	float jumpXmovement = 0.0f;
+	//ジャンプした時の中心点
+	float jumpXCenter = 0.0f;
 
 	//HitCeiling
 	bool isHitCeiling = false;
