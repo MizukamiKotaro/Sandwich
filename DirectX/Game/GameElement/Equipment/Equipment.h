@@ -45,6 +45,7 @@ private:
 		float scale;
 		int32_t divisionNum;
 		float divisionScale;
+		float stageWidthX;
 	};
 	static std::unique_ptr<StaticData> staticData_;
 
