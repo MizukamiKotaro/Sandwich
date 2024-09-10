@@ -12,7 +12,7 @@ public:
 	static void StaticInitialize();
 	static void StaticUpdate();
 
-	Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const Vector3& vect, const float& speed = -1.0f);
+	Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const int32_t& division, const Vector3& vect, const float& speed = -1.0f);
 	void Update(const float& deltaTime);
 	void Draw();
 
@@ -43,6 +43,8 @@ private:
 		float reflectCoefficient;
 		float acceleration;
 		float scale;
+		int32_t divisionNum;
+		float divisionScale;
 	};
 	static std::unique_ptr<StaticData> staticData_;
 
@@ -60,6 +62,7 @@ private:
 		int32_t texNum;
 		bool isRotateRight;
 		bool isSand;
+		int32_t division;
 	};
 	std::unique_ptr<EquipmentData> data_;
 };

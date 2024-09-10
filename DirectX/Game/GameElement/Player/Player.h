@@ -7,6 +7,8 @@
 #include "Input.h"
 #include "GlobalVariables/GlobalVariableUser.h"
 #include "ImGuiManager/ImGuiManager.h"
+#include "RandomGenerator/RandomGenerator.h"
+#include "Audio/Audio.h"
 
 class Player : public Collider {
 public://パブリック関数
@@ -30,21 +32,19 @@ private://プライベート関数
 	void JumpInit();
 	void CommonJumpInit();
 	void Jump();
-
+	//プレイヤーのテクスチャをランダムで選択する(かぶりなし)
+	int randomTextureSelect(int PreTextture);
 	//床関連
 	//床を作る
 	void CreateFloor();
-
 	//天井に当たったら
 	void HitCeiling();
 	//床に当たったら
 	void HitBottom();
-
 	//当たり判定の更新
 	void ColliderUpdate();
 	//当たった時の処理
 	void OnCollision(const Collider& collider)override;
-
 	//Globalvariables
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
@@ -57,13 +57,20 @@ private://プライベート変数
 	//床をまとめた物
 	std::list<std::unique_ptr<Floor>> floor_;
 
-	//AutoJump
+	//Jump
 	//ジャンプのインターバル
-	const float kJumpInterval = 2.0f;//2秒
+	float kJumpInterval = 2.0f;//2秒
 	//ジャンプのフレーム
 	float jumpFlame;
+	//ジャンプの初期値
+	float kJumpForce = 10.0f;
 	//ジャンプの力
 	float jumpForce;
+	//横移動の強さ
+	float kJumpForceX = 5.0f;
+	//プレイヤーにかかる重力
+	float gravity = 0.05f;
+
 	//ジャンプの力
 	Vector3 jumpForceVec;
 	//ジャンプのフラグ
@@ -72,18 +79,34 @@ private://プライベート変数
 	float jumpXmovement = 0.0f;
 	//ジャンプした時の中心点
 	float jumpXCenter = 0.0f;
-
-	//HitCeiling
+	//ジャンプのテクスチャ
+	std::vector<std::string> jumpTexture;
+	//左右を反転させるための行列
+	Matrix4x4 lookLeftMatrix;
+	Matrix4x4 lookRightMatrix;
+	//ジャンプのSE
+	std::unique_ptr<Audio> jumpSE;
+	//ひとつ前で選択されたテクスチャ
+	int preTexture = 0;
+	//現在のテクスチャ
+	int currentTexture;
+	//天井に当たったかのフラグ
 	bool isHitCeiling = false;
+	//落下速度
+	float kDropSpeed = 50.0f;
 	float dropSpeed_;
-
+	//上側のパンの位置(Y)
 	const float topLimit = 20.0f;
 	float panTopY;
-
+	//下側のパンの位置(Y)
 	const float bottomLimit = -15.0f;
 
+	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
 	std::unique_ptr<Floor> panBottom;
+	//パンのサイズ
+	Vector3 panSize = {20.0f,1.0f,1.0f};
+
 
 #pragma endregion
 
@@ -91,5 +114,6 @@ private://基本機能たち
 #pragma region
 	Input* input_ = nullptr;
 	std::unique_ptr<GlobalVariableUser> global;
+	RandomGenerator* random;
 #pragma endregion
 };
