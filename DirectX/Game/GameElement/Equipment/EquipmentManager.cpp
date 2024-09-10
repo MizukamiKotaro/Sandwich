@@ -73,9 +73,9 @@ void EquipmentManager::Clear()
 	equipments_.clear();
 }
 
-void EquipmentManager::AddEquipment(const Vector3& pos, const int32_t& tex, const Vector3& scale, const Vector3& vect, const float& speed)
+void EquipmentManager::AddEquipment(const Vector3& pos, const int32_t& tex, const int32_t& division, const Vector3& scale, const Vector3& vect, const float& speed)
 {
-	equipments_.push_back(std::make_unique<Equipment>(pos, scale, tex, vect, speed));
+	equipments_.push_back(std::make_unique<Equipment>(pos, scale, tex, division, vect, speed));
 }
 
 void EquipmentManager::DropEquipment(const float& deltaTime)
@@ -92,7 +92,7 @@ void EquipmentManager::DropEquipment(const float& deltaTime)
 		dropNum_ = num;
 		Vector3 pos = { -0.5f * width_ + (width_ / (divisionNum_ * 2.0f)) + (width_ / divisionNum_) * num ,dropY_,0.001f };
 
-		AddEquipment(pos, rand->RandInt(0, 4));
+		AddEquipment(pos, rand->RandInt(0, 4), 0);
 	}
 }
 

@@ -59,7 +59,7 @@ void Equipment::StaticUpdate()
 #endif // _DEBUG
 }
 
-Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const Vector3& vect, const float& speed)
+Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const int32_t& division, const Vector3& vect, const float& speed)
 {
 	data_ = std::make_unique<EquipmentData>();
 	
@@ -91,6 +91,7 @@ Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& te
 		data_->isRotateRight = false;
 	}
 	data_->isSand = false;
+	data_->division = division;
 
 	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::EQUIPMENT);
 	AddTargetMask(ColliderMask::FLOOR);
@@ -199,7 +200,8 @@ bool IsCollision(const Vector3& pos0, const Vector3& scale0, const Vector3& pos1
 void Equipment::NotDropCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
-		seReflect->Play();
+		//seReflect->Play();
+
 		ColliderShape::BOX2D;
 		ShapeBox2D* box = collider.GetBox2D();
 		float y = 0.0f;
@@ -224,7 +226,9 @@ void Equipment::NotDropCollision(const Collider& collider)
 			return;
 		}
 
-		data_->reflecteNum++;
+		if (data_->division < staticData_->divisionNum) {
+			data_->reflecteNum++;
+		}
 		if (data_->reflecteNum == staticData_->reflectNum) {
 			//反射の分裂の処理
 			data_->reflecteNum = 0;
@@ -243,12 +247,13 @@ void Equipment::NotDropCollision(const Collider& collider)
 
 			data_->vect.y *= -1.0f;
 			data_->speed += staticData_->reflectCoefficient;
-			data_->scale *= 0.7f;
+			data_->scale *= staticData_->divisionScale;
 
 			Vector3 v = {};
 			Rotate(v, 0.526f, data_->vect);
 
-			eMana->AddEquipment(rp + v * data_->moveSpeed * t, data_->texNum, data_->scale, v, data_->speed);
+			data_->division++;
+			eMana->AddEquipment(rp + v * data_->moveSpeed * t, data_->texNum, data_->division, data_->scale, v, data_->speed);
 
 			Rotate(v, -0.526f, data_->vect);
 			data_->position = rp + v * data_->moveSpeed * t;
@@ -283,6 +288,8 @@ void Equipment::StaticSetGlobalVariables()
 	global_->AddItem("最大速度", 5.65f, "落下関係");
 	global_->AddItem("反発係数", 1.0f, "落下関係");
 	global_->AddItem("分裂までの反射回数", 5, "落下関係");
+	global_->AddItem("分裂の回数", 3, "生成関係");
+	global_->AddItem("分裂のスケール係数", 0.8f, "生成関係");
 	global_->AddItem("スケール", 2.0f, "生成関係");
 	StaticApplyGlobalVariables();
 }
@@ -295,4 +302,6 @@ void Equipment::StaticApplyGlobalVariables()
 	staticData_->acceleration = global_->GetFloatValue("落下の加速度", "落下関係");
 	staticData_->reflectNum = global_->GetIntValue("分裂までの反射回数", "落下関係");
 	staticData_->scale = global_->GetFloatValue("スケール", "生成関係");
+	staticData_->divisionNum = global_->GetIntValue("分裂の回数", "生成関係");
+	staticData_->divisionScale = global_->GetFloatValue("分裂のスケール係数", "生成関係");
 }
