@@ -236,7 +236,7 @@ void Player::SetGlobalVariables()
 	global->AddItem("上のパンの位置", topLimit, "パン");
 	global->AddItem("下のパンの位置", bottomLimit, "パン");
 
-	global->AddItem("上のパンの描画", IsDraw, "パン");
+	//global->AddItem("上のパンの描画", IsDraw, "パン");
 
 	ApplyGlobalVariables();
 }
@@ -252,5 +252,5 @@ void Player::ApplyGlobalVariables()
 	topLimit = global->GetFloatValue("上のパンの位置", "パン");
 	bottomLimit = global->GetFloatValue("下のパンの位置", "パン");
 	
-	IsDraw = global->GetBoolValue("上のパンの描画","パン");
+	//IsDraw = global->GetBoolValue("上のパンの描画","パン");
 }

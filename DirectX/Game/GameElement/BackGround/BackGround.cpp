@@ -1,11 +1,13 @@
 #include "BackGround.h"
 #include "WindowsInfo/WindowsInfo.h"
 #include <cmath>
+#include "GameElement/GameManager/GameManager.h"
 
 const Texture* texture;
 
 BackGround::BackGround() 
 {
+	gameManager_ = GameManager::GetInstance();
 	screenSize_ = WindowsInfo::GetInstance()->GetWindowSize();
 
 	postEffect_ = std::make_unique<PostEffect>();
@@ -95,8 +97,10 @@ void BackGround::DrawSprites()
 		sp->Draw();
 	}
 
-	for (const std::unique_ptr<Sprite>& sp : sprites_) {
-		sp->Draw();
+	if (gameManager_->GetScene() == GameManager::kTitle) {
+		for (const std::unique_ptr<Sprite>& sp : sprites_) {
+			sp->Draw();
+		}
 	}
 	postEffect2_->PostDrawScene();
 

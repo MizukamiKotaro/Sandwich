@@ -3,6 +3,8 @@
 #include <list>
 #include "RandomGenerator/RandomGenerator.h"
 
+class GameManager;
+
 class EquipmentManager {
 public:
 	static EquipmentManager* GetInstance();
@@ -27,6 +29,8 @@ private:
 	void ApplyGlobalVariables();
 
 private:
+	GameManager* gameManager_;
+
 	std::unique_ptr<GlobalVariableUser> global_;
 	std::unique_ptr<StageEditor> stageEditor_;
 	std::list<std::unique_ptr<Equipment>> equipments_;

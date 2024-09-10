@@ -1,5 +1,6 @@
 #include "EquipmentManager.h"
 #include "GameElement/Player/Player.h"
+#include "GameElement/GameManager/GameManager.h"
 
 Vector3 scale3_ = { 0.5f,0.5f,0.5f };
 
@@ -11,6 +12,7 @@ EquipmentManager* EquipmentManager::GetInstance()
 
 void EquipmentManager::FirstInitialize()
 {
+	gameManager_ = GameManager::GetInstance();
 	stageEditor_ = std::make_unique<StageEditor>("具の設定");
 	stageEditor_->Initialize();
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Equipment");
@@ -30,6 +32,7 @@ void EquipmentManager::Initialize()
 	Clear();
 	Equipment::StaticInitialize();
 	SetGlobalVariables();
+	time_ = coolTime_ * 0.5f;
 }
 
 void EquipmentManager::Update(const float& deltaTime)
@@ -37,6 +40,10 @@ void EquipmentManager::Update(const float& deltaTime)
 	if (stageEditor_->IsChangedStage()) {
 		Initialize();
 	}
+	if (gameManager_->GetScene() != GameManager::kGame || gameManager_->GetIsTransition()) {
+		return;
+	}
+	
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 	Equipment::StaticUpdate();

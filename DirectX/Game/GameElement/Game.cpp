@@ -6,9 +6,11 @@
 #include "ImGuiManager/ImGuiManager.h"
 #endif // _DEBUG
 
+#include "GameManager/GameManager.h"
 
 Game::Game(Camera* camera)
 {
+	gameManager_ = GameManager::GetInstance();
 	// 入力マネージャ
 	input_ = Input::GetInstance();
 	// カメラの参照
@@ -26,16 +28,28 @@ void Game::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Init();
 	equipmentManager_->SetPlayer(player_.get());
+
+	customer_ = std::make_unique<Customer>();
+	customer_->Init();
 }
 
 void Game::Update()
 {
+	if (player_->GetIsDrop() && gameManager_->GetScene() == GameManager::kTitle) {
+		gameManager_->ChangeScene(GameManager::kGame);
+		// これ仮置き
+		gameManager_->CompletedTransition();
+		customer_->isDraw = true;
+	}
+
 	collisionManager_->Clear();
 	// 時間差分
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	equipmentManager_->Update(deltaTime);
 
 	player_->Update();
+
+	customer_->Update();
 
 	collisionManager_->CheckCollision();
 }
@@ -47,6 +61,7 @@ void Game::Draw()
 	equipmentManager_->Draw();
 	player_->Draw(camera_);
 	instancingModelManager_->Draw(*camera_);
+	customer_->Draw(camera_);
 }
 
 void Game::FirstUpdate()
