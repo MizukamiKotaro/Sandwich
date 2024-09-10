@@ -53,10 +53,8 @@ private://プライベート変数
 #pragma region
 	//3Dモデル
 	std::unique_ptr<Object> object_;
-
 	//床をまとめた物
 	std::list<std::unique_ptr<Floor>> floor_;
-
 	//Jump
 	//ジャンプのインターバル
 	float kJumpInterval = 2.0f;//2秒
@@ -70,11 +68,12 @@ private://プライベート変数
 	float kJumpForceX = 5.0f;
 	//プレイヤーにかかる重力
 	float gravity = 0.05f;
-
 	//ジャンプの力
 	Vector3 jumpForceVec;
 	//ジャンプのフラグ
 	bool jumpFlag = false;
+	//ジャンプの判定が何度も当たらないようにする
+	bool isHitFlag = false;
 	//ジャンプした時のXの移動量
 	float jumpXmovement = 0.0f;
 	//ジャンプした時の中心点
@@ -84,6 +83,8 @@ private://プライベート変数
 	//左右を反転させるための行列
 	Matrix4x4 lookLeftMatrix;
 	Matrix4x4 lookRightMatrix;
+	//左右の移動制限
+	float Xlimit = 18.0f;
 	//ジャンプのSE
 	std::unique_ptr<Audio> jumpSE;
 	//ひとつ前で選択されたテクスチャ
@@ -96,10 +97,10 @@ private://プライベート変数
 	float kDropSpeed = 50.0f;
 	float dropSpeed_;
 	//上側のパンの位置(Y)
-	const float topLimit = 20.0f;
+	float topLimit = 20.0f;
 	float panTopY;
 	//下側のパンの位置(Y)
-	const float bottomLimit = -15.0f;
+	float bottomLimit = -15.0f;
 
 	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
