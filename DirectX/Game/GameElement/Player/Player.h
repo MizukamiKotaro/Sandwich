@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "GlobalVariables/GlobalVariableUser.h"
 #include "ImGuiManager/ImGuiManager.h"
+#include "RandomGenerator/RandomGenerator.h"
 
 class Player : public Collider {
 public://パブリック関数
@@ -30,6 +31,9 @@ private://プライベート関数
 	void JumpInit();
 	void CommonJumpInit();
 	void Jump();
+
+	//プレイヤーのテクスチャをランダムで選択する(かぶりなし)
+	int randomTextureSelect(int PreTextture);
 
 	//床関連
 	//床を作る
@@ -72,7 +76,12 @@ private://プライベート変数
 	float jumpXmovement = 0.0f;
 	//ジャンプした時の中心点
 	float jumpXCenter = 0.0f;
-
+	//ジャンプのテクスチャ
+	std::vector<std::string> jumpTexture;
+	Matrix4x4 lookLeftMatrix;
+	Matrix4x4 lookRightMatrix;
+	int preTexture = 0;
+	int currentTexture;
 	//HitCeiling
 	bool isHitCeiling = false;
 	float dropSpeed_;
@@ -82,8 +91,11 @@ private://プライベート変数
 
 	const float bottomLimit = -15.0f;
 
+	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
 	std::unique_ptr<Floor> panBottom;
+	//パンのサイズ
+	Vector3 panSize = {20.0f,1.0f,1.0f};
 
 #pragma endregion
 
@@ -91,5 +103,6 @@ private://基本機能たち
 #pragma region
 	Input* input_ = nullptr;
 	std::unique_ptr<GlobalVariableUser> global;
+	RandomGenerator* random;
 #pragma endregion
 };
