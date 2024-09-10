@@ -10,7 +10,9 @@ StageScene::StageScene()
 	camera_->Update();
 	game_ = std::make_unique<Game>(camera_.get());
 	backGround_ = std::make_unique<BackGround>();
-
+	bgm_ = std::make_unique<Audio>();
+	bgm_->Load("game.mp3", "ゲームBGM");
+	bgm_->Play(true);
 }
 
 void StageScene::Initialize()
