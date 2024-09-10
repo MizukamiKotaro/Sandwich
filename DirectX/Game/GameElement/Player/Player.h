@@ -74,6 +74,8 @@ private://プライベート変数
 	bool jumpFlag = false;
 	//ジャンプの判定が何度も当たらないようにする
 	bool isHitFlag = false;
+	float hitFlame;
+	const float kHitFlame = 1.5f;
 	//ジャンプした時のXの移動量
 	float jumpXmovement = 0.0f;
 	//ジャンプした時の中心点
@@ -107,6 +109,10 @@ private://プライベート変数
 	std::unique_ptr<Floor> panBottom;
 	//パンのサイズ
 	Vector3 panSize = {20.0f,1.0f,1.0f};
+	//上のパンを描画
+#ifdef _DEBUG
+	bool IsDraw = false;
+#endif
 
 
 #pragma endregion

@@ -28,4 +28,6 @@ private:
 
 	std::unique_ptr<Game> game_;
 	std::unique_ptr<BackGround> backGround_;
+
+	std::unique_ptr<Audio> bgm_;
 };
