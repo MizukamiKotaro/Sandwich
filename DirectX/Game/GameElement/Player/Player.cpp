@@ -17,6 +17,10 @@ void Player::Init()
 
 	random = RandomGenerator::GetInstance();
 
+	input_ = Input::GetInstance();
+
+	global = std::make_unique<GlobalVariableUser>("Character", "Player");
+	SetGlobalVariables();
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>(jumpTexture[0]);
 	//右と左のアフィン行列
@@ -27,11 +31,6 @@ void Player::Init()
 	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::PLAYER);
 	AddTargetMask(ColliderMask::FLOOR);
 	AddTargetMask(ColliderMask::PAN);
-
-	input_ = Input::GetInstance();
-
-	global = std::make_unique<GlobalVariableUser>("Character", "Player");
-	SetGlobalVariables();
 
 	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, ColliderMask::PAN);
 
@@ -46,7 +45,10 @@ void Player::Update()
 {
 #ifdef _DEBUG
 	ApplyGlobalVariables();
+	panTop->Move(Vector3{ 0.0f,topLimit ,0.0f });
+	panBottom->Move(Vector3{ 0.0f,bottomLimit ,0.0f });
 #endif
+
 
 	//天井に当たった時の処理
 	if (isHitCeiling) {
@@ -117,6 +119,11 @@ void Player::Draw(const Camera* camera)
 	if (isHitCeiling) {
 		panTop->Draw(camera);
 	}
+#ifdef _DEBUG
+	if (IsDraw){
+		panTop->Draw(camera);
+	}
+#endif
 	panBottom->Draw(camera);
 }
 
@@ -229,6 +236,8 @@ void Player::SetGlobalVariables()
 	global->AddItem("上のパンの位置", topLimit, "パン");
 	global->AddItem("下のパンの位置", bottomLimit, "パン");
 
+	global->AddItem("上のパンの描画", IsDraw, "パン");
+
 	ApplyGlobalVariables();
 }
 
@@ -242,4 +251,6 @@ void Player::ApplyGlobalVariables()
 
 	topLimit = global->GetFloatValue("上のパンの位置", "パン");
 	bottomLimit = global->GetFloatValue("下のパンの位置", "パン");
+	
+	IsDraw = global->GetBoolValue("上のパンの描画","パン");
 }

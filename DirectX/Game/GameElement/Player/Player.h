@@ -109,6 +109,10 @@ private://プライベート変数
 	std::unique_ptr<Floor> panBottom;
 	//パンのサイズ
 	Vector3 panSize = {20.0f,1.0f,1.0f};
+	//上のパンを描画
+#ifdef _DEBUG
+	bool IsDraw = false;
+#endif
 
 
 #pragma endregion
