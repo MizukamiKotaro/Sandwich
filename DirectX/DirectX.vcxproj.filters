@@ -864,6 +864,9 @@
     <ClCompile Include="Game\GameElement\ResultUI\ResultUI.cpp">
       <Filter>Game\GameElement\ResultUI</Filter>
     </ClCompile>
+    <ClCompile Include="Game\GameElement\Customer\Customer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utils\Math\calc.h">
@@ -1372,6 +1375,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\ResultUI\ResultUI.h">
       <Filter>Game\GameElement\ResultUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Customer\Customer.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
