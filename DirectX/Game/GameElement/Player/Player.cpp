@@ -32,7 +32,6 @@ void Player::Init()
 
 	global = std::make_unique<GlobalVariableUser>("Character", "Player");
 	SetGlobalVariables();
-	object_->Update();
 
 	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, ColliderMask::PAN);
 
@@ -40,7 +39,7 @@ void Player::Init()
 
 	//キャラクターのサイズ変更
 	object_->model->transform_.scale_ = {2.0f,2.0f,1.0f};
-
+	object_->Update();
 }
 
 void Player::Update()
@@ -63,6 +62,11 @@ void Player::Update()
 	}
 
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
+	//ジャンプの判定が何度も当たらないようにする
+	hitFlame += FrameInfo::GetInstance()->GetDeltaTime();
+	if (hitFlame > kHitFlame) {
+		isHitFlag = false;
+	}
 	//ジャンプをしない
 
 	jumpForceVec.y = jumpForce;
@@ -204,6 +208,7 @@ void Player::OnCollision(const Collider& collider)
 		}
 		CommonJumpInit();
 		isHitFlag = true;
+		hitFlame = 0.0f;
 	}
 	if (collider.GetMask() == ColliderMask::PAN) {
 		isHitCeiling = true;

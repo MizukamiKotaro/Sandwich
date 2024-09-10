@@ -74,6 +74,8 @@ private://プライベート変数
 	bool jumpFlag = false;
 	//ジャンプの判定が何度も当たらないようにする
 	bool isHitFlag = false;
+	float hitFlame;
+	const float kHitFlame = 1.5f;
 	//ジャンプした時のXの移動量
 	float jumpXmovement = 0.0f;
 	//ジャンプした時の中心点
