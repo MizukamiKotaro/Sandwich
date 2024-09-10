@@ -7,6 +7,8 @@
 #include "Player/Player.h"
 #include "Equipment/EquipmentManager.h"
 
+class GameManager;
+
 class Game {
 public: 
 	Game(Camera* camera);
@@ -22,6 +24,7 @@ private:
 	EquipmentManager* equipmentManager_;
 	InstancingModelManager* instancingModelManager_;
 private:
+	GameManager* gameManager_;
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
 	CollisionManager* collisionManager_ = nullptr;

@@ -7,6 +7,8 @@
 #include "GlobalVariables/GlobalVariableUser.h"
 #include <vector>
 
+class GameManager;
+
 class BackGround {
 public:
 	BackGround();
@@ -21,6 +23,8 @@ private:
 	void ApplyGlobalVariables();
 
 private:
+	GameManager* gameManager_;
+
 	enum SpriteNames {
 		kTitle,
 		kStartUI,

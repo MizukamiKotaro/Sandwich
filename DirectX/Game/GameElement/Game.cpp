@@ -6,9 +6,11 @@
 #include "ImGuiManager/ImGuiManager.h"
 #endif // _DEBUG
 
+#include "GameManager/GameManager.h"
 
 Game::Game(Camera* camera)
 {
+	gameManager_ = GameManager::GetInstance();
 	// 入力マネージャ
 	input_ = Input::GetInstance();
 	// カメラの参照
@@ -30,6 +32,12 @@ void Game::Initialize()
 
 void Game::Update()
 {
+	if (player_->GetIsDrop() && gameManager_->GetScene() == GameManager::kTitle) {
+		gameManager_->ChangeScene(GameManager::kGame);
+		// これ仮置き
+		gameManager_->CompletedTransition();
+	}
+
 	collisionManager_->Clear();
 	// 時間差分
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
