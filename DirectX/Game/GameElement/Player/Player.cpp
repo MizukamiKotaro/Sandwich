@@ -39,7 +39,7 @@ void Player::Init()
 void Player::Update()
 {
 #ifdef _DEBUG
-	//ApplyGlobalVariables();
+	ApplyGlobalVariables();
 #endif
 
 	//天井の判定の代わり
@@ -119,7 +119,7 @@ void Player::CommonJumpInit()
 {
 	jumpFlag = true;
 	jumpXCenter = object_->model->transform_.translate_.x;
-	jumpForce = 10.0f;
+	jumpForce = kJumpForce;
 	jumpForceVec.x = 0.0f;
 	jumpForceVec.y = jumpForce;
 
@@ -134,13 +134,13 @@ void Player::Jump()
 	jumpForceVec.y = jumpForce;
 
 	if (input_->PressingKey(DIK_A)) {
-		jumpForceVec.x = -5.0f;
-		jumpForce -= 0.05f;
+		jumpForceVec.x = -kJumpForceX;
+		jumpForce -= gravity;
 		object_->model->GetMaterialData()->uvTransform = lookLeftMatrix;
 	}
 	else if (input_->PressingKey(DIK_D)) {
-		jumpForceVec.x = 5.0f;
-		jumpForce -= 0.05f;
+		jumpForceVec.x = kJumpForceX;
+		jumpForce -= gravity;
 		object_->model->GetMaterialData()->uvTransform = lookRightMatrix;
 	}
 
@@ -169,7 +169,7 @@ void Player::CreateFloor()
 void Player::HitCeiling()
 {
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
-	dropSpeed_ = 50.0f * deltaTime;
+	dropSpeed_ = kDropSpeed * deltaTime;
 	object_->model->transform_.translate_.y -= dropSpeed_;
 	panTop->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,2.0f,0.0f });
 }
@@ -199,14 +199,22 @@ void Player::OnCollision(const Collider& collider)
 
 void Player::SetGlobalVariables()
 {
-	global->AddItem("拡縮", object_->GetWorldTransform().scale_, "トランスフォーム");
-	global->AddItem("回転", object_->GetWorldTransform().rotate_, "トランスフォーム");
-	global->AddItem("座標", object_->GetWorldTransform().translate_, "トランスフォーム");
+	global->AddItem("落下速度", kDropSpeed, "落下関連");
+
+
+	global->AddItem("ジャンプ力", kJumpForce, "ジャンプ");
+	global->AddItem("横移動の大きさ", kJumpForceX, "ジャンプ");
+	global->AddItem("ジャンプのインターバル", kJumpInterval, "ジャンプ");
 
 	ApplyGlobalVariables();
 }
 
 void Player::ApplyGlobalVariables()
 {
-	object_->SetTranslate(global->GetVector3Value("座標", "トランスフォーム"));
+	kDropSpeed = global->GetFloatValue("落下速度","落下関連");
+
+
+	kJumpForce = global->GetFloatValue("ジャンプ力","ジャンプ");
+	kJumpForceX = global->GetFloatValue("横移動の大きさ", "ジャンプ");
+	kJumpInterval = global->GetFloatValue("ジャンプのインターバル", "ジャンプ");
 }
