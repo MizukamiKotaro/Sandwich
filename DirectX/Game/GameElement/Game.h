@@ -6,6 +6,7 @@
 #include "CollisionSystem/CollisionManager/CollisionManager.h"
 #include "Player/Player.h"
 #include "Equipment/EquipmentManager.h"
+#include "Customer/Customer.h"
 
 class Game {
 public: 
@@ -19,6 +20,8 @@ public:
 
 private:
 	std::unique_ptr<Player> player_;
+	//お客さんクラス
+	std::unique_ptr<Customer> customer_;
 	EquipmentManager* equipmentManager_;
 	InstancingModelManager* instancingModelManager_;
 private:

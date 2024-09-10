@@ -26,6 +26,9 @@ void Game::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Init();
 	equipmentManager_->SetPlayer(player_.get());
+
+	customer_ = std::make_unique<Customer>();
+	customer_->Init();
 }
 
 void Game::Update()
@@ -37,6 +40,8 @@ void Game::Update()
 
 	player_->Update();
 
+	customer_->Update();
+
 	collisionManager_->CheckCollision();
 }
 
@@ -47,6 +52,7 @@ void Game::Draw()
 	equipmentManager_->Draw();
 	player_->Draw(camera_);
 	instancingModelManager_->Draw(*camera_);
+	customer_->Draw(camera_);
 }
 
 void Game::FirstUpdate()

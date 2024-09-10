@@ -114,7 +114,6 @@ private://プライベート変数
 	bool IsDraw = false;
 #endif
 
-
 #pragma endregion
 
 private://基本機能たち
