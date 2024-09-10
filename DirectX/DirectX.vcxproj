@@ -229,6 +229,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\Equipment\Equipment.cpp" />
     <ClCompile Include="Game\GameElement\Equipment\EquipmentManager.cpp" />
     <ClCompile Include="Game\GameElement\Game.cpp" />
+    <ClCompile Include="Game\GameElement\GameManager\GameManager.cpp" />
     <ClCompile Include="Game\GameElement\Object\Object.cpp" />
     <ClCompile Include="Game\GameElement\Player\Player.cpp" />
     <ClCompile Include="Game\GameElement\ResultUI\ResultUI.cpp" />
@@ -417,6 +418,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\Equipment\Equipment.h" />
     <ClInclude Include="Game\GameElement\Equipment\EquipmentManager.h" />
     <ClInclude Include="Game\GameElement\Game.h" />
+    <ClInclude Include="Game\GameElement\GameManager\GameManager.h" />
     <ClInclude Include="Game\GameElement\Object\Object.h" />
     <ClInclude Include="Game\GameElement\Player\Player.h" />
     <ClInclude Include="Game\GameElement\ResultUI\ResultUI.h" />

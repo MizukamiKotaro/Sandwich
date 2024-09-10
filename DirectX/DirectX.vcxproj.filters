@@ -421,6 +421,9 @@
     <Filter Include="Game\GameElement\ResultUI">
       <UniqueIdentifier>{59f0d78e-70b1-4919-a04c-8ed1ca8577a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\GameManager">
+      <UniqueIdentifier>{b7e7c7cb-f570-4611-94ed-6bb246ebd735}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -863,6 +866,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\ResultUI\ResultUI.cpp">
       <Filter>Game\GameElement\ResultUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\GameManager\GameManager.cpp">
+      <Filter>Game\GameElement\GameManager</Filter>
     </ClCompile>
     <ClCompile Include="Game\GameElement\Customer\Customer.cpp">
       <Filter>ソース ファイル</Filter>
@@ -1375,6 +1381,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\ResultUI\ResultUI.h">
       <Filter>Game\GameElement\ResultUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\GameManager\GameManager.h">
+      <Filter>Game\GameElement\GameManager</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameElement\Customer\Customer.h">
       <Filter>ヘッダー ファイル</Filter>
