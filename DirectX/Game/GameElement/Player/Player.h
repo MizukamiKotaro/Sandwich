@@ -1,18 +1,23 @@
 #pragma once
+#include <iostream>
+#include <algorithm>
 #include "GameElement/Object/Object.h"
 #include "GameElement/Floor/Floor.h"
 #include "CollisionSystem/Collider/Collider.h"
 #include "Input.h"
 #include "GlobalVariables/GlobalVariableUser.h"
-
 #include "ImGuiManager/ImGuiManager.h"
 
-class Player : public Collider{
+class Player : public Collider {
 public://パブリック関数
 #pragma region
 	void Init();
 	void Update();
 	void Draw(const Camera* camera);
+
+	//trueなら落下中
+	bool GetIsDrop() const { return isHitCeiling; };
+	float GetIsDropSpeed()const { return dropSpeed_; };
 #pragma endregion
 public://パブリック変数
 #pragma region 
@@ -22,8 +27,8 @@ private://プライベート関数
 #pragma region
 
 	//ジャンプ関連
-	void AutoJumpSystem();
 	void JumpInit();
+	void CommonJumpInit();
 	void Jump();
 
 	//床関連
@@ -37,8 +42,12 @@ private://プライベート関数
 
 	//当たり判定の更新
 	void ColliderUpdate();
-	//当たり判定
+	//当たった時の処理
 	void OnCollision(const Collider& collider)override;
+
+	//Globalvariables
+	void SetGlobalVariables();
+	void ApplyGlobalVariables();
 #pragma endregion
 private://プライベート変数
 #pragma region
@@ -59,16 +68,23 @@ private://プライベート変数
 	Vector3 jumpForceVec;
 	//ジャンプのフラグ
 	bool jumpFlag = false;
+	//ジャンプした時のXの移動量
+	float jumpXmovement = 0.0f;
+	//ジャンプした時の中心点
+	float jumpXCenter = 0.0f;
 
 	//HitCeiling
 	bool isHitCeiling = false;
+	float dropSpeed_;
 
-	float topLimit = 20.0f;
-	float bottomLimit = -15.0f;
+	const float topLimit = 20.0f;
+	float panTopY;
 
-	//Globalvariables
-	void SetGlobalVariables();
-	void ApplyGlobalVariables();
+	const float bottomLimit = -15.0f;
+
+	std::unique_ptr<Floor> panTop;
+	std::unique_ptr<Floor> panBottom;
+
 #pragma endregion
 
 private://基本機能たち

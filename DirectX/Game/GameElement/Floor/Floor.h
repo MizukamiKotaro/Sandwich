@@ -4,11 +4,12 @@
 
 class Floor : public Collider {
 public:
-	Floor(const std::string& textureName,Vector3 position);
+	Floor(const std::string& textureName,Vector3 position, Vector3 scale,ColliderMask ColliderMask = ColliderMask::FLOOR);
 	//void Init();
 	void Update();
 	void Draw(const Camera* camera);
 
+	void Move(Vector3 position);
 	//当たり判定の更新
 	void ColliderUpdate();
 	//当たり判定
