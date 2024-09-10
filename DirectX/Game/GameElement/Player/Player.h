@@ -61,13 +61,20 @@ private://プライベート変数
 	//床をまとめた物
 	std::list<std::unique_ptr<Floor>> floor_;
 
-	//AutoJump
+	//Jump
 	//ジャンプのインターバル
-	const float kJumpInterval = 2.0f;//2秒
+	float kJumpInterval = 2.0f;//2秒
 	//ジャンプのフレーム
 	float jumpFlame;
+	//ジャンプの初期値
+	float kJumpForce = 10.0f;
 	//ジャンプの力
 	float jumpForce;
+	//横移動の強さ
+	float kJumpForceX = 5.0f;
+	//プレイヤーにかかる重力
+	float gravity = 0.05f;
+
 	//ジャンプの力
 	Vector3 jumpForceVec;
 	//ジャンプのフラグ
@@ -84,6 +91,8 @@ private://プライベート変数
 	int currentTexture;
 	//HitCeiling
 	bool isHitCeiling = false;
+
+	float kDropSpeed = 50.0f;
 	float dropSpeed_;
 
 	const float topLimit = 20.0f;
