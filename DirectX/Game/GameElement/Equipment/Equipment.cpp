@@ -150,6 +150,19 @@ void Equipment::MoveUpdate(const float& deltaTime)
 
 	data_->position += data_->move;
 
+	float x = std::fabs(data_->position.x);
+	if (x > staticData_->stageWidthX) {
+		x -= staticData_->stageWidthX;
+		Vector3 prepos = data_->position - data_->move;
+		if (data_->position.x > 0.0f) {
+			data_->position.x -= x;
+		}
+		else {
+			data_->position.x += x;
+		}
+		data_->vect.x *= -1;
+	}
+
 	if (data_->isRotateRight) {
 		data_->rotate.z += 2.0f * deltaTime;
 	}
@@ -291,6 +304,7 @@ void Equipment::StaticSetGlobalVariables()
 	global_->AddItem("分裂の回数", 3, "生成関係");
 	global_->AddItem("分裂のスケール係数", 0.8f, "生成関係");
 	global_->AddItem("スケール", 2.0f, "生成関係");
+	global_->AddItem("ステージの横幅", 18.0f, "ステージ関係");
 	StaticApplyGlobalVariables();
 }
 
@@ -304,4 +318,5 @@ void Equipment::StaticApplyGlobalVariables()
 	staticData_->scale = global_->GetFloatValue("スケール", "生成関係");
 	staticData_->divisionNum = global_->GetIntValue("分裂の回数", "生成関係");
 	staticData_->divisionScale = global_->GetFloatValue("分裂のスケール係数", "生成関係");
+	staticData_->stageWidthX = global_->GetFloatValue("ステージの横幅", "ステージ関係");
 }
