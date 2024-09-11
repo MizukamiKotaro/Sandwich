@@ -6,7 +6,7 @@ void Customer::Init()
 	object_->model->transform_.scale_ = scale_;
 	object_->model->transform_.translate_ = translate_;
 
-	global = std::make_unique<GlobalVariableUser>("Character", "お客さん");
+	global = std::make_unique<GlobalVariableUser>("Character", "Customer");
 
 	SetGlobalVariables();
 }
@@ -33,14 +33,14 @@ void Customer::Draw(const Camera* camera)
 
 void Customer::SetGlobalVariables()
 {
-	global->AddItem("大きさ", scale_, "お客さん");
-	global->AddItem("移動", translate_, "お客さん");
+	global->AddItem("大きさ", scale_, "Customer");
+	global->AddItem("移動", translate_, "Customer");
 
 	ApplyGlobalVariables();
 }
 
 void Customer::ApplyGlobalVariables()
 {
-	scale_ = global->GetVector3Value("大きさ", "お客さん");
-	translate_ = global->GetVector3Value("移動", "お客さん");
+	scale_ = global->GetVector3Value("大きさ", "Customer");
+	translate_ = global->GetVector3Value("移動", "Customer");
 }
