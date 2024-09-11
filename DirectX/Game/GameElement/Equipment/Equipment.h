@@ -17,6 +17,7 @@ public:
 	void Draw();
 
 	const bool& GetIsDelete() const;
+	static void DrawBonusLine();
 
 private:
 	void MoveUpdate(const float& deltaTime);
@@ -28,6 +29,9 @@ private:
 private:
 	static void StaticSetGlobalVariables();
 	static void StaticApplyGlobalVariables();
+
+private:
+	static const InstancingMeshTexData* bonusLineModelData_;
 
 private:
 	static const Player* player_;
@@ -46,6 +50,13 @@ private:
 		int32_t divisionNum;
 		float divisionScale;
 		float stageWidthX;
+
+		float bonusHeight;
+		Vector4 bonusLineColor;
+		float bonusWeight;
+		Vector2 bonusLineScale;
+		float bonusFirstX;
+		int32_t bonusLineNum;
 	};
 	static std::unique_ptr<StaticData> staticData_;
 
