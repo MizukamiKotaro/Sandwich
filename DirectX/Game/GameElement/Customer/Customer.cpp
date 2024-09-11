@@ -121,6 +121,11 @@ void Customer::BlinkUpdate()
 {
 	blinkFrame += FrameInfo::GetInstance()->GetDeltaTime();
 	if (blinkFrame > kBlinkInterval) {
+		
+		if (countBlink >= kcountBlink) {
+		behaviorRequest_ = Behavior::kRoot;
+		}
+
 		countBlink++;
 		blinkFrame = 0.0f;
 		kBlinkInterval = random->RandFloat(kBlinkMinInterval, kBlinkMaxInterval);
@@ -134,9 +139,7 @@ void Customer::BlinkUpdate()
 	//テクスチャを変える
 	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
 	
-	if (countBlink >= kcountBlink) {
-		behaviorRequest_ = Behavior::kRoot;
-	}
+
 }
 
 void Customer::EatInit()
