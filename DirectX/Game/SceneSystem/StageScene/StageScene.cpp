@@ -22,6 +22,7 @@ void StageScene::Initialize()
 	game_->Initialize();
 	backGround_->Initialise();
 	score_->Initialize();
+	score_->Update(0.0f);
 }
 
 void StageScene::Update()
@@ -57,8 +58,8 @@ void StageScene::Draw()
 {
 	Kyoko::Engine::PreDraw();
 	backGround_->Draw(*camera_.get());
-	score_->Draw();
 	game_->Draw();
+	score_->Draw();
 
 	BlackDraw();
 

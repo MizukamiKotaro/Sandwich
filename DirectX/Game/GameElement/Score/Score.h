@@ -32,6 +32,7 @@ private:
 		kOutSideFrameCustomer,
 		kPlus,
 		kCustomerNum,
+		kMaxFrame,
 		kMax,
 		kLine,
 		kMaxSpriteNames,
