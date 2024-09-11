@@ -13,12 +13,15 @@ StageScene::StageScene()
 	bgm_ = std::make_unique<Audio>();
 	bgm_->Load("game.mp3", "ゲームBGM");
 	bgm_->Play(true);
+	score_ = Score::GetInstance();
+	score_->FirstInitialize();
 }
 
 void StageScene::Initialize()
 {
 	game_->Initialize();
 	backGround_->Initialise();
+	score_->Initialize();
 }
 
 void StageScene::Update()
@@ -38,9 +41,13 @@ void StageScene::Update()
 		ChangeScene(CLEAR);
 		Audio::AllStop();
 	}
+	if (input_->PressedKey(DIK_R)) {
+		Initialize();
+	}
 #endif // _DEBUG
 	float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 
+	score_->Update(deltaTime);
 	backGround_->Update(deltaTime);
 	camera_->Update();
 	game_->Update();
@@ -50,6 +57,7 @@ void StageScene::Draw()
 {
 	Kyoko::Engine::PreDraw();
 	backGround_->Draw(*camera_.get());
+	score_->Draw();
 	game_->Draw();
 
 	BlackDraw();
