@@ -12,6 +12,7 @@
 #include "PostEffect/PostEffect.h"
 #include "GameElement/Game.h"
 #include "GameElement/BackGround/BackGround.h"
+#include "GameElement/Score/Score.h"
 
 class StageScene : public IScene
 {
@@ -28,6 +29,7 @@ private:
 
 	std::unique_ptr<Game> game_;
 	std::unique_ptr<BackGround> backGround_;
+	Score* score_;
 
 	std::unique_ptr<Audio> bgm_;
 };
