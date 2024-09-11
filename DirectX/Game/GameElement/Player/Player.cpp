@@ -250,7 +250,6 @@ void Player::SetGlobalVariables()
 {
 	global->AddItem("落下速度", kDropSpeed, "落下関連");
 
-
 	global->AddItem("ジャンプ力", kJumpForce, "ジャンプ");
 	global->AddItem("横移動の大きさ", kJumpForceX, "ジャンプ");
 	global->AddItem("ジャンプのインターバル", kJumpInterval, "ジャンプ");
