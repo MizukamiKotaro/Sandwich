@@ -18,6 +18,7 @@ StageScene::StageScene()
 void StageScene::Initialize()
 {
 	game_->Initialize();
+	backGround_->Initialise();
 }
 
 void StageScene::Update()
@@ -26,6 +27,9 @@ void StageScene::Update()
 		// シーン切り替え
 		ChangeScene(CLEAR);
 		Audio::AllStop();
+	}
+	if (backGround_->GetIsReset()) {
+		Initialize();
 	}
 
 #ifdef _DEBUG

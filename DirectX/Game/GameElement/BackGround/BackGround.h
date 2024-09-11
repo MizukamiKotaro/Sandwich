@@ -6,6 +6,7 @@
 #include "Sprite.h"
 #include "GlobalVariables/GlobalVariableUser.h"
 #include <vector>
+#include "GameElement/Timer/Timer.h"
 
 class GameManager;
 
@@ -13,8 +14,12 @@ class BackGround {
 public:
 	BackGround();
 
+	void Initialise();
 	void Update(const float& deltaTime);
 	void Draw(const Camera& camera);
+
+	const bool GetIsTimeUp() const;
+	const bool& GetIsReset() const;
 
 private:
 	void Create();
@@ -43,6 +48,8 @@ private:
 	std::vector<PutData> putDatas_;
 
 private:
+	std::unique_ptr<Timer> timer_;
+
 	std::unique_ptr<Model> model_;
 	std::unique_ptr<PostEffect> postEffect_;
 	std::unique_ptr<PostEffect> postEffect2_;

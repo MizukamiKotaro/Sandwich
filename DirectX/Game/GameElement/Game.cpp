@@ -31,6 +31,9 @@ void Game::Initialize()
 
 	customer_ = std::make_unique<Customer>();
 	customer_->Init();
+
+	gameManager_->ChangeScene(GameManager::kTitle);
+	gameManager_->CompletedTransition();
 }
 
 void Game::Update()

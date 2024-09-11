@@ -25,11 +25,18 @@ BackGround::BackGround()
 	back_->size_ = screenSize_;
 	back_->Update();
 
+	timer_ = std::make_unique<Timer>();
+
 	Create();
 
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "BackGround");
 	SetGlobalVariables();
 	DrawSprites();
+}
+
+void BackGround::Initialise()
+{
+	timer_->Initialize();
 }
 
 void BackGround::Update(const float& deltaTime)
@@ -55,12 +62,26 @@ void BackGround::Update(const float& deltaTime)
 		pos.y += size2_;
 	}
 
+	if (gameManager_->GetScene() == GameManager::kGame) {
+		timer_->Update(deltaTime);
+	}
+
 	DrawSprites();
 }
 
 void BackGround::Draw(const Camera& camera)
 {
 	model_->Draw(camera);
+}
+
+const bool BackGround::GetIsTimeUp() const
+{
+	return timer_->GetIsTimeUp();
+}
+
+const bool& BackGround::GetIsReset() const
+{
+	return timer_->GetIsReset();
 }
 
 void BackGround::Create()
@@ -101,6 +122,9 @@ void BackGround::DrawSprites()
 		for (const std::unique_ptr<Sprite>& sp : sprites_) {
 			sp->Draw();
 		}
+	}
+	else {
+		timer_->Draw();
 	}
 	postEffect2_->PostDrawScene();
 
