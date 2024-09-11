@@ -225,6 +225,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Utils\Transform\QuaternionTransform.cpp" />
     <ClCompile Include="Game\GameElement\BackGround\BackGround.cpp" />
     <ClCompile Include="Game\GameElement\Customer\Customer.cpp" />
+    <ClCompile Include="Game\GameElement\DrawNumbers\DrawNumbers.cpp" />
     <ClCompile Include="Game\GameElement\Floor\Floor.cpp" />
     <ClCompile Include="Game\GameElement\Equipment\Equipment.cpp" />
     <ClCompile Include="Game\GameElement\Equipment\EquipmentManager.cpp" />
@@ -415,6 +416,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utils\Transform\Transform.h" />
     <ClInclude Include="Game\GameElement\BackGround\BackGround.h" />
     <ClInclude Include="Game\GameElement\Customer\Customer.h" />
+    <ClInclude Include="Game\GameElement\DrawNumbers\DrawNumbers.h" />
     <ClInclude Include="Game\GameElement\Floor\Floor.h" />
     <ClInclude Include="Game\GameElement\Equipment\Equipment.h" />
     <ClInclude Include="Game\GameElement\Equipment\EquipmentManager.h" />
