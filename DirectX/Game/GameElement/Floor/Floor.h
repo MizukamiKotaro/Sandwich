@@ -10,6 +10,7 @@ public:
 	void Update();
 	void Draw(const Camera* camera);
 
+	void SetSize(Vector3 size);
 	void Move(Vector3 position);
 	//当たり判定の更新
 	void ColliderUpdate();

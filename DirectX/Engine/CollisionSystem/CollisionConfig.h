@@ -21,4 +21,5 @@ enum class ColliderMask {
     FLOOR,
     PAN,
     EQUIPMENT,
+    PREDICTIONLINE,
 };

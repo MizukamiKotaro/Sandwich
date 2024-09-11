@@ -35,6 +35,13 @@ void Player::Init()
 	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, this, ColliderMask::PAN);
 
 	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize, this);
+	//予測線
+	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_ }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this,ColliderMask::PREDICTIONLINE);
+	predictionLine->object_->model->color_ = { 1.0f,1.0f,1.0f,0.5f };
+
+	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
+
+	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 
 	//キャラクターのサイズ変更
 	object_->model->transform_.scale_ = { 2.0f,2.0f,1.0f };
@@ -100,6 +107,15 @@ void Player::Update()
 	for (std::list<std::unique_ptr<Floor>>::iterator it = cheese_.begin(); it != cheese_.end(); it++) {
 		(*it)->Update();
 	}
+	//予測線更新
+
+	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
+
+	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
+	predictionLine->Move({ object_->model->transform_.translate_.x, object_->model->transform_.translate_.y - 2.0f, object_->model->transform_.translate_.z });
+	predictionLine->SetSize({ std::abs(jumpXmovement),0.1f,1.0f });
+
+	predictionLine->Update();
 
 	object_->Update();
 
@@ -129,6 +145,9 @@ void Player::Draw(const Camera* camera)
 	}
 #endif
 	panBottom->Draw(camera);
+
+	//予測線描画
+	predictionLine->Draw(camera);
 }
 
 void Player::JumpInit()
@@ -187,7 +206,7 @@ void Player::CreateFloor()
 
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 
-	cheese_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", { object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f,object_->model->transform_.translate_.z}, { std::abs(jumpXmovement),0.1f,1.0f }, this)));
+	cheese_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", { object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f,object_->model->transform_.translate_.z }, { std::abs(jumpXmovement),0.1f,1.0f }, this)));
 }
 
 void Player::HitCeiling()

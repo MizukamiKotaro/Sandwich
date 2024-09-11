@@ -30,6 +30,11 @@ void Floor::Draw(const Camera* camera)
 	object_->Draw(*camera);
 }
 
+void Floor::SetSize(Vector3 size)
+{
+	object_->model->transform_.scale_ = size;
+}
+
 void Floor::Move(Vector3 position)
 {
 	object_->model->transform_.translate_ = position;
