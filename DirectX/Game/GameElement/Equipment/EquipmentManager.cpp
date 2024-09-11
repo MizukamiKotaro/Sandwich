@@ -40,14 +40,14 @@ void EquipmentManager::Update(const float& deltaTime)
 	if (stageEditor_->IsChangedStage()) {
 		Initialize();
 	}
-	if (gameManager_->GetScene() != GameManager::kGame || gameManager_->GetIsTransition()) {
-		return;
-	}
-	
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 	Equipment::StaticUpdate();
 #endif // _DEBUG
+	if (gameManager_->GetScene() != GameManager::kGame || gameManager_->GetIsTransition()) {
+		return;
+	}
+	
 	DropEquipment(deltaTime);
 
 	for (std::list<std::unique_ptr<Equipment>>::iterator it = equipments_.begin(); it != equipments_.end();) {
@@ -73,6 +73,7 @@ void EquipmentManager::Draw()
 	for (std::unique_ptr<Equipment>& equipment : equipments_) {
 		equipment->Draw();
 	}
+	Equipment::DrawBonusLine();
 }
 
 void EquipmentManager::Clear()

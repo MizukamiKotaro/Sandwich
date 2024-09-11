@@ -16,6 +16,7 @@ std::unique_ptr<Audio> seReflect;
 
 RandomGenerator* rand_;
 EquipmentManager* eMana;
+const InstancingMeshTexData* Equipment::bonusLineModelData_;
 
 void Equipment::SetPlayer(const Player* player) 
 {
@@ -26,6 +27,8 @@ void Equipment::StaticInitialize()
 {
 	if (!instancingManager_) {
 		instancingManager_ = InstancingModelManager::GetInstance();
+
+		bonusLineModelData_ = instancingManager_->GetDrawData("white.png");
 
 		seReflect = std::make_unique<Audio>();
 		seReflect->Load("reflect.mp3", "具材の反射");
@@ -125,6 +128,21 @@ void Equipment::Draw()
 const bool& Equipment::GetIsDelete() const
 {
 	return data_->isDelete;
+}
+
+void Equipment::DrawBonusLine()
+{
+	if (staticData_->bonusLineNum >= 1) {
+		Vector3 scale = { staticData_->bonusLineScale.x,staticData_->bonusLineScale.y,1.0f };
+		Vector3 rotate = { 0.0f,0.0f,0.0f };
+		Vector3 translate = { staticData_->bonusFirstX,staticData_->bonusHeight,0.001f };
+		Matrix4x4 matrix = {};
+		for (int32_t i = 0; i < staticData_->bonusLineNum; i++) {
+			matrix = Matrix4x4::MakeAffinMatrix(scale, rotate, translate);
+			instancingManager_->AddBox(bonusLineModelData_, InstancingModelData{ matrix, Matrix4x4::MakeIdentity4x4(), staticData_->bonusLineColor });
+			translate.x += staticData_->bonusWeight;
+		}
+	}
 }
 
 void Rotate(Vector3& v, const float& rotate, const Vector3& v2) 
@@ -261,16 +279,36 @@ void Equipment::NotDropCollision(const Collider& collider)
 			data_->vect.y *= -1.0f;
 			data_->speed += staticData_->reflectCoefficient;
 			data_->scale *= staticData_->divisionScale;
+			data_->division++;
 
 			Vector3 v = {};
-			Rotate(v, 0.526f, data_->vect);
+			float speed = data_->moveSpeed * t;
 
-			data_->division++;
-			eMana->AddEquipment(rp + v * data_->moveSpeed * t, data_->texNum, data_->division, data_->scale, v, data_->speed);
+			if (y >= staticData_->bonusHeight) {
+				// 4 つに分裂
+				Rotate(v, 0.263f, data_->vect);
+				eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
 
-			Rotate(v, -0.526f, data_->vect);
-			data_->position = rp + v * data_->moveSpeed * t;
-			data_->vect = v;
+				Rotate(v, 0.785f, data_->vect);
+				eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
+
+				Rotate(v, -0.263f, data_->vect);
+				eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
+
+				Rotate(v, -0.785f, data_->vect);
+				data_->position = rp + v * speed;
+				data_->vect = v;
+
+			}
+			else {
+				// 2つに分裂
+				Rotate(v, 0.526f, data_->vect);
+				eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
+
+				Rotate(v, -0.526f, data_->vect);
+				data_->position = rp + v * speed;
+				data_->vect = v;
+			}
 		}
 		else {
 			if (data_->vect.y >= 0.0f) {
@@ -305,6 +343,13 @@ void Equipment::StaticSetGlobalVariables()
 	global_->AddItem("分裂のスケール係数", 0.8f, "生成関係");
 	global_->AddItem("スケール", 2.0f, "生成関係");
 	global_->AddItem("ステージの横幅", 18.0f, "ステージ関係");
+
+	global_->AddItem("高さ", 6.0f, "ボーナス関係");
+	global_->AddItem("ラインの幅", 1.0f, "ボーナス関係");
+	global_->AddItem("ラインのスケール", Vector2{0.4f,0.01f}, "ボーナス関係");
+	global_->AddItem("ラインの最初のx座標", -2.0f, "ボーナス関係");
+	global_->AddItem("ラインの数", 6, "ボーナス関係");
+	global_->AddItemColor("ラインの色", Vector4{ 1.0f,1.0f,1.0f,1.0f }, "ボーナス関係");
 	StaticApplyGlobalVariables();
 }
 
@@ -319,4 +364,11 @@ void Equipment::StaticApplyGlobalVariables()
 	staticData_->divisionNum = global_->GetIntValue("分裂の回数", "生成関係");
 	staticData_->divisionScale = global_->GetFloatValue("分裂のスケール係数", "生成関係");
 	staticData_->stageWidthX = global_->GetFloatValue("ステージの横幅", "ステージ関係");
+
+	staticData_->bonusHeight = global_->GetFloatValue("高さ", "ボーナス関係");
+	staticData_->bonusWeight = global_->GetFloatValue("ラインの幅", "ボーナス関係");
+	staticData_->bonusLineScale = global_->GetVector2Value("ラインのスケール", "ボーナス関係");
+	staticData_->bonusFirstX = global_->GetFloatValue("ラインの最初のx座標", "ボーナス関係");
+	staticData_->bonusLineNum = global_->GetIntValue("ラインの数", "ボーナス関係");
+	staticData_->bonusLineColor = global_->GetColor("ラインの色", "ボーナス関係");
 }

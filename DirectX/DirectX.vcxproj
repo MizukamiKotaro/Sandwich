@@ -233,6 +233,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\Object\Object.cpp" />
     <ClCompile Include="Game\GameElement\Player\Player.cpp" />
     <ClCompile Include="Game\GameElement\ResultUI\ResultUI.cpp" />
+    <ClCompile Include="Game\GameElement\Timer\Timer.cpp" />
     <ClCompile Include="Game\SceneSystem\ClearScene\ClearScene.cpp" />
     <ClCompile Include="Game\SceneSystem\ISceneFactory\ISceneFactory.cpp" />
     <ClCompile Include="Game\SceneSystem\IScene\IScene.cpp" />
@@ -422,6 +423,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\Object\Object.h" />
     <ClInclude Include="Game\GameElement\Player\Player.h" />
     <ClInclude Include="Game\GameElement\ResultUI\ResultUI.h" />
+    <ClInclude Include="Game\GameElement\Timer\Timer.h" />
     <ClInclude Include="Game\SceneSystem\ClearScene\ClearScene.h" />
     <ClInclude Include="Game\SceneSystem\ISceneFactory\ISceneFactory.h" />
     <ClInclude Include="Game\SceneSystem\IScene\IScene.h" />
