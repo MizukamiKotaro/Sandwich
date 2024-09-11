@@ -112,6 +112,7 @@ void Customer::BlinkInit()
 {
 	blinkFrame = 0;
 	currentTexture = 0;
+	countBlink = 0;
 	kcountBlink = random->RandInt(blinkMinTime, blinkMaxTime);
 	kBlinkInterval = random->RandFloat(kBlinkMinInterval, kBlinkMaxInterval);
 }
