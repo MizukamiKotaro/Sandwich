@@ -104,8 +104,6 @@ void Customer::RootUpdate()
 			behaviorRequest_ = Behavior::kBlink;
 		}
 	}
-
-
 }
 
 void Customer::BlinkInit()
@@ -123,14 +121,15 @@ void Customer::BlinkUpdate()
 	if (blinkFrame > kBlinkInterval) {
 		
 		if (countBlink >= kcountBlink) {
-		behaviorRequest_ = Behavior::kRoot;
+			behaviorRequest_ = Behavior::kRoot;
+			return;
 		}
 
-		countBlink++;
 		blinkFrame = 0.0f;
 		kBlinkInterval = random->RandFloat(kBlinkMinInterval, kBlinkMaxInterval);
 		if (currentTexture == 0) {
 			currentTexture = 1;
+			countBlink++;
 		}
 		else {
 			currentTexture = 0;
