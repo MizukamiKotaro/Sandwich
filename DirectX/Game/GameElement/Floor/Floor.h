@@ -1,6 +1,7 @@
 #pragma once
 #include "GameElement/Object/Object.h"
 #include "CollisionSystem/Collider/Collider.h"
+#include "Ease/Ease.h"
 
 class Player;
 class Floor : public Collider {
@@ -12,18 +13,23 @@ public:
 
 	void SetSize(Vector3 size);
 	void Move(Vector3 position);
+
+	//3Dモデル
+	std::unique_ptr<Object> object_;
+private:
 	//当たり判定の更新
 	void ColliderUpdate();
 	//当たり判定
 	void OnCollision(const Collider& collider)override;
-	//3Dモデル
-	std::unique_ptr<Object> object_;
-private:
+	void StepOn();
 
 	Player* player_;
 
-	//当たり判定発生のための
-	float kColliderFlame = 0.0f;
 	//当たり判定が発生するまでの時間
 	const float kColliderInterval = 10.0f;
+	//踏まれたかどうかのフラグ
+	bool IsStepOnFlag = false;
+	//経過フレーム
+	float stepOnrlame;
+
 };
