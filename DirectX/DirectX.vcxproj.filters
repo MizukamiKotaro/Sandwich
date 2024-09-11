@@ -430,6 +430,9 @@
     <Filter Include="Game\GameElement\DrawNumbers">
       <UniqueIdentifier>{196a209c-962c-4b54-9792-ff5d23f8ef51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameElement\Score">
+      <UniqueIdentifier>{ecfd577f-d3ee-4545-b24e-bfd89b1c2370}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -884,6 +887,9 @@
     </ClCompile>
     <ClCompile Include="Game\GameElement\DrawNumbers\DrawNumbers.cpp">
       <Filter>Game\GameElement\DrawNumbers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameElement\Score\Score.cpp">
+      <Filter>Game\GameElement\Score</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1405,6 +1411,9 @@
     </ClInclude>
     <ClInclude Include="Game\GameElement\DrawNumbers\DrawNumbers.h">
       <Filter>Game\GameElement\DrawNumbers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameElement\Score\Score.h">
+      <Filter>Game\GameElement\Score</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
