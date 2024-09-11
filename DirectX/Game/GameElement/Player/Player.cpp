@@ -61,7 +61,7 @@ void Player::Update()
 		panTop->Update();
 
 		//床更新
-		for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++) {
+		for (std::list<std::unique_ptr<Floor>>::iterator it = cheese_.begin(); it != cheese_.end(); it++) {
 			(*it)->Update();
 		}
 		return;
@@ -97,7 +97,7 @@ void Player::Update()
 	object_->SetTranslate({ std::clamp(object_->GetWorldTransform().translate_.x, -Xlimit, Xlimit) ,object_->GetWorldTransform().translate_.y,0.0f });
 
 	//床更新
-	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++) {
+	for (std::list<std::unique_ptr<Floor>>::iterator it = cheese_.begin(); it != cheese_.end(); it++) {
 		(*it)->Update();
 	}
 
@@ -115,7 +115,7 @@ void Player::Draw(const Camera* camera)
 	object_->Draw(*camera);
 
 	//床描画
-	for (std::list<std::unique_ptr<Floor>>::iterator it = floor_.begin(); it != floor_.end(); it++)
+	for (std::list<std::unique_ptr<Floor>>::iterator it = cheese_.begin(); it != cheese_.end(); it++)
 	{
 		(*it)->Draw(camera);
 	}
@@ -187,7 +187,7 @@ void Player::CreateFloor()
 
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 
-	floor_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", object_->model->transform_.translate_, { std::abs(jumpXmovement),0.1f,1.0f }, this)));
+	cheese_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", { object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f,object_->model->transform_.translate_.z}, { std::abs(jumpXmovement),0.1f,1.0f }, this)));
 }
 
 void Player::HitCeiling()
@@ -200,7 +200,7 @@ void Player::HitCeiling()
 
 void Player::HitBottom()
 {
-	floor_.clear();
+	cheese_.clear();
 	panTop->Move({ 0.0f,topLimit ,0.0f });
 	isHitCeiling = false;
 

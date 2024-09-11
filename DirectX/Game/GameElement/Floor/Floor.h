@@ -15,10 +15,9 @@ public:
 	void ColliderUpdate();
 	//当たり判定
 	void OnCollision(const Collider& collider)override;
-
-private:
 	//3Dモデル
 	std::unique_ptr<Object> object_;
+private:
 
 	Player* player_;
 

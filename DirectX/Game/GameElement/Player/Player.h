@@ -55,7 +55,8 @@ private://プライベート変数
 	//3Dモデル
 	std::unique_ptr<Object> object_;
 	//床をまとめた物
-	std::list<std::unique_ptr<Floor>> floor_;
+	std::list<std::unique_ptr<Floor>> cheese_;
+	//std::list<std::unique_ptr<Floor>> floor_;
 	//Jump
 	//ジャンプのインターバル
 	float kJumpInterval = 2.0f;//2秒
