@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "FrameInfo/FrameInfo.h"
-
+#include "ImGuiManager/ImGuiManager.h"
 void Player::Init()
 {
 	//ジャンプのテクスチャ
@@ -20,7 +20,7 @@ void Player::Init()
 	input_ = Input::GetInstance();
 
 	global = std::make_unique<GlobalVariableUser>("Character", "Player");
-	SetGlobalVariables();
+
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>(jumpTexture[0]);
 	//右と左のアフィン行列
@@ -46,6 +46,7 @@ void Player::Init()
 	//キャラクターのサイズ変更
 	object_->model->transform_.scale_ = { 2.0f,2.0f,1.0f };
 	object_->Update();
+	SetGlobalVariables();
 }
 
 void Player::Update()
@@ -55,14 +56,20 @@ void Player::Update()
 	panTop->Move(Vector3{ 0.0f,topLimit ,0.0f });
 	panBottom->Move(Vector3{ 0.0f,bottomLimit ,0.0f });
 #endif
+	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+
 	Vector3 prePos = object_->model->transform_.translate_;
 
 	//天井に当たった時の処理
 	if (isHitCeiling) {
 		HitCeiling();
-		if (object_->model->transform_.translate_.y < bottomLimit) {
+		//プレイヤーがパンの位置に到達
+		if (object_->model->transform_.translate_.y - 4.0f < bottomLimit) {
 			HitBottom();
 			isPlayerBackFlag = true;
+			jumpForce = kJumpForce;
+			jumpForceVec.y = jumpForce;
+			object_->model->transform_.translate_ += jumpForceVec * deltaTime;
 			if (panBottom->GetPos().y < bottomDropLimit) {
 				isHitCeiling = false;
 				isDrawbottomPanFlag = false;
@@ -87,6 +94,8 @@ void Player::Update()
 		jumpForce = kJumpForce;
 	}
 
+	
+
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
 
 	jumpForceVec.y = jumpForce;
@@ -103,7 +112,7 @@ void Player::Update()
 		Jump();
 	}
 
-	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+
 	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
 	jumpForce -= gravity;
 
