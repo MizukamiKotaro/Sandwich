@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Camera.h"
 #include "FrameInfo/FrameInfo.h"
+#include "GameElement/Score/Score.h"
 
 #ifdef _DEBUG
 #include "ImGuiManager/ImGuiManager.h"
@@ -28,6 +29,7 @@ void Game::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Init();
 	equipmentManager_->SetPlayer(player_.get());
+	Score::GetInstance()->SetPlayer(player_.get());
 
 	customer_ = std::make_unique<Customer>();
 	customer_->Init(player_.get());
