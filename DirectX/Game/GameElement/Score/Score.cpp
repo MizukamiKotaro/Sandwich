@@ -39,6 +39,12 @@ void Score::FirstInitialize()
 	drawCustomerNum_ = std::make_unique<DrawNumbers>("equipmentsNumbers.png", "Frame", "客の数字", size);
 	drawAddNum_ = std::make_unique<DrawNumbers>("equipmentsNumbers.png", "Frame", "プラスの数字", size);
 
+	cusEditMaxNum_ = 5;
+	maxNums_.resize(5);
+	for (int32_t i = 0; i < 5; i++) {
+		maxNums_[i] = 20 + 20 * i;
+	}
+
 	glo_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Frame");
 	SetGlobalVariables();
 
@@ -56,6 +62,7 @@ void Score::Initialize()
 	customerNum_ = 1;
 	num_ = 0;
 	addNum_ = 0;
+	maxNum_ = maxNums_[0];
 	preDrop_ = false;
 	sprite1_->pos_.x = 0.0f;
 	sprite2_->pos_.x = screenPos_.x + screenPos_.x;
@@ -120,6 +127,9 @@ void Score::AddNum()
 	if (num_ >= maxNum_) {
 		num_ = 0;
 		customerNum_++;
+		if (size_t(customerNum_) <= maxNums_.size()) {
+			maxNum_ = maxNums_[customerNum_ - 1];
+		}
 		seSatisfaction_->Play();
 	}
 }
@@ -178,12 +188,16 @@ void Score::SetGlobalVariables()
 		glo_->AddItem(names_[i] + "のスケール", 1.0f, "配置", names_[i]);
 		glo_->AddItem(names_[i] + "の座標", baseDatas_[i].basePos, "配置", names_[i]);
 	}
+
+	glo_->AddItem("分母の設定する数", 5, "分母関係");
+	for (int32_t i = 0; i < 5; i++) {
+		glo_->AddItem("分母" + std::to_string(i), maxNums_[i], "分母関係");
+	}
 	ApplyGlobalVariables();
 }
 
 void Score::ApplyGlobalVariables()
 {
-	maxNum_ = glo_->GetIntValue("最大数");
 	for (int32_t i = 0; i < SpriteNames::kMaxSpriteNames; i++) {
 		baseDatas_[i].scale = glo_->GetFloatValue(names_[i] + "のスケール", "配置", names_[i]);
 		baseDatas_[i].basePos = glo_->GetVector2Value(names_[i] + "の座標", "配置", names_[i]);
@@ -196,6 +210,29 @@ void Score::ApplyGlobalVariables()
 	arrow_->pos_.x += (screenPos_.x - arrow_->pos_.x) * 2.0f;
 	arrow_->size_ = sprites_[SpriteNames::kArrow]->size_;
 	arrow_->Update();
+
+	cusEditMaxNum_ = glo_->GetIntValue("分母の設定する数", "分母関係");
+
+	if (cusEditMaxNum_ <= 0) {
+		cusEditMaxNum_ = 1;
+		glo_->SetVariable("分母の設定する数", 5, "分母関係");
+	}
+	if (size_t(cusEditMaxNum_) != maxNums_.size()) {
+		maxNums_.resize(cusEditMaxNum_);
+		for (int32_t i = 0; i < cusEditMaxNum_; i++) {
+			glo_->AddItem("分母" + std::to_string(i), maxNums_[i], "分母関係");
+			maxNums_[i] = glo_->GetIntValue("分母" + std::to_string(i), "分母関係");
+		}
+	}
+	else {
+		for (int32_t i = 0; i < cusEditMaxNum_; i++) {
+			maxNums_[i] = glo_->GetIntValue("分母" + std::to_string(i), "分母関係");
+		}
+	}
+
+	if (size_t(customerNum_) <= maxNums_.size()) {
+		maxNum_ = maxNums_[customerNum_ - 1];
+	}
 }
 
 void Score::DrawSprite()
