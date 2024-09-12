@@ -36,7 +36,7 @@ void Player::Init()
 
 	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize, this);
 	//予測線
-	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_ }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this,ColliderMask::PREDICTIONLINE);
+	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_ }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this, ColliderMask::PREDICTIONLINE);
 	predictionLine->object_->model->color_ = { 1.0f,1.0f,1.0f,0.5f };
 
 	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
@@ -64,15 +64,30 @@ void Player::Update()
 	if (isHitCeiling) {
 		HitCeiling();
 		//プレイヤーがパンの位置に到達
-		if (object_->model->transform_.translate_.y - 4.0f < bottomLimit) {
+		if (object_->model->transform_.translate_.y <= bottomLimit) {
 			HitBottom();
 			isPlayerBackFlag = true;
+			panbottomMove = true;
+		}
+		if (panBottom->GetPos().y <= bottomDropLimit) {
+			panbottomMove = false;
+
+			isDrawbottomPanFlag = false;
+
+		}
+
+		//プレイヤーを特定の位置に戻す
+		if (isPlayerBackFlag) {
 			jumpForce = kJumpForce;
 			jumpForceVec.y = jumpForce;
 			object_->model->transform_.translate_ += jumpForceVec * deltaTime;
-			if (panBottom->GetPos().y < bottomDropLimit) {
+
+			if (object_->model->transform_.translate_.y > bottomPanReset) {
+				isDrawbottomPanFlag = true;
+				isPlayerBackFlag = false;
 				isHitCeiling = false;
-				isDrawbottomPanFlag = false;
+				panTop->Move(Vector3{ 0.0f,topLimit ,0.0f });
+				panBottom->Move(Vector3{ 0.0f,bottomLimit ,0.0f });
 			}
 		}
 		object_->Update();
@@ -85,16 +100,6 @@ void Player::Update()
 		}
 		return;
 	}
-	//プレイヤーを特定の位置に戻す
-	if (object_->model->transform_.translate_.y > bottomPanReset) {
-		isDrawbottomPanFlag = true;
-	}
-	else if(isPlayerBackFlag){
-		isPlayerBackFlag = false;
-		jumpForce = kJumpForce;
-	}
-
-	
 
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
 
@@ -240,18 +245,26 @@ void Player::HitCeiling()
 	dropSpeed_ = kDropSpeed * deltaTime;
 
 	if (isPlayerBackFlag == false) {
-	object_->model->transform_.translate_.y -= dropSpeed_;
+		object_->model->transform_.translate_.y -= dropSpeed_;
+		prePanPos = object_->model->transform_.translate_.y;
+
+	}
+	else if (isPlayerBackFlag) {
+		prePanPos -= dropSpeed_;
 	}
 
-	panTop->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,2.0f,0.0f });
+	panTop->Move(Vector3{ 0.0f,prePanPos,0.0f } - Vector3{ 0.0f,2.0f,0.0f });
+	if (panbottomMove) {
+		panBottom->Move(Vector3{ 0.0f,prePanPos,0.0f } - Vector3{ 0.0f,4.0f,0.0f });
 
+	}
 }
 
 void Player::HitBottom()
 {
 	cheese_.clear();
 
-	panBottom->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,4.0f,0.0f });
+
 }
 
 void Player::ColliderUpdate(const Vector3& move)

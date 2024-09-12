@@ -110,10 +110,15 @@ private://プライベート変数
 	//下のパン出現条件
 	float bottomPanReset = -7.0f;
 	//どこまで落下するか
-	float bottomDropLimit = -16.0f;
+	float bottomDropLimit = -15.0f;
 	//プレイヤーをパンの上に戻す
 	bool isPlayerBackFlag = false;
 
+	bool panbottomMove = false;
+	
+	bool player;
+
+	float prePanPos;
 
 	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
