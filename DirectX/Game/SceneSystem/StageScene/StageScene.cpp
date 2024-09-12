@@ -15,6 +15,8 @@ StageScene::StageScene()
 	bgm_->Play(true);
 	score_ = Score::GetInstance();
 	score_->FirstInitialize();
+	resultUI_ = std::make_unique<ResultUI>();
+	resultUI_->Initialize();
 }
 
 void StageScene::Initialize()
@@ -27,16 +29,10 @@ void StageScene::Initialize()
 
 void StageScene::Update()
 {
-	if (game_->GetIsClear()) {
-		// シーン切り替え
-		ChangeScene(CLEAR);
-		Audio::AllStop();
-	}
+#ifdef _DEBUG
 	if (backGround_->GetIsReset()) {
 		Initialize();
 	}
-
-#ifdef _DEBUG
 	if (input_->PressedKey(DIK_N)) {
 		// シーン切り替え
 		ChangeScene(CLEAR);
@@ -47,7 +43,7 @@ void StageScene::Update()
 	}
 #endif // _DEBUG
 	float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
-
+	resultUI_->Update(deltaTime);
 	score_->Update(deltaTime);
 	backGround_->Update(deltaTime);
 	camera_->Update();
@@ -60,7 +56,7 @@ void StageScene::Draw()
 	backGround_->Draw(*camera_.get());
 	game_->Draw();
 	score_->Draw();
-
+	resultUI_->Draw();
 	BlackDraw();
 
 	// フレームの終了
