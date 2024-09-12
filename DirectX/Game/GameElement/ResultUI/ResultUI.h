@@ -45,6 +45,7 @@ private:
 
 	std::unique_ptr<Audio> seClear_;
 	std::unique_ptr<Audio> seDecision_;
+	std::unique_ptr<Audio> seCursor_;
 
 	enum SpriteNameEnum
 	{

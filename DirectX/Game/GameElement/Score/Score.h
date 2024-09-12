@@ -1,6 +1,7 @@
 #pragma once
 #include "GameElement/DrawNumbers/DrawNumbers.h"
 #include "PostEffect/PostEffect.h"
+#include "Audio.h"
 class Player;
 class GameManager;
 class Score
@@ -31,6 +32,7 @@ private:
 	void DrawSprite();
 
 private:
+	std::unique_ptr<Audio> seSatisfaction_;
 	GameManager* gameManager_;
 	const Player* player_;
 	enum SpriteNames {

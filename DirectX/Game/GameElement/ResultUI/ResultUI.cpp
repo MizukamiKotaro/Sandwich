@@ -36,9 +36,11 @@ ResultUI::ResultUI()
 	isTran_ = false;
 
 	seClear_ = std::make_unique<Audio>();
-	seClear_->Load("waveClear.mp3", "クリアの音");
+	seClear_->Load("end.mp3", "クリアの音");
 	seDecision_ = std::make_unique<Audio>();
 	seDecision_->Load("decision.mp3", "リザルトの決定音");
+	seCursor_ = std::make_unique<Audio>();
+	seCursor_->Load("cursor.mp3", "カーソルの操作音");
 
 	SetGlobalVariables();
 }
@@ -83,9 +85,11 @@ void ResultUI::Update(const float& deltaTime)
 		else if (!isTran_) {
 			if (input_->PressedKey(DIK_DOWN) || input_->PressedKey(DIK_S)) {
 				yesNoSpriteNum_--;
+				seCursor_->Play();
 			}
 			else if (input_->PressedKey(DIK_UP) || input_->PressedKey(DIK_W)) {
 				yesNoSpriteNum_++;
+				seCursor_->Play();
 			}
 			if (yesNoSpriteNum_ < 0) {
 				yesNoSpriteNum_ = yesNoSpriteMaxNum_;
