@@ -44,4 +44,5 @@ private:
 	int32_t dropNum_;
 	int32_t divisionNum_;
 	RandomGenerator* rand;
+	int32_t dropType_;
 };

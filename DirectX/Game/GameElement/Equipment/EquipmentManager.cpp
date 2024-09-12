@@ -17,6 +17,8 @@ void EquipmentManager::FirstInitialize()
 	stageEditor_->Initialize();
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Equipment");
 	rand = RandomGenerator::GetInstance();
+	dropType_ = 0;
+	dropNum_ = 0;
 }
 
 void EquipmentManager::SetPlayer(const Player* player)
@@ -93,14 +95,20 @@ void EquipmentManager::DropEquipment(const float& deltaTime)
 		time_ -= coolTime_;
 
 		int32_t num = rand->RandInt(0, divisionNum_);
-		while (num == dropNum_)
+		while (std::abs(dropNum_ - num) <= 1)
 		{
 			num = rand->RandInt(0, divisionNum_);
 		}
 		dropNum_ = num;
 		Vector3 pos = { -0.5f * width_ + (width_ / (divisionNum_ * 2.0f)) + (width_ / divisionNum_) * num ,dropY_,0.001f };
 
-		AddEquipment(pos, rand->RandInt(0, 4), 0);
+		num = rand->RandInt(0, 4);
+		while (num == dropType_)
+		{
+			num = rand->RandInt(0, 4);
+		}
+		dropType_ = num;
+		AddEquipment(pos, dropType_, 0);
 	}
 }
 
