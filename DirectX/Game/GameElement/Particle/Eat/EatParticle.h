@@ -14,17 +14,16 @@ public:
 	void Update();
 	void Draw();
 
-
-	void Create();
+	void Create(Vector3 pos);
 private:
 	void ParticleUpdate();
-
 
 	struct Data {
 		Vector3 pos;
 		Vector3 vel;
 		Vector4 color;
 		float time;
+		float alpha;
 	};
 	//初期位置
 	Vector3 pos_ = {0.0f,0.0f,1.0f};
@@ -39,6 +38,12 @@ private:
 	int createNumber_ = 6;
 	//下に落とす力の倍率
 	float downForce_ = 1.0f;
+
+	float velsityXmin = -1.5f;
+	float velsityXmax = 1.5f;
+
+	float velsityYmin = -3.0f;
+	float velsityYmax = 1.5f;
 
 	std::list<Data> particleData_;
 	//パーティクルオブジェクト

@@ -4,7 +4,7 @@ EatParticle::EatParticle()
 {
 	global = std::make_unique<GlobalVariableUser>("Particle", "Eat");
 
-	tex_ = ParticleManager::GetInstance()->GetDrawData("circle.png", BlendMode::kBlendModeNone);
+	tex_ = ParticleManager::GetInstance()->GetDrawData("cheese.png", BlendMode::kBlendModeNone);
 
 	SetGlobalVariable();
 }
@@ -15,7 +15,7 @@ void EatParticle::Update()
 	ApplyGlobalVariable();
 	ImGui::Begin("Eat");
 	if (ImGui::Button("Create")) {
-		Create();
+		Create(pos_);
 	}
 	ImGui::End();
 #endif
@@ -31,20 +31,21 @@ void EatParticle::Draw()
 {
 	for (Data& ho : particleData_) {
 		Matrix4x4 matrix = Matrix4x4::MakeAffinMatrix(size_, Vector3{ 0.0f,0.0f,0.0f }, ho.pos);
-		ParticleManager::GetInstance()->AddParticle(ParticleData{ matrix, Matrix4x4::MakeIdentity4x4(), ho.color }, tex_);
+		ParticleManager::GetInstance()->AddParticle(ParticleData{ matrix, Matrix4x4::MakeIdentity4x4(), {ho.color.x,ho.color.y,ho.color.z,ho.alpha} }, tex_);
 	}
 }
 
-void EatParticle::Create()
+void EatParticle::Create(Vector3 pos)
 {
 	for (int It = 0; It <= createNumber_; It++) {
 
 		RandomGenerator* rand = RandomGenerator::GetInstance();
 		Data data{};
-		data.pos = pos_;
-		data.vel = { rand->RandFloat(-1.5f,1.5f), rand->RandFloat(-3.0f,1.5f),0.0f };
+		data.pos = pos;
+		data.vel = { rand->RandFloat(velsityXmin,velsityXmax), rand->RandFloat(velsityYmin,velsityYmax),0.0f };
 		data.color = color_;
 		data.time = 0.0f;
+		data.alpha = 1.0f;
 
 		particleData_.push_back(data);
 
@@ -60,9 +61,14 @@ void EatParticle::ParticleUpdate(){
 		(*it).pos += (*it).vel * time_;
 		//下に落とす
 		(*it).vel.y -= downForce_ * time_;
-
+		//特定の時間になったら
 		if ((*it).time >= deleteTime_) {
-			it = particleData_.erase(it);
+			//アルファを薄く
+			(*it).alpha -= 0.1f;
+			if ((*it).alpha < 0.0f) {
+				//アルファが0なら削除
+				it = particleData_.erase(it);
+			}
 		}
 		else {
 			it++;
@@ -79,6 +85,11 @@ void EatParticle::SetGlobalVariable()
 	global->AddItem("作る個数", createNumber_, "Eat");
 	global->AddItem("下に落とす力の倍率", downForce_, "Eat");
 
+	global->AddItem("X軸の幅最小値", velsityXmin, "Eat");
+	global->AddItem("X軸の幅最大値", velsityXmax, "Eat");
+	global->AddItem("Y軸の幅最小値", velsityYmin, "Eat");
+	global->AddItem("Y軸の幅最大値", velsityYmax, "Eat");
+
 	ApplyGlobalVariable();
 }
 
@@ -90,4 +101,9 @@ void EatParticle::ApplyGlobalVariable()
 	deleteTime_ = global->GetFloatValue("削除までの時間", "Eat");
 	createNumber_ = global->GetIntValue("作る個数", "Eat");
 	downForce_ = global->GetFloatValue("下に落とす力の倍率", "Eat");
+
+	velsityXmin = global->GetFloatValue("X軸の幅最小値", "Eat");
+	velsityXmax = global->GetFloatValue("X軸の幅最大値", "Eat");
+	velsityYmin = global->GetFloatValue("Y軸の幅最小値", "Eat");
+	velsityYmax = global->GetFloatValue("Y軸の幅最大値", "Eat");
 }

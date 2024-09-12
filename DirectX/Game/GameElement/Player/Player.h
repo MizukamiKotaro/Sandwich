@@ -9,6 +9,7 @@
 
 #include "RandomGenerator/RandomGenerator.h"
 #include "Audio/Audio.h"
+#include "Game/GameElement/Particle/Eat/EatParticle.h"
 
 class Player : public Collider {
 public://パブリック関数
@@ -57,6 +58,8 @@ private://プライベート変数
 	//床をまとめた物
 	std::list<std::unique_ptr<Floor>> cheese_;
 	std::unique_ptr<Floor> predictionLine;
+
+#pragma region
 	//Jump
 	//ジャンプのインターバル
 	float kJumpInterval = 2.0f;//2秒
@@ -95,6 +98,9 @@ private://プライベート変数
 	int preTexture = 0;
 	//現在のテクスチャ
 	int currentTexture;
+#pragma endregion ジャンプ
+
+#pragma region
 	//天井に当たったかのフラグ
 	bool isHitCeiling = false;
 	//下のパンを描画するかどうかのフラグ
@@ -115,16 +121,19 @@ private://プライベート変数
 	bool isPlayerBackFlag = false;
 
 	bool panbottomMove = false;
-	
-	bool player;
 
 	float prePanPos;
+#pragma endregion パンと落下に関して
 
 	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
 	std::unique_ptr<Floor> panBottom;
 	//パンのサイズ
 	Vector3 panSize = { 20.0f,1.0f,1.0f };
+
+	//パーティクル
+	std::unique_ptr<EatParticle> eatParticle_;
+	
 	//上のパンを描画
 #ifdef _DEBUG
 	bool IsDraw = false;

@@ -35,8 +35,6 @@ void Game::Initialize()
 	customer_ = std::make_unique<Customer>();
 	customer_->Init(player_.get());
 	customer_->isDraw = false;
-	
-	eatParticle_ = std::make_unique<EatParticle>();
 
 	gameManager_->ChangeScene(GameManager::kTitle);
 	gameManager_->CompletedTransition();
@@ -64,8 +62,6 @@ void Game::Update()
  		customer_->isDraw = true;
 	}
 
-	eatParticle_->Update();
-
 	collisionManager_->Clear();
 	// 時間差分
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
@@ -89,7 +85,7 @@ void Game::Draw()
 	player_->Draw(camera_);
 	instancingModelManager_->Draw(*camera_);
 	customer_->Draw(camera_);
-	eatParticle_->Draw();
+
 	particleManager_->Draw(*camera_);
 }
 
