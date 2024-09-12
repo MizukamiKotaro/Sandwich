@@ -2,7 +2,7 @@
 #include "GameElement/Player/Player.h"
 #include "FrameInfo/FrameInfo.h"
 
-Floor::Floor(const std::string& textureName, Vector3 position, Vector3 scale, Player* player, ColliderMask ColliderMask) {
+Floor::Floor(const std::string& textureName, Vector3 position, Vector3 scale, Player* player, ColliderMask ColliderMask, bool isColliderUse) {
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>(textureName);
 
@@ -13,20 +13,32 @@ Floor::Floor(const std::string& textureName, Vector3 position, Vector3 scale, Pl
 
 	player_ = player;
 
+	useCollider = isColliderUse;
 	//当たり判定
-	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask);
-	AddTargetMask(ColliderMask::PAN);
-	AddTargetMask(ColliderMask::PLAYER);
+	if (useCollider) {
+		CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask);
+		AddTargetMask(ColliderMask::PAN);
+		AddTargetMask(ColliderMask::PLAYER);
+	}
+
+	global = std::make_unique<GlobalVariableUser>("Character", "cheese");
+
+	SetGlobalVariables();
 }
 
 void Floor::Update()
 {
+#ifdef _DEBUG
+	ApplyGlobalVariables();
+#endif
+
 	if (IsStepOnFlag) {
 		StepOn();
 	}
 
-
-	ColliderUpdate();
+	if (useCollider) {
+		ColliderUpdate();
+	}
 
 	object_->Update();
 }
@@ -46,6 +58,19 @@ void Floor::Move(Vector3 position)
 	object_->model->transform_.translate_ = position;
 }
 
+void Floor::SetGlobalVariables()
+{
+
+	global->AddItem("速度の倍率", ratio,"踏みつけ");
+
+	ApplyGlobalVariables();
+}
+
+void Floor::ApplyGlobalVariables()
+{
+	ratio = global->GetFloatValue("速度の倍率", "踏みつけ");
+}
+
 void Floor::ColliderUpdate()
 {
 	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_);
@@ -59,17 +84,36 @@ void Floor::OnCollision(const Collider& collider)
 	}
 	if (collider.GetMask() == ColliderMask::PLAYER) {
 		if (GetMask() == ColliderMask::PAN) { return; };
+		if (GetMask() == ColliderMask::PREDICTIONLINE) { return; };
+		prePos = object_->model->transform_.translate_;
+		targetPos = { prePos.x,prePos.y - 0.5f,prePos.z };
+		IsFrameOver = false;
 		IsStepOnFlag = true;
 	}
 }
 
-void Floor::StepOn(){
-	stepOnrlame += FrameInfo::GetInstance()->GetDeltaTime();
+void Floor::StepOn() {
 
-	//Ease::UseEase(object_->model->transform_.translate_, {0.0f,0.0f,0.0f}, Ease::EaseInBack);
 
-	if (stepOnrlame >= 1.0f) {
-		IsStepOnFlag = false;
-		stepOnrlame = 0.0f;
+
+	stepOnFrame += FrameInfo::GetInstance()->GetDeltaTime() * ratio;
+
+	stepOnFrame = std::min(stepOnFrame,1.0f);
+
+	if (IsFrameOver == false) {
+		object_->model->transform_.translate_ = Ease::UseEase(prePos, targetPos, stepOnFrame,Ease::EaseIn);
 	}
+	else {
+		object_->model->transform_.translate_ = Ease::UseEase(targetPos, prePos, stepOnFrame, Ease::EaseIn);
+	}
+
+	if (stepOnFrame >= 1.0f && IsFrameOver) {
+		IsStepOnFlag = false;
+		stepOnFrame = 0.0f;
+	}
+	if (IsFrameOver == false && stepOnFrame >= 1.0f) {
+		IsFrameOver = true;
+		stepOnFrame = 0.0f;
+	}
+
 }

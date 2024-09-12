@@ -1,7 +1,8 @@
 #include "Customer.h"
 #include "FrameInfo/FrameInfo.h"
+#include "Game/GameElement/Player/Player.h"
 
-void Customer::Init()
+void Customer::Init(Player* player)
 {
 	customerTexture.push_back("customer.png");
 	customerTexture.push_back("customerClose.png");
@@ -12,6 +13,8 @@ void Customer::Init()
 	}
 
 	object_ = std::make_unique<Object>(customerTexture[0]);
+
+	player_ = player;
 	
 	//ランダム生成器のインスタンスを生成
 	random = RandomGenerator::GetInstance();
@@ -69,6 +72,9 @@ void Customer::Update()
 	}
 #pragma endregion BehaviorTree
 
+	if (player_->GetIsDrop()) {
+		isPreEatFlag = true;
+	}
 
 	object_->model->transform_.scale_ = scale_;
 	object_->model->transform_.translate_ = translate_;
@@ -94,6 +100,11 @@ void Customer::RootInit()
 
 void Customer::RootUpdate()
 {	
+	if (isPreEatFlag) {
+		behaviorRequest_ = Behavior::kEat;
+		return;
+	}
+
 	raffleFlame += FrameInfo::GetInstance()->GetDeltaTime();
 	//特定のフレームに到達したら抽選を行う
 	if (raffleFlame > raffleInterval) {
@@ -125,6 +136,11 @@ void Customer::BlinkUpdate()
 			return;
 		}
 
+		if (isPreEatFlag) {
+			behaviorRequest_ = Behavior::kEat;
+			return;
+		}
+
 		blinkFrame = 0.0f;
 		kBlinkInterval = random->RandFloat(kBlinkMinInterval, kBlinkMaxInterval);
 		if (currentTexture == 0) {
@@ -143,10 +159,42 @@ void Customer::BlinkUpdate()
 
 void Customer::EatInit()
 {
+	EatFrame = 0;
+	currentTexture = 0;
+	countEat = 0;
+	//テクスチャを変える
+	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
 }
 
 void Customer::EatUpdate()
 {
+	if (player_->GetIsDrop() == false) {
+		isPreEatFlag = false;
+		isEatFlag = true;
+
+	}
+	if (isEatFlag) {
+		EatFrame += FrameInfo::GetInstance()->GetDeltaTime();
+		if (EatFrame > kEatInterval) {
+
+			if (countEat >= kcountEat) {
+				isEatFlag = false;
+				behaviorRequest_ = Behavior::kRoot;
+				return;
+			}
+
+			EatFrame = 0.0f;
+			if (currentTexture == 0) {
+				currentTexture = 2;
+				countEat++;
+			}
+			else {
+				currentTexture = 0;
+			}
+		}
+		//テクスチャを変える
+		object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
+	}
 }
 
 void Customer::SetGlobalVariables()
@@ -161,6 +209,9 @@ void Customer::SetGlobalVariables()
 	global->AddItem("間隔の最大値", kBlinkMaxInterval, "瞬き","間隔");
 	global->AddItem("回数の最小値", blinkMinTime, "瞬き","間隔");
 	global->AddItem("回数の最大値", blinkMaxTime, "瞬き","間隔");
+
+	global->AddItem("抽選するフレーム", kEatInterval, "食べる動き","間隔");
+	global->AddItem("回数", kcountEat, "食べる動き","間隔");
 
 	ApplyGlobalVariables();
 }
@@ -177,6 +228,9 @@ void Customer::ApplyGlobalVariables()
 	kBlinkMaxInterval = global->GetFloatValue("間隔の最大値", "瞬き", "間隔");
 	blinkMinTime = global->GetIntValue("回数の最小値", "瞬き","間隔");
 	blinkMaxTime = global->GetIntValue("回数の最大値", "瞬き","間隔");
+
+	kEatInterval = global->GetFloatValue("抽選するフレーム", "食べる動き", "間隔");
+	kcountEat = global->GetIntValue("回数", "食べる動き", "間隔");
 
 
 }

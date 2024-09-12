@@ -193,7 +193,7 @@ void Player::Jump()
 
 int Player::randomTextureSelect(int PreTextture)
 {
-	currentTexture = random->RandInt(0, 3);
+	currentTexture = random->RandInt(0, 4);
 	if (currentTexture == PreTextture) {
 		currentTexture = randomTextureSelect(PreTextture);
 	}

@@ -30,7 +30,7 @@ void Game::Initialize()
 	equipmentManager_->SetPlayer(player_.get());
 
 	customer_ = std::make_unique<Customer>();
-	customer_->Init();
+	customer_->Init(player_.get());
 
 	gameManager_->ChangeScene(GameManager::kTitle);
 	gameManager_->CompletedTransition();
