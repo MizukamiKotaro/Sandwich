@@ -2,6 +2,7 @@
 #include "GameElement/Object/Object.h"
 #include "CollisionSystem/Collider/Collider.h"
 #include "Ease/Ease.h"
+#include "GlobalVariables/GlobalVariableUser.h"
 
 class Player;
 class Floor : public Collider {
@@ -17,6 +18,9 @@ public:
 	//3Dモデル
 	std::unique_ptr<Object> object_;
 private:
+	//Globalvariables
+	void SetGlobalVariables();
+	void ApplyGlobalVariables();
 	//当たり判定の更新
 	void ColliderUpdate();
 	//当たり判定
@@ -29,10 +33,18 @@ private:
 	const float kColliderInterval = 10.0f;
 	//踏まれたかどうかのフラグ
 	bool IsStepOnFlag = false;
+	//0.5f超えたら
+	bool IsFrameOver;
 	//経過フレーム
-	float stepOnrlame;
+	float stepOnFrame;
 	//コライダーを使うかどうか
 	bool useCollider;
 
+	//踏んだ時の戻る速度
+	float ratio = 2.0f;
+
 	Vector3 prePos;
+	Vector3 targetPos;
+
+	std::unique_ptr<GlobalVariableUser> global;
 };
