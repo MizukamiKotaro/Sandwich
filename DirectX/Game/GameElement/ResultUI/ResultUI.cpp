@@ -47,6 +47,8 @@ void ResultUI::Initialize(const bool& isClear)
 {
 	isTran_ = false;
 	isTranHalf_ = false;
+	isTitle_ = false;
+	isGame_ = false;
 	isClear_ = isClear;
 	yesNoSpriteNum_ = 0;
 	postTime_ = 0.0f;
