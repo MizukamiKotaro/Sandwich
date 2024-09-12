@@ -62,7 +62,7 @@ public:
 
 	void LoadTexture(const std::string& filePath);
 
-	void SetTexture(const Texture* texture);
+	void SetTexture(const Texture* texture, const bool& isSizeSet = true);
 
 	void SetAnchorPoint(const Vector2& anchorpoint);
 

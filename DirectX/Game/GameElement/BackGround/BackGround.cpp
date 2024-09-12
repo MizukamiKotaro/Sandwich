@@ -32,17 +32,20 @@ BackGround::BackGround()
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "BackGround");
 	SetGlobalVariables();
 	DrawSprites();
+	preResult_ = false;
 }
 
 void BackGround::Initialise()
 {
 	timer_->Initialize();
+	preResult_ = false;
 }
 
 void BackGround::Update(const float& deltaTime)
 {
 #ifdef _DEBUG
 	ApplyGlobalVariables();
+	timer_->UpdateGlobal();
 #endif // _DEBUG
 
 	basePos_ += move_ * deltaTime;
@@ -60,10 +63,18 @@ void BackGround::Update(const float& deltaTime)
 		sp->pos_ = pos + basePos_;
 		sp->Update();
 		pos.y += size2_;
+	} 
+
+	if (preResult_ && gameManager_->GetScene() == GameManager::kGame) {
+		Initialise();
 	}
 
 	if (gameManager_->GetScene() == GameManager::kGame) {
 		timer_->Update(deltaTime);
+		if (timer_->GetIsTimeUp()) {
+			gameManager_->ChangeScene(GameManager::kResult);
+			preResult_ = true;
+		}
 	}
 
 	DrawSprites();
