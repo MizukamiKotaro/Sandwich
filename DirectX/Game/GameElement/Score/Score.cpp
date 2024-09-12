@@ -41,6 +41,9 @@ void Score::FirstInitialize()
 
 	glo_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Frame");
 	SetGlobalVariables();
+
+	seSatisfaction_ = std::make_unique<Audio>();
+	seSatisfaction_->Load("waveClear.mp3", "満足した時の音");
 }
 
 void Score::SetPlayer(const Player* player)
@@ -117,6 +120,7 @@ void Score::AddNum()
 	if (num_ >= maxNum_) {
 		num_ = 0;
 		customerNum_++;
+		seSatisfaction_->Play();
 	}
 }
 
