@@ -36,7 +36,7 @@ void Floor::Update()
 		StepOn();
 	}
 
-	if (useCollider) {
+	if (isuseCollider) {
 		ColliderUpdate();
 	}
 
@@ -80,9 +80,11 @@ void Floor::ColliderUpdate()
 void Floor::OnCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::PAN) {
+		if (isuseCollider == false) { return; };
 		object_->model->transform_.translate_.y = player_->GetTlanslate().y - 2.0f;
 	}
 	if (collider.GetMask() == ColliderMask::PLAYER) {
+		if (player_->GetIsDrop()) { return; };
 		if (GetMask() == ColliderMask::PAN) { return; };
 		if (GetMask() == ColliderMask::PREDICTIONLINE) { return; };
 		prePos = object_->model->transform_.translate_;
@@ -94,8 +96,7 @@ void Floor::OnCollision(const Collider& collider)
 
 void Floor::StepOn() {
 
-
-
+	isuseCollider = false;
 	stepOnFrame += FrameInfo::GetInstance()->GetDeltaTime() * ratio;
 
 	stepOnFrame = std::min(stepOnFrame,1.0f);
@@ -106,11 +107,13 @@ void Floor::StepOn() {
 	else {
 		object_->model->transform_.translate_ = Ease::UseEase(targetPos, prePos, stepOnFrame, Ease::EaseIn);
 	}
-
+	//終了条件
 	if (stepOnFrame >= 1.0f && IsFrameOver) {
 		IsStepOnFlag = false;
+		isuseCollider = true;
 		stepOnFrame = 0.0f;
 	}
+	//折り返し
 	if (IsFrameOver == false && stepOnFrame >= 1.0f) {
 		IsFrameOver = true;
 		stepOnFrame = 0.0f;

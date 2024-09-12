@@ -61,11 +61,16 @@ void Player::Update()
 	if (isHitCeiling) {
 		HitCeiling();
 		if (object_->model->transform_.translate_.y < bottomLimit) {
-
 			HitBottom();
+			isPlayerBackFlag = true;
+			if (panBottom->GetPos().y < bottomDropLimit) {
+				isHitCeiling = false;
+				isDrawbottomPanFlag = false;
+			}
 		}
 		object_->Update();
 		panTop->Update();
+		panBottom->Update();
 
 		//床更新
 		for (std::list<std::unique_ptr<Floor>>::iterator it = cheese_.begin(); it != cheese_.end(); it++) {
@@ -73,17 +78,19 @@ void Player::Update()
 		}
 		return;
 	}
+	//プレイヤーを特定の位置に戻す
+	if (object_->model->transform_.translate_.y > bottomPanReset) {
+		isDrawbottomPanFlag = true;
+	}
+	else if(isPlayerBackFlag){
+		isPlayerBackFlag = false;
+		jumpForce = kJumpForce;
+	}
 
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
-	//ジャンプの判定が何度も当たらないようにする
-	hitFlame += FrameInfo::GetInstance()->GetDeltaTime();
-	if (hitFlame > kHitFlame) {
-		isHitFlag = false;
-	}
-	//ジャンプをしない
 
 	jumpForceVec.y = jumpForce;
-
+	//ジャンプインターバル
 	if (jumpFlame > kJumpInterval) {
 		//スペースでジャンプ初期化
 		if (input_->PressedKey(DIK_SPACE)) {
@@ -98,7 +105,7 @@ void Player::Update()
 
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
-	jumpForce -= 0.1f;
+	jumpForce -= gravity;
 
 	//移動制御
 	object_->SetTranslate({ std::clamp(object_->GetWorldTransform().translate_.x, -Xlimit, Xlimit) ,object_->GetWorldTransform().translate_.y,0.0f });
@@ -123,7 +130,9 @@ void Player::Update()
 
 	//パンの更新
 	panTop->Update();
-	panBottom->Update();
+	if (isDrawbottomPanFlag) {
+		panBottom->Update();
+	}
 }
 
 void Player::Draw(const Camera* camera)
@@ -144,7 +153,9 @@ void Player::Draw(const Camera* camera)
 		panTop->Draw(camera);
 	}
 #endif
-	panBottom->Draw(camera);
+	if (isDrawbottomPanFlag) {
+		panBottom->Draw(camera);
+	}
 
 	//予測線描画
 	predictionLine->Draw(camera);
@@ -178,12 +189,12 @@ void Player::Jump()
 
 	if (input_->PressingKey(DIK_A)) {
 		jumpForceVec.x = -kJumpForceX;
-		jumpForce -= gravity;
+		jumpForce -= buttomGravity;
 		object_->model->GetMaterialData()->uvTransform = lookLeftMatrix;
 	}
 	else if (input_->PressingKey(DIK_D)) {
 		jumpForceVec.x = kJumpForceX;
-		jumpForce -= gravity;
+		jumpForce -= buttomGravity;
 		object_->model->GetMaterialData()->uvTransform = lookRightMatrix;
 	}
 
@@ -213,16 +224,20 @@ void Player::HitCeiling()
 {
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	dropSpeed_ = kDropSpeed * deltaTime;
+
+	if (isPlayerBackFlag == false) {
 	object_->model->transform_.translate_.y -= dropSpeed_;
+	}
+
 	panTop->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,2.0f,0.0f });
+
 }
 
 void Player::HitBottom()
 {
 	cheese_.clear();
-	panTop->Move({ 0.0f,topLimit ,0.0f });
-	isHitCeiling = false;
 
+	panBottom->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,4.0f,0.0f });
 }
 
 void Player::ColliderUpdate()
@@ -234,12 +249,8 @@ void Player::ColliderUpdate()
 void Player::OnCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
-		if (isHitFlag) {
-			return;
-		}
+
 		CommonJumpInit();
-		isHitFlag = true;
-		hitFlame = 0.0f;
 	}
 	if (collider.GetMask() == ColliderMask::PAN) {
 		isHitCeiling = true;
@@ -251,6 +262,8 @@ void Player::SetGlobalVariables()
 	global->AddItem("落下速度", kDropSpeed, "落下関連");
 
 	global->AddItem("ジャンプ力", kJumpForce, "ジャンプ");
+	global->AddItem("重力", gravity, "ジャンプ");
+	global->AddItem("ボタンを押した時にかかる力", buttomGravity, "ジャンプ");
 	global->AddItem("横移動の大きさ", kJumpForceX, "ジャンプ");
 	global->AddItem("ジャンプのインターバル", kJumpInterval, "ジャンプ");
 
@@ -258,6 +271,7 @@ void Player::SetGlobalVariables()
 
 	global->AddItem("上のパンの位置", topLimit, "パン");
 	global->AddItem("下のパンの位置", bottomLimit, "パン");
+	global->AddItem("下のパン再出現位置", bottomPanReset, "パン");
 
 	ApplyGlobalVariables();
 }
@@ -267,9 +281,12 @@ void Player::ApplyGlobalVariables()
 	kDropSpeed = global->GetFloatValue("落下速度", "落下関連");
 
 	kJumpForce = global->GetFloatValue("ジャンプ力", "ジャンプ");
+	gravity = global->GetFloatValue("重力", "ジャンプ");
+	buttomGravity = global->GetFloatValue("ボタンを押した時にかかる力", "ジャンプ");
 	kJumpForceX = global->GetFloatValue("横移動の大きさ", "ジャンプ");
 	kJumpInterval = global->GetFloatValue("ジャンプのインターバル", "ジャンプ");
 
 	topLimit = global->GetFloatValue("上のパンの位置", "パン");
 	bottomLimit = global->GetFloatValue("下のパンの位置", "パン");
+	bottomPanReset = global->GetFloatValue("下のパン再出現位置", "パン");
 }

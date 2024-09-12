@@ -14,6 +14,7 @@ public:
 
 	void SetSize(Vector3 size);
 	void Move(Vector3 position);
+	Vector3 GetPos() { return object_->model->transform_.translate_; };
 
 	//3Dモデル
 	std::unique_ptr<Object> object_;
@@ -39,6 +40,8 @@ private:
 	float stepOnFrame;
 	//コライダーを使うかどうか
 	bool useCollider;
+	//コライダー使うかどうか
+	bool isuseCollider = true;
 
 	//踏んだ時の戻る速度
 	float ratio = 2.0f;

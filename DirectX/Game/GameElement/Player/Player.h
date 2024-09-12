@@ -69,15 +69,13 @@ private://プライベート変数
 	//横移動の強さ
 	float kJumpForceX = 5.0f;
 	//プレイヤーにかかる重力
-	float gravity = 0.05f;
+	float gravity = 0.1f;
+	//ボタンを押したときにかかる力
+	float buttomGravity = 0.05f;
 	//ジャンプの力
 	Vector3 jumpForceVec;
 	//ジャンプのフラグ
 	bool jumpFlag = false;
-	//ジャンプの判定が何度も当たらないようにする
-	bool isHitFlag = false;
-	float hitFlame;
-	const float kHitFlame = 1.5f;
 	//ジャンプした時のXの移動量
 	float jumpXmovement = 0.0f;
 	//ジャンプした時の中心点
@@ -97,6 +95,8 @@ private://プライベート変数
 	int currentTexture;
 	//天井に当たったかのフラグ
 	bool isHitCeiling = false;
+	//下のパンを描画するかどうかのフラグ
+	bool isDrawbottomPanFlag = false;
 	//落下速度
 	float kDropSpeed = 50.0f;
 	float dropSpeed_;
@@ -104,7 +104,13 @@ private://プライベート変数
 	float topLimit = 20.0f;
 	float panTopY;
 	//下側のパンの位置(Y)
-	float bottomLimit = -15.0f;
+	float bottomLimit = -12.0f;
+	//下のパン出現条件
+	float bottomPanReset = -7.0f;
+	//どこまで落下するか
+	float bottomDropLimit = -15.0f;
+	//プレイヤーをパンの上に戻す
+	bool isPlayerBackFlag = false;
 
 	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
