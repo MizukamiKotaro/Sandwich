@@ -18,6 +18,10 @@ public:
 	void Draw();
 	void DrawPlane(const Camera& camera);
 
+	const bool& GetIsTranHalf() const;
+	const bool& GetIsTitle() const;
+	const bool& GetIsGame() const;
+
 private:
 
 	void ClearInitialize();
@@ -78,4 +82,5 @@ private:
 	bool isTitle_;
 	bool isGame_;
 	bool isTran_;
+	bool isTranHalf_;
 };
