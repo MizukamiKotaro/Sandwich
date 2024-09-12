@@ -8,6 +8,7 @@
 #include <vector>
 #include "Input.h"
 #include "GameElement/DrawNumbers/DrawNumbers.h"
+#include "Audio.h"
 
 class GameManager;
 class Score;
@@ -25,7 +26,7 @@ public:
 	const bool& GetIsGame() const;
 
 private:
-
+	void DrawSp();
 	void ClearInitialize();
 	void GameOverInitialize();
 	void Create();
@@ -37,6 +38,13 @@ private:
 	GameManager* gameManager_;
 	Score* score_;
 	Vector2 screenSize_;
+
+	std::unique_ptr<PostEffect> postEf_;
+	std::unique_ptr<Sprite> postSp_;
+	float postTime_;
+
+	std::unique_ptr<Audio> seClear_;
+	std::unique_ptr<Audio> seDecision_;
 
 	enum SpriteNameEnum
 	{
