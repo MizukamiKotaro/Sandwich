@@ -84,4 +84,7 @@ private:
 	bool preDrop_;
 
 	Vector2 screenPos_;
+
+	int32_t cusEditMaxNum_;
+	std::vector<int32_t> maxNums_;
 };
