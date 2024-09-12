@@ -7,8 +7,11 @@
 #include "GlobalVariables/GlobalVariableUser.h"
 #include <vector>
 #include "Input.h"
+#include "GameElement/DrawNumbers/DrawNumbers.h"
+#include "Audio.h"
 
 class GameManager;
+class Score;
 
 class ResultUI {
 public:
@@ -23,7 +26,7 @@ public:
 	const bool& GetIsGame() const;
 
 private:
-
+	void DrawSp();
 	void ClearInitialize();
 	void GameOverInitialize();
 	void Create();
@@ -33,7 +36,15 @@ private:
 private:
 	Input* input_;
 	GameManager* gameManager_;
+	Score* score_;
 	Vector2 screenSize_;
+
+	std::unique_ptr<PostEffect> postEf_;
+	std::unique_ptr<Sprite> postSp_;
+	float postTime_;
+
+	std::unique_ptr<Audio> seClear_;
+	std::unique_ptr<Audio> seDecision_;
 
 	enum SpriteNameEnum
 	{
@@ -62,7 +73,23 @@ private:
 	{
 		Vector2 baseScale;
 		float scale;
+		Vector2 basePos;
 	};
+
+	std::vector<std::unique_ptr<Sprite>> sps_;
+	std::vector<PutData> putSps_;
+	std::vector<std::string> spsNames_;
+
+	std::unique_ptr<DrawNumbers> drawNum_;
+
+	enum SpsNames
+	{
+		kBack,
+		kSatisfaction,
+		kcustomer,
+		kEnd,
+	};
+
 	std::vector<PutData> putData_;
 	std::vector<Vector2> clearBasePoses_;
 	std::vector<Vector2> gameOverBasePoses_;

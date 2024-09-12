@@ -2,6 +2,8 @@
 #include "WindowsInfo/WindowsInfo.h"
 #include "GameElement/GameManager/GameManager.h"
 #include "RandomGenerator/RandomGenerator.h"
+#include "GameElement/Score/Score.h"
+#include "Ease/Ease.h"
 
 ResultUI::ResultUI()
 {
@@ -11,6 +13,12 @@ ResultUI::ResultUI()
 
 	global_ = std::make_unique<GlobalVariableUser>("UIAdjustmentItems", "Result");
 	input_ = Input::GetInstance();
+
+	score_ = Score::GetInstance();
+
+	postEf_ = std::make_unique<PostEffect>();
+	postSp_ = std::make_unique<Sprite>(screenSize_ * 0.5f);
+	postSp_->SetSRVGPUDescriptorHandle_(postEf_->GetSRVGPUDescriptorHandle());
 
 	TextureManager* tm = TextureManager::GetInstance();
 	equipmentTeses_.resize(4);
@@ -27,6 +35,11 @@ ResultUI::ResultUI()
 	isGame_ = false;
 	isTran_ = false;
 
+	seClear_ = std::make_unique<Audio>();
+	seClear_->Load("waveClear.mp3", "クリアの音");
+	seDecision_ = std::make_unique<Audio>();
+	seDecision_->Load("decision.mp3", "リザルトの決定音");
+
 	SetGlobalVariables();
 }
 
@@ -34,8 +47,12 @@ void ResultUI::Initialize(const bool& isClear)
 {
 	isTran_ = false;
 	isTranHalf_ = false;
+	isTitle_ = false;
+	isGame_ = false;
 	isClear_ = isClear;
 	yesNoSpriteNum_ = 0;
+	postTime_ = 0.0f;
+
 	if (isClear_) {
 		ClearInitialize();
 	}
@@ -48,9 +65,22 @@ void ResultUI::Update(const float& deltaTime)
 {
 #ifdef _DEBUG
 	ApplyGlobalVariables();
+	drawNum_->Update();
 #endif // _DEBUG
 	if (gameManager_->GetScene() == GameManager::kResult) {
-		if (!isTran_) {
+		if (postTime_ == 0.0f) {
+			seClear_->Play();
+		}
+		float b = 1.0f;
+		if (postTime_ != b) {
+			postTime_ = std::clamp(postTime_ + deltaTime, 0.0f, b);
+			float t = postTime_ / b;
+			float y = screenSize_.y * 0.5f;
+			//postSp_->pos_.y = (1.0f - t) * (-y) + t * y;
+			postSp_->pos_.y = Ease::UseEase(-y, y, t, Ease::EaseOutBounce);
+			postSp_->Update();
+		}
+		else if (!isTran_) {
 			if (input_->PressedKey(DIK_DOWN) || input_->PressedKey(DIK_S)) {
 				yesNoSpriteNum_--;
 			}
@@ -81,6 +111,7 @@ void ResultUI::Update(const float& deltaTime)
 					isTran_ = true;
 					isTitle_ = true;
 				}
+				seDecision_->Play();
 			}
 #ifdef _DEBUG
 			plane_->transform_.translate_ = pos_;
@@ -117,21 +148,14 @@ void ResultUI::Update(const float& deltaTime)
 			}
 		}
 	}
+
+	DrawSp();
 }
 
 void ResultUI::Draw()
 {
 	if (gameManager_->GetScene() == GameManager::kResult && !isTranHalf_) {
-		if (isClear_) {
-			for (size_t i = 0; i < sprites_.size() - 1; i++) {
-				sprites_[i]->Draw();
-			}
-		}
-		else {
-			for (size_t i = 0; i < sprites_.size(); i++) {
-				sprites_[i]->Draw();
-			}
-		}
+		postSp_->Draw();
 	}
 }
 
@@ -153,6 +177,29 @@ const bool& ResultUI::GetIsTitle() const
 const bool& ResultUI::GetIsGame() const
 {
 	return isGame_;
+}
+
+void ResultUI::DrawSp()
+{
+	postEf_->PreDrawScene();
+	if (gameManager_->GetScene() == GameManager::kResult && !isTranHalf_) {
+		for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+			sps_[i]->Draw();
+		}
+		drawNum_->Draw(score_->GetCustomer() - 1);
+
+		if (isClear_) {
+			for (size_t i = 0; i < sprites_.size() - 1; i++) {
+				sprites_[i]->Draw();
+			}
+		}
+		else {
+			for (size_t i = 0; i < sprites_.size(); i++) {
+				sprites_[i]->Draw();
+			}
+		}
+	}
+	postEf_->PostDrawScene();
 }
 
 void ResultUI::ClearInitialize()
@@ -183,7 +230,7 @@ void ResultUI::Create()
 	TextureManager* texMa = TextureManager::GetInstance();
 	textures_.resize(8);
 	textures_[0] = texMa->LoadTexture("retryUi.png");
-	textures_[1] = texMa->LoadTexture("notRestartUi.png");
+	textures_[1] = texMa->LoadTexture("notRetryUi.png");
 	textures_[2] = texMa->LoadTexture("titleUi.png");
 	textures_[3] = texMa->LoadTexture("notTitleUi.png");
 	textures_[4] = texMa->LoadTexture("result.png");
@@ -225,6 +272,25 @@ void ResultUI::Create()
 	names_[SpriteNameEnum::kTitle] = "タイトル";
 	names_[SpriteNameEnum::kResult] = "リザルト";
 	names_[SpriteNameEnum::kContinue] = "つづきから";
+
+	sps_.resize(SpsNames::kEnd);
+	sps_[SpsNames::kBack] = std::make_unique<Sprite>("resultBackGround.png", screenSize_ * 0.5f);
+	sps_[SpsNames::kSatisfaction] = std::make_unique<Sprite>("resultSatisfactionUi.png", screenSize_ * 0.5f);
+	sps_[SpsNames::kcustomer] = std::make_unique<Sprite>("resultCusutomerNumberCounter.png", screenSize_ * 0.5f);
+
+	putSps_.resize(SpsNames::kEnd);
+	for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+		putSps_[i].baseScale = sps_[i]->size_;
+		putSps_[i].basePos = screenSize_ * 0.5f;
+		putSps_[i].scale = 1.0f;
+	}
+
+	spsNames_.resize(SpsNames::kEnd);
+	spsNames_[SpsNames::kBack] = "背景";
+	spsNames_[SpsNames::kcustomer] = "人";
+	spsNames_[SpsNames::kSatisfaction] = "満足";
+
+	drawNum_ = std::make_unique<DrawNumbers>("resultCustomerNumber.png", "Result", "数字", Vector2{ 160.0f,208.0f });
 }
 
 void ResultUI::SetGlobalVariables()
@@ -243,6 +309,11 @@ void ResultUI::SetGlobalVariables()
 	global_->AddItem("回転速度", 1.0f, "遷移");
 	global_->AddItem("時間", 1.0f, "遷移");
 	global_->AddItem("位置", Vector3{ 0.0f,0.0f,-1.0f }, "遷移");
+
+	for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+		global_->AddItem(spsNames_[i] + "の位置", putSps_[i].basePos, spsNames_[i]);
+		global_->AddItem(spsNames_[i] + "のスケール", putSps_[i].scale, spsNames_[i]);
+	}
 
 	ApplyGlobalVariables();
 }
@@ -289,4 +360,13 @@ void ResultUI::ApplyGlobalVariables()
 	pos_ = global_->GetVector3Value("位置", "遷移");
 	plane_->transform_.scale_ = { planeSize_,planeSize_ ,planeSize_ };
 	plane_->Update();
+
+	for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+		putSps_[i].basePos = global_->GetVector2Value(spsNames_[i] + "の位置", spsNames_[i]);
+		putSps_[i].scale = global_->GetFloatValue(spsNames_[i] + "のスケール", spsNames_[i]);
+
+		sps_[i]->pos_ = putSps_[i].basePos;
+		sps_[i]->size_ = putSps_[i].baseScale * putSps_[i].scale;
+		sps_[i]->Update();
+	}
 }
