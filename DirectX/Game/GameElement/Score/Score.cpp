@@ -182,8 +182,6 @@ void Score::CreateSprites()
 
 void Score::SetGlobalVariables()
 {
-	glo_->AddItem("最大数", maxNum_);
-
 	for (int32_t i = 0; i < SpriteNames::kMaxSpriteNames; i++) {
 		glo_->AddItem(names_[i] + "のスケール", 1.0f, "配置", names_[i]);
 		glo_->AddItem(names_[i] + "の座標", baseDatas_[i].basePos, "配置", names_[i]);
