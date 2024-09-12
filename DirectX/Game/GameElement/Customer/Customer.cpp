@@ -128,11 +128,6 @@ void Customer::BlinkInit()
 
 void Customer::BlinkUpdate()
 {
-#ifdef _DEBUG
-	ImGui::Begin("Play");
-	ImGui::Text("Blink");
-	ImGui::End();
-#endif
 	blinkFrame += FrameInfo::GetInstance()->GetDeltaTime();
 	if (blinkFrame > kBlinkInterval) {
 		
@@ -178,11 +173,6 @@ void Customer::EatUpdate()
 		isEatFlag = true;
 
 	}
-#ifdef _DEBUG
-	ImGui::Begin("Play");
-	ImGui::Text("Eat");
-	ImGui::End();
-#endif
 	if (isEatFlag) {
 		EatFrame += FrameInfo::GetInstance()->GetDeltaTime();
 		if (EatFrame > kEatInterval) {
