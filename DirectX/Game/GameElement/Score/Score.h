@@ -17,6 +17,8 @@ public:
 	void AddAddNum();
 	void AddNum();
 
+	const int32_t& GetCustomer() const;
+
 private:
 	Score() = default;
 	~Score() = default;

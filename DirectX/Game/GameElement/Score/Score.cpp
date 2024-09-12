@@ -120,6 +120,11 @@ void Score::AddNum()
 	}
 }
 
+const int32_t& Score::GetCustomer() const
+{
+	return customerNum_;
+}
+
 void Score::CreateSprites()
 {
 	Vector2 pos = WindowsInfo::GetInstance()->GetWindowSize() * 0.5f;

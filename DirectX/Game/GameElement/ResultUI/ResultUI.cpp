@@ -2,6 +2,7 @@
 #include "WindowsInfo/WindowsInfo.h"
 #include "GameElement/GameManager/GameManager.h"
 #include "RandomGenerator/RandomGenerator.h"
+#include "GameElement/Score/Score.h"
 
 ResultUI::ResultUI()
 {
@@ -11,6 +12,8 @@ ResultUI::ResultUI()
 
 	global_ = std::make_unique<GlobalVariableUser>("UIAdjustmentItems", "Result");
 	input_ = Input::GetInstance();
+
+	score_ = Score::GetInstance();
 
 	TextureManager* tm = TextureManager::GetInstance();
 	equipmentTeses_.resize(4);
@@ -48,6 +51,7 @@ void ResultUI::Update(const float& deltaTime)
 {
 #ifdef _DEBUG
 	ApplyGlobalVariables();
+	drawNum_->Update();
 #endif // _DEBUG
 	if (gameManager_->GetScene() == GameManager::kResult) {
 		if (!isTran_) {
@@ -122,6 +126,11 @@ void ResultUI::Update(const float& deltaTime)
 void ResultUI::Draw()
 {
 	if (gameManager_->GetScene() == GameManager::kResult && !isTranHalf_) {
+		for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+			sps_[i]->Draw();
+		}
+		drawNum_->Draw(score_->GetCustomer() - 1);
+
 		if (isClear_) {
 			for (size_t i = 0; i < sprites_.size() - 1; i++) {
 				sprites_[i]->Draw();
@@ -225,6 +234,25 @@ void ResultUI::Create()
 	names_[SpriteNameEnum::kTitle] = "タイトル";
 	names_[SpriteNameEnum::kResult] = "リザルト";
 	names_[SpriteNameEnum::kContinue] = "つづきから";
+
+	sps_.resize(SpsNames::kEnd);
+	sps_[SpsNames::kBack] = std::make_unique<Sprite>("resultBackGround.png", screenSize_ * 0.5f);
+	sps_[SpsNames::kSatisfaction] = std::make_unique<Sprite>("resultSatisfactionUi.png", screenSize_ * 0.5f);
+	sps_[SpsNames::kcustomer] = std::make_unique<Sprite>("resultCusutomerNumberCounter.png", screenSize_ * 0.5f);
+
+	putSps_.resize(SpsNames::kEnd);
+	for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+		putSps_[i].baseScale = sps_[i]->size_;
+		putSps_[i].basePos = screenSize_ * 0.5f;
+		putSps_[i].scale = 1.0f;
+	}
+
+	spsNames_.resize(SpsNames::kEnd);
+	spsNames_[SpsNames::kBack] = "背景";
+	spsNames_[SpsNames::kcustomer] = "人";
+	spsNames_[SpsNames::kSatisfaction] = "満足";
+
+	drawNum_ = std::make_unique<DrawNumbers>("resultCustomerNumber.png", "Result", "数字", Vector2{ 160.0f,208.0f });
 }
 
 void ResultUI::SetGlobalVariables()
@@ -243,6 +271,11 @@ void ResultUI::SetGlobalVariables()
 	global_->AddItem("回転速度", 1.0f, "遷移");
 	global_->AddItem("時間", 1.0f, "遷移");
 	global_->AddItem("位置", Vector3{ 0.0f,0.0f,-1.0f }, "遷移");
+
+	for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+		global_->AddItem(spsNames_[i] + "の位置", putSps_[i].basePos, spsNames_[i]);
+		global_->AddItem(spsNames_[i] + "のスケール", putSps_[i].scale, spsNames_[i]);
+	}
 
 	ApplyGlobalVariables();
 }
@@ -289,4 +322,13 @@ void ResultUI::ApplyGlobalVariables()
 	pos_ = global_->GetVector3Value("位置", "遷移");
 	plane_->transform_.scale_ = { planeSize_,planeSize_ ,planeSize_ };
 	plane_->Update();
+
+	for (int32_t i = 0; i < SpsNames::kEnd; i++) {
+		putSps_[i].basePos = global_->GetVector2Value(spsNames_[i] + "の位置", spsNames_[i]);
+		putSps_[i].scale = global_->GetFloatValue(spsNames_[i] + "のスケール", spsNames_[i]);
+
+		sps_[i]->pos_ = putSps_[i].basePos;
+		sps_[i]->size_ = putSps_[i].baseScale * putSps_[i].scale;
+		sps_[i]->Update();
+	}
 }
