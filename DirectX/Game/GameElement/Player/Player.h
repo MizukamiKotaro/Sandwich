@@ -43,7 +43,7 @@ private://プライベート関数
 	//床に当たったら
 	void HitBottom();
 	//当たり判定の更新
-	void ColliderUpdate();
+	void ColliderUpdate(const Vector3& move);
 	//当たった時の処理
 	void OnCollision(const Collider& collider)override;
 	//Globalvariables

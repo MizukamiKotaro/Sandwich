@@ -73,7 +73,7 @@ void Floor::ApplyGlobalVariables()
 
 void Floor::ColliderUpdate()
 {
-	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_);
+	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_, Vector3{});
 	SetCollider();
 }
 

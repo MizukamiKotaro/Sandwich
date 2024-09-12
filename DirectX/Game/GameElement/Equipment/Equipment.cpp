@@ -210,7 +210,7 @@ void Equipment::DropUpdate()
 
 void Equipment::ColliderUpdate()
 {	
-	SetBox2D(data_->position, data_->scale);
+	SetBox2D(data_->position, data_->scale, data_->move);
 	SetCollider();
 }
 
