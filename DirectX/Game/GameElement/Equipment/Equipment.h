@@ -63,6 +63,8 @@ private:
 
 		float seTime_;
 		float seMaxTime_;
+
+		bool isBoundFlag_;
 	};
 	static std::unique_ptr<StaticData> staticData_;
 

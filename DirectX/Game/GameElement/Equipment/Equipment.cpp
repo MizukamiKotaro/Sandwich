@@ -261,21 +261,35 @@ void Equipment::NotDropCollision(const Collider& collider)
 		Vector3 translate = data_->position;
 
 		if (IsCollision(box->position_, box->scale_, data_->position - data_->move, data_->scale)) {
-			data_->reflecteNum = 0;
+			data_->reflecteNum++;
 
-			if (data_->vect.y < 0.0f) {
-				data_->vect.y *= -1;
+			if (staticData_->isBoundFlag_) {
+				if (translate.y >= box->position_.y) {
+					if (data_->vect.y < 0.0f) {
+						data_->vect.y *= -1;
+					}
+					data_->position.y = box->position_.y + box->scale_.y + data_->scale.y + data_->vect.y;
+				}
+				else {
+					if (data_->vect.y > 0.0f) {
+						data_->vect.y *= -1;
+					}
+					data_->position.y = box->position_.y - box->scale_.y - data_->scale.y + data_->vect.y;
+				}
 			}
-
-			data_->position.y = box->position_.y + box->scale_.y + data_->scale.y + data_->vect.y;
-
+			else {
+				if (data_->vect.y < 0.0f) {
+					data_->vect.y *= -1;
+				}
+				data_->position.y = box->position_.y + box->scale_.y + data_->scale.y + data_->vect.y;
+			}
 			return;
 		}
 
 		if (data_->division < staticData_->divisionNum) {
 			data_->reflecteNum++;
 		}
-		if (data_->reflecteNum == staticData_->reflectNum) {
+		if (data_->reflecteNum >= staticData_->reflectNum) {
 			//反射の分裂の処理
 			data_->reflecteNum = 0;
 
@@ -367,6 +381,8 @@ void Equipment::StaticSetGlobalVariables()
 	global_->AddItemColor("ラインの色", Vector4{ 1.0f,1.0f,1.0f,1.0f }, "ボーナス関係");
 
 	global_->AddItem("反射SEの間隔", 0.01f, "SE関係");
+
+	global_->AddItem("上下判別の反射にするか", false, "処理の分岐");
 	StaticApplyGlobalVariables();
 }
 
@@ -390,4 +406,5 @@ void Equipment::StaticApplyGlobalVariables()
 	staticData_->bonusLineColor = global_->GetColor("ラインの色", "ボーナス関係");
 
 	staticData_->seMaxTime_ = global_->GetFloatValue("反射SEの間隔", "SE関係");
+	staticData_->isBoundFlag_ = global_->GetBoolValue("上下判別の反射にするか", "処理の分岐");
 }
