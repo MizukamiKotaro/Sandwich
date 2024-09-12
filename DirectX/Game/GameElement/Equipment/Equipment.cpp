@@ -51,6 +51,7 @@ void Equipment::StaticInitialize()
 		stageEditor_->Initialize();
 		global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Equipment");
 		staticData_ = std::make_unique<StaticData>();
+		staticData_->seTime_ = 0.0f;
 		StaticSetGlobalVariables();
 	}
 	else {
@@ -59,11 +60,12 @@ void Equipment::StaticInitialize()
 	}
 }
 
-void Equipment::StaticUpdate()
+void Equipment::StaticUpdate(const float& deltaTime)
 {
 #ifdef _DEBUG
 	StaticApplyGlobalVariables();
 #endif // _DEBUG
+	staticData_->seTime_ += deltaTime;
 }
 
 Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const int32_t& division, const Vector3& vect, const float& speed)
@@ -109,7 +111,6 @@ Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& te
 
 Equipment::~Equipment()
 {
-	
 }
 
 void Equipment::Update(const float& deltaTime)
@@ -242,7 +243,10 @@ bool IsCollision(const Vector3& pos0, const Vector3& scale0, const Vector3& pos1
 void Equipment::NotDropCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
-		//seReflect->Play();
+		if (staticData_->seTime_ >= staticData_->seMaxTime_) {
+			seReflect->Play();
+			staticData_->seTime_ = 0.0f;
+		}
 
 		ColliderShape::BOX2D;
 		ShapeBox2D* box = collider.GetBox2D();
@@ -361,6 +365,8 @@ void Equipment::StaticSetGlobalVariables()
 	global_->AddItem("ラインの最初のx座標", -2.0f, "ボーナス関係");
 	global_->AddItem("ラインの数", 6, "ボーナス関係");
 	global_->AddItemColor("ラインの色", Vector4{ 1.0f,1.0f,1.0f,1.0f }, "ボーナス関係");
+
+	global_->AddItem("反射SEの間隔", 0.01f, "SE関係");
 	StaticApplyGlobalVariables();
 }
 
@@ -382,4 +388,6 @@ void Equipment::StaticApplyGlobalVariables()
 	staticData_->bonusFirstX = global_->GetFloatValue("ラインの最初のx座標", "ボーナス関係");
 	staticData_->bonusLineNum = global_->GetIntValue("ラインの数", "ボーナス関係");
 	staticData_->bonusLineColor = global_->GetColor("ラインの色", "ボーナス関係");
+
+	staticData_->seMaxTime_ = global_->GetFloatValue("反射SEの間隔", "SE関係");
 }
