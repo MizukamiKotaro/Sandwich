@@ -3,6 +3,7 @@
 #include "calc.h"
 #include "GameElement/Player/Player.h"
 #include "Audio/Audio.h"
+#include "GameElement/Score/Score.h"
 
 std::unique_ptr<StageEditor> Equipment::stageEditor_;
 std::unique_ptr<GlobalVariableUser> Equipment::global_;
@@ -18,6 +19,8 @@ RandomGenerator* rand_;
 EquipmentManager* eMana;
 const InstancingMeshTexData* Equipment::bonusLineModelData_;
 
+Score* Equipment::score_;
+
 void Equipment::SetPlayer(const Player* player) 
 {
 	player_ = player;
@@ -29,6 +32,7 @@ void Equipment::StaticInitialize()
 		instancingManager_ = InstancingModelManager::GetInstance();
 
 		bonusLineModelData_ = instancingManager_->GetDrawData("white.png");
+		score_ = Score::GetInstance();
 
 		seReflect = std::make_unique<Audio>();
 		seReflect->Load("reflect.mp3", "具材の反射");
@@ -64,6 +68,8 @@ void Equipment::StaticUpdate()
 
 Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const int32_t& division, const Vector3& vect, const float& speed)
 {
+	score_->AddAddNum();
+
 	data_ = std::make_unique<EquipmentData>();
 	
 	data_->texNum = tex;
@@ -99,6 +105,11 @@ Equipment::Equipment(const Vector3& pos, const Vector3& scale, const int32_t& te
 	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::EQUIPMENT);
 	AddTargetMask(ColliderMask::FLOOR);
 	AddTargetMask(ColliderMask::PAN);
+}
+
+Equipment::~Equipment()
+{
+	
 }
 
 void Equipment::Update(const float& deltaTime)

@@ -1,16 +1,20 @@
 #pragma once
 #include "GameElement/DrawNumbers/DrawNumbers.h"
 #include "PostEffect/PostEffect.h"
-
+class Player;
 class Score
 {
 public:
 	static Score* GetInstance();
 
 	void FirstInitialize();
+	void SetPlayer(const Player* player);
 	void Initialize();
 	void Update(const float& deltaTime);
 	void Draw();
+
+	void AddAddNum();
+	void AddNum();
 
 private:
 	Score() = default;
@@ -24,6 +28,7 @@ private:
 	void DrawSprite();
 
 private:
+	const Player* player_;
 	enum SpriteNames {
 		kFrame,
 		kBonus,
@@ -61,5 +66,5 @@ private:
 	int32_t num_;
 	int32_t maxNum_;
 	int32_t addNum_;
-	
+	bool preDrop_;
 };

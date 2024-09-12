@@ -57,6 +57,7 @@ void StageScene::Draw()
 	game_->Draw();
 	score_->Draw();
 	resultUI_->Draw();
+	resultUI_->DrawPlane(*camera_.get());
 	BlackDraw();
 
 	// フレームの終了
