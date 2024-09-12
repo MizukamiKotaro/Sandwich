@@ -2,6 +2,7 @@
 #include "GameElement/DrawNumbers/DrawNumbers.h"
 #include "PostEffect/PostEffect.h"
 class Player;
+class GameManager;
 class Score
 {
 public:
@@ -28,6 +29,7 @@ private:
 	void DrawSprite();
 
 private:
+	GameManager* gameManager_;
 	const Player* player_;
 	enum SpriteNames {
 		kFrame,
@@ -56,6 +58,12 @@ private:
 	std::unique_ptr<Sprite> sprite_;
 	std::vector<std::unique_ptr<Sprite>> sprites_;
 	std::unique_ptr<GlobalVariableUser> glo_;
+
+	std::unique_ptr<PostEffect> post1_;
+	std::unique_ptr<Sprite> sprite1_;
+	std::unique_ptr<PostEffect> post2_;
+	std::unique_ptr<Sprite> sprite2_;
+	float easeTime_;
 
 	struct BaseData
 	{
