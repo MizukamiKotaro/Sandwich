@@ -243,6 +243,10 @@ void Score::DrawSprite()
 	drawNum_->Draw(num_);
 	drawMaxNum_->Draw(maxNum_);
 	drawAddNum_->Draw(addNum_);
+	if (num_ + addNum_ >= maxNum_) {
+		sprites_[SpriteNames::kMaxFrame]->Draw();
+		sprites_[SpriteNames::kMax]->Draw();
+	}
 	post1_->PostDrawScene();
 
 	post2_->PreDrawScene();
