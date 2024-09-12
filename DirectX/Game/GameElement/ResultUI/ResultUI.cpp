@@ -1,6 +1,7 @@
 #include "ResultUI.h"
 #include "WindowsInfo/WindowsInfo.h"
 #include "GameElement/GameManager/GameManager.h"
+#include "RandomGenerator/RandomGenerator.h"
 
 ResultUI::ResultUI()
 {
@@ -8,13 +9,31 @@ ResultUI::ResultUI()
 	gameManager_ = GameManager::GetInstance();
 	Create();
 
-	global_ = std::make_unique<GlobalVariableUser>("UI_AdjustmentItems", "Result");
-	SetGlobalVariables();
+	global_ = std::make_unique<GlobalVariableUser>("UIAdjustmentItems", "Result");
 	input_ = Input::GetInstance();
+
+	TextureManager* tm = TextureManager::GetInstance();
+	equipmentTeses_.resize(4);
+	equipmentTeses_[0] = tm->LoadTexture("egg.png");
+	equipmentTeses_[1] = tm->LoadTexture("ham.png");
+	equipmentTeses_[2] = tm->LoadTexture("lettuce.png");
+	equipmentTeses_[3] = tm->LoadTexture("tomato.png");
+	equipmentTeses_;
+	plane_ = std::make_unique<Model>("plane");
+	plane_->SetTexture(equipmentTeses_[0]);
+	texNum_ = 0;
+	time_ = 0.0f;
+	isTitle_ = false;
+	isGame_ = false;
+	isTran_ = false;
+
+	SetGlobalVariables();
 }
 
 void ResultUI::Initialize(const bool& isClear)
 {
+	isTran_ = false;
+	isTranHalf_ = false;
 	isClear_ = isClear;
 	yesNoSpriteNum_ = 0;
 	if (isClear_) {
@@ -31,44 +50,78 @@ void ResultUI::Update(const float& deltaTime)
 	ApplyGlobalVariables();
 #endif // _DEBUG
 	if (gameManager_->GetScene() == GameManager::kResult) {
-		if (input_->PressedKey(DIK_DOWN) || input_->PressedKey(DIK_S)) {
-			yesNoSpriteNum_--;
-		}
-		else if (input_->PressedKey(DIK_UP) || input_->PressedKey(DIK_W)) {
-			yesNoSpriteNum_++;
-		}
-		if (yesNoSpriteNum_ < 0) {
-			yesNoSpriteNum_ = yesNoSpriteMaxNum_;
-		}
-		else if (yesNoSpriteNum_ > yesNoSpriteMaxNum_) {
-			yesNoSpriteNum_ = 0;
-		}
-		for (int32_t i = 0; i < yesNoSpriteMaxNum_ + 1; i++) {
-			if (i == yesNoSpriteNum_) {
-				sprites_[i]->SetTexture(textures_[i * 2], false);
+		if (!isTran_) {
+			if (input_->PressedKey(DIK_DOWN) || input_->PressedKey(DIK_S)) {
+				yesNoSpriteNum_--;
 			}
-			else {
-				sprites_[i]->SetTexture(textures_[i * 2 + 1], false);
+			else if (input_->PressedKey(DIK_UP) || input_->PressedKey(DIK_W)) {
+				yesNoSpriteNum_++;
 			}
-		}
+			if (yesNoSpriteNum_ < 0) {
+				yesNoSpriteNum_ = yesNoSpriteMaxNum_;
+			}
+			else if (yesNoSpriteNum_ > yesNoSpriteMaxNum_) {
+				yesNoSpriteNum_ = 0;
+			}
+			for (int32_t i = 0; i < yesNoSpriteMaxNum_ + 1; i++) {
+				if (i == yesNoSpriteNum_) {
+					sprites_[i]->SetTexture(textures_[i * 2], false);
+				}
+				else {
+					sprites_[i]->SetTexture(textures_[i * 2 + 1], false);
+				}
+			}
 
-		if (input_->PressedKey(DIK_SPACE)) {
-			if (yesNoSpriteNum_ == SpriteNameEnum::kRestart) {
-				gameManager_->ChangeScene(GameManager::kGame);
+			if (input_->PressedKey(DIK_SPACE)) {
+				if (yesNoSpriteNum_ == SpriteNameEnum::kRestart) {
+					isTran_ = true;
+					isGame_ = true;
+				}
+				else {
+					isTran_ = true;
+					isTitle_ = true;
+				}
+			}
+#ifdef _DEBUG
+			plane_->transform_.translate_ = pos_;
+			plane_->Update();
+#endif // _DEBUG
+		}
+	}
+#ifdef _DEBUG
+	else {
+		plane_->transform_.translate_ = pos_;
+		plane_->Update();
+	}
+#endif // _DEBUG
+
+	if(isTran_) {
+		time_ = std::clamp(time_ + deltaTime, 0.0f, maxTime_);
+		float t = time_ / maxTime_;
+		plane_->transform_.translate_.x = (1.0f - t) * pos_.x - t * pos_.x;
+		plane_->transform_.rotate_.z += rotate_ * deltaTime;
+		plane_->Update();
+
+		if (t >= 1.0f) {
+			Initialize();
+		}
+		else if (t >= 0.5f) {
+			isTranHalf_ = true;
+			if (isTitle_) {
+				gameManager_->ChangeScene(GameManager::kTitle);
 				gameManager_->CompletedTransition();
 			}
-			else {
-				gameManager_->ChangeScene(GameManager::kTitle);
+			else if (isGame_) {
+				gameManager_->ChangeScene(GameManager::kGame);
 				gameManager_->CompletedTransition();
 			}
 		}
 	}
-	deltaTime;
 }
 
 void ResultUI::Draw()
 {
-	if (gameManager_->GetScene() == GameManager::kResult) {
+	if (gameManager_->GetScene() == GameManager::kResult && !isTranHalf_) {
 		if (isClear_) {
 			for (size_t i = 0; i < sprites_.size() - 1; i++) {
 				sprites_[i]->Draw();
@@ -82,9 +135,42 @@ void ResultUI::Draw()
 	}
 }
 
+void ResultUI::DrawPlane(const Camera& camera)
+{
+	plane_->Draw(camera);
+}
+
+const bool& ResultUI::GetIsTranHalf() const
+{
+	return isTranHalf_;
+}
+
+const bool& ResultUI::GetIsTitle() const
+{
+	return isTitle_;
+}
+
+const bool& ResultUI::GetIsGame() const
+{
+	return isGame_;
+}
+
 void ResultUI::ClearInitialize()
 {
 	yesNoSpriteMaxNum_ = 1;
+	time_ = 0.0f;
+	texNum_ = RandomGenerator::GetInstance()->RandInt(0, 4);
+	plane_->SetTexture(equipmentTeses_[texNum_]);
+	plane_->transform_.translate_ = pos_;
+	plane_->Update();
+	for (int32_t i = 0; i < yesNoSpriteMaxNum_ + 1; i++) {
+		if (i == yesNoSpriteNum_) {
+			sprites_[i]->SetTexture(textures_[i * 2], false);
+		}
+		else {
+			sprites_[i]->SetTexture(textures_[i * 2 + 1], false);
+		}
+	}
 }
 
 void ResultUI::GameOverInitialize()
@@ -152,6 +238,12 @@ void ResultUI::SetGlobalVariables()
 			global_->AddItem(scaleNames_[i] + "のスケール", putData_[i].scale, "スケール");
 		}
 	}
+
+	global_->AddItem("サイズ", 1.0f, "遷移");
+	global_->AddItem("回転速度", 1.0f, "遷移");
+	global_->AddItem("時間", 1.0f, "遷移");
+	global_->AddItem("位置", Vector3{ 0.0f,0.0f,-1.0f }, "遷移");
+
 	ApplyGlobalVariables();
 }
 
@@ -190,4 +282,11 @@ void ResultUI::ApplyGlobalVariables()
 		}
 		sprites_[i]->Update();
 	}
+
+	planeSize_ = global_->GetFloatValue("サイズ", "遷移");
+	rotate_ = global_->GetFloatValue("回転速度", "遷移");
+	maxTime_ = global_->GetFloatValue("時間", "遷移");
+	pos_ = global_->GetVector3Value("位置", "遷移");
+	plane_->transform_.scale_ = { planeSize_,planeSize_ ,planeSize_ };
+	plane_->Update();
 }

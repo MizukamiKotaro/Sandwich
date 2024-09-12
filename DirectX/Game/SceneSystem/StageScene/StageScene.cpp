@@ -42,6 +42,12 @@ void StageScene::Update()
 		Initialize();
 	}
 #endif // _DEBUG
+	if (resultUI_->GetIsTranHalf()) {
+		backGround_->Initialise();
+		game_->ResetInitialize();
+		score_->Initialize();
+		score_->Update(0.0f);
+	}
 	float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	resultUI_->Update(deltaTime);
 	score_->Update(deltaTime);
@@ -57,6 +63,7 @@ void StageScene::Draw()
 	game_->Draw();
 	score_->Draw();
 	resultUI_->Draw();
+	resultUI_->DrawPlane(*camera_.get());
 	BlackDraw();
 
 	// フレームの終了

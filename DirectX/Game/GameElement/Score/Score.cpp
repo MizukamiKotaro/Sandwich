@@ -1,5 +1,6 @@
 #include "Score.h"
 #include "WindowsInfo/WindowsInfo.h"
+#include "GameElement/Player/Player.h"
 
 Score* Score::GetInstance()
 {
@@ -30,11 +31,17 @@ void Score::FirstInitialize()
 	SetGlobalVariables();
 }
 
+void Score::SetPlayer(const Player* player)
+{
+	player_ = player;
+}
+
 void Score::Initialize()
 {
 	customerNum_ = 1;
 	num_ = 0;
 	addNum_ = 0;
+	preDrop_ = false;
 }
 
 void Score::Update(const float& deltaTime)
@@ -46,6 +53,15 @@ void Score::Update(const float& deltaTime)
 	drawCustomerNum_->Update();
 	drawMaxNum_->Update();
 #endif // _DEBUG
+	if (player_) {
+		if (player_->GetIsDrop()) {
+			preDrop_ = true;
+		}
+		else if (preDrop_) {
+			preDrop_ = false;
+			AddNum();
+		}
+	}
 	deltaTime;
 	DrawSprite();
 }
@@ -53,6 +69,24 @@ void Score::Update(const float& deltaTime)
 void Score::Draw()
 {
 	sprite_->Draw();
+}
+
+void Score::AddAddNum()
+{
+	addNum_++;
+	if (addNum_ == 1000) {
+		addNum_ = 999;
+	}
+}
+
+void Score::AddNum()
+{
+	num_ += addNum_;
+	addNum_ = 0;
+	if (num_ >= maxNum_) {
+		num_ = 0;
+		customerNum_++;
+	}
 }
 
 void Score::CreateSprites()

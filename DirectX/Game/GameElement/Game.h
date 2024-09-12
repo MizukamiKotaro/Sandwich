@@ -15,6 +15,7 @@ public:
 	Game(Camera* camera);
 
 	void Initialize();
+	void ResetInitialize();
 	void Update();
 	void Draw();
 	void FirstUpdate();

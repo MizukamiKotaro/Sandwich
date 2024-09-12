@@ -5,6 +5,7 @@
 #include "InstancingModelManager.h"
 
 class Player;
+class Score;
 
 class Equipment : public Collider{
 public:
@@ -13,6 +14,7 @@ public:
 	static void StaticUpdate();
 
 	Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const int32_t& division, const Vector3& vect, const float& speed = -1.0f);
+	~Equipment();
 	void Update(const float& deltaTime);
 	void Draw();
 
@@ -34,6 +36,7 @@ private:
 	static const InstancingMeshTexData* bonusLineModelData_;
 
 private:
+	static Score* score_;
 	static const Player* player_;
 	static std::unique_ptr<StageEditor> stageEditor_;
 	static std::unique_ptr<GlobalVariableUser> global_;
