@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "FrameInfo/FrameInfo.h"
-
+#include "ImGuiManager/ImGuiManager.h"
 void Player::Init()
 {
 	//ジャンプのテクスチャ
@@ -20,7 +20,7 @@ void Player::Init()
 	input_ = Input::GetInstance();
 
 	global = std::make_unique<GlobalVariableUser>("Character", "Player");
-	SetGlobalVariables();
+
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>(jumpTexture[0]);
 	//右と左のアフィン行列
@@ -36,7 +36,7 @@ void Player::Init()
 
 	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize, this);
 	//予測線
-	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_ }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this,ColliderMask::PREDICTIONLINE);
+	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_ }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this, ColliderMask::PREDICTIONLINE);
 	predictionLine->object_->model->color_ = { 1.0f,1.0f,1.0f,0.5f };
 
 	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
@@ -46,6 +46,7 @@ void Player::Init()
 	//キャラクターのサイズ変更
 	object_->model->transform_.scale_ = { 2.0f,2.0f,1.0f };
 	object_->Update();
+	SetGlobalVariables();
 }
 
 void Player::Update()
@@ -55,17 +56,38 @@ void Player::Update()
 	panTop->Move(Vector3{ 0.0f,topLimit ,0.0f });
 	panBottom->Move(Vector3{ 0.0f,bottomLimit ,0.0f });
 #endif
+	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+
 	Vector3 prePos = object_->model->transform_.translate_;
 
 	//天井に当たった時の処理
 	if (isHitCeiling) {
 		HitCeiling();
-		if (object_->model->transform_.translate_.y < bottomLimit) {
+		//プレイヤーがパンの位置に到達
+		if (object_->model->transform_.translate_.y <= bottomLimit) {
 			HitBottom();
 			isPlayerBackFlag = true;
-			if (panBottom->GetPos().y < bottomDropLimit) {
+			panbottomMove = true;
+		}
+		if (panBottom->GetPos().y <= bottomDropLimit) {
+			panbottomMove = false;
+
+			isDrawbottomPanFlag = false;
+
+		}
+
+		//プレイヤーを特定の位置に戻す
+		if (isPlayerBackFlag) {
+			jumpForce = kJumpForce;
+			jumpForceVec.y = jumpForce;
+			object_->model->transform_.translate_ += jumpForceVec * deltaTime;
+
+			if (object_->model->transform_.translate_.y > bottomPanReset) {
+				isDrawbottomPanFlag = true;
+				isPlayerBackFlag = false;
 				isHitCeiling = false;
-				isDrawbottomPanFlag = false;
+				panTop->Move(Vector3{ 0.0f,topLimit ,0.0f });
+				panBottom->Move(Vector3{ 0.0f,bottomLimit ,0.0f });
 			}
 		}
 		object_->Update();
@@ -77,14 +99,6 @@ void Player::Update()
 			(*it)->Update();
 		}
 		return;
-	}
-	//プレイヤーを特定の位置に戻す
-	if (object_->model->transform_.translate_.y > bottomPanReset) {
-		isDrawbottomPanFlag = true;
-	}
-	else if(isPlayerBackFlag){
-		isPlayerBackFlag = false;
-		jumpForce = kJumpForce;
 	}
 
 	jumpFlame += FrameInfo::GetInstance()->GetDeltaTime();
@@ -103,7 +117,7 @@ void Player::Update()
 		Jump();
 	}
 
-	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
+
 	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
 	jumpForce -= gravity;
 
@@ -231,18 +245,26 @@ void Player::HitCeiling()
 	dropSpeed_ = kDropSpeed * deltaTime;
 
 	if (isPlayerBackFlag == false) {
-	object_->model->transform_.translate_.y -= dropSpeed_;
+		object_->model->transform_.translate_.y -= dropSpeed_;
+		prePanPos = object_->model->transform_.translate_.y;
+
+	}
+	else if (isPlayerBackFlag) {
+		prePanPos -= dropSpeed_;
 	}
 
-	panTop->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,2.0f,0.0f });
+	panTop->Move(Vector3{ 0.0f,prePanPos,0.0f } - Vector3{ 0.0f,2.0f,0.0f });
+	if (panbottomMove) {
+		panBottom->Move(Vector3{ 0.0f,prePanPos,0.0f } - Vector3{ 0.0f,4.0f,0.0f });
 
+	}
 }
 
 void Player::HitBottom()
 {
 	cheese_.clear();
 
-	panBottom->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,4.0f,0.0f });
+
 }
 
 void Player::ColliderUpdate(const Vector3& move)
