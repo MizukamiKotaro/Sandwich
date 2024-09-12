@@ -6,7 +6,7 @@
 #include "CollisionSystem/Collider/Collider.h"
 #include "Input.h"
 #include "GlobalVariables/GlobalVariableUser.h"
-#include "ImGuiManager/ImGuiManager.h"
+
 #include "RandomGenerator/RandomGenerator.h"
 #include "Audio/Audio.h"
 
@@ -98,7 +98,7 @@ private://プライベート変数
 	//天井に当たったかのフラグ
 	bool isHitCeiling = false;
 	//下のパンを描画するかどうかのフラグ
-	bool isDrawbottomPanFlag = false;
+	bool isDrawbottomPanFlag = true;
 	//落下速度
 	float kDropSpeed = 50.0f;
 	float dropSpeed_;
@@ -114,6 +114,11 @@ private://プライベート変数
 	//プレイヤーをパンの上に戻す
 	bool isPlayerBackFlag = false;
 
+	bool panbottomMove = false;
+	
+	bool player;
+
+	float prePanPos;
 
 	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
