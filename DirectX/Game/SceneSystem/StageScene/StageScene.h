@@ -13,6 +13,7 @@
 #include "GameElement/Game.h"
 #include "GameElement/BackGround/BackGround.h"
 #include "GameElement/Score/Score.h"
+#include "GameElement/ResultUI/ResultUI.h"
 
 class StageScene : public IScene
 {
@@ -29,6 +30,7 @@ private:
 
 	std::unique_ptr<Game> game_;
 	std::unique_ptr<BackGround> backGround_;
+	std::unique_ptr<ResultUI> resultUI_;
 	Score* score_;
 
 	std::unique_ptr<Audio> bgm_;

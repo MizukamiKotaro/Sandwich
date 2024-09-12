@@ -11,8 +11,11 @@ public:
 	void Update(const float& deltaTime);
 	void Draw();
 
+	void UpdateToGame(const float& deltaTime);
+
 	const bool GetIsTimeUp() const;
 	const bool& GetIsReset() const;
+	void UpdateGlobal();
 
 private:
 	void SetGlobalVariables();
@@ -28,4 +31,7 @@ private:
 	int32_t maxTime_;
 	float time_;
 	bool isReset_;
+
+	float easeTime_;
+	Vector2 screenPos_;
 };
