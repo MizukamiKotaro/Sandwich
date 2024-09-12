@@ -21,6 +21,7 @@ Game::Game(Camera* camera)
 	equipmentManager_ = EquipmentManager::GetInstance();
 	equipmentManager_->FirstInitialize();
 	instancingModelManager_ = InstancingModelManager::GetInstance();
+	particleManager_ = ParticleManager::GetInstance();
 }
 
 void Game::Initialize()
@@ -33,6 +34,8 @@ void Game::Initialize()
 
 	customer_ = std::make_unique<Customer>();
 	customer_->Init(player_.get());
+	
+	eatParticle_ = std::make_unique<EatParticle>();
 
 	gameManager_->ChangeScene(GameManager::kTitle);
 	gameManager_->CompletedTransition();
@@ -59,6 +62,8 @@ void Game::Update()
 		customer_->isDraw = true;
 	}
 
+	eatParticle_->Update();
+
 	collisionManager_->Clear();
 	// 時間差分
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
@@ -75,12 +80,15 @@ void Game::Update()
 
 void Game::Draw()
 {
+	particleManager_->Clear();
 	instancingModelManager_->Clear();
 
 	equipmentManager_->Draw();
 	player_->Draw(camera_);
 	instancingModelManager_->Draw(*camera_);
 	customer_->Draw(camera_);
+	eatParticle_->Draw();
+	particleManager_->Draw(*camera_);
 }
 
 void Game::FirstUpdate()

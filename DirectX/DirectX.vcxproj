@@ -232,6 +232,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\GameElement\Game.cpp" />
     <ClCompile Include="Game\GameElement\GameManager\GameManager.cpp" />
     <ClCompile Include="Game\GameElement\Object\Object.cpp" />
+    <ClCompile Include="Game\GameElement\Particle\Eat\EatParticle.cpp" />
+    <ClCompile Include="Game\GameElement\Particle\Jump\JumpParticle.cpp" />
     <ClCompile Include="Game\GameElement\Player\Player.cpp" />
     <ClCompile Include="Game\GameElement\ResultUI\ResultUI.cpp" />
     <ClCompile Include="Game\GameElement\Score\Score.cpp" />
@@ -424,6 +426,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\GameElement\Game.h" />
     <ClInclude Include="Game\GameElement\GameManager\GameManager.h" />
     <ClInclude Include="Game\GameElement\Object\Object.h" />
+    <ClInclude Include="Game\GameElement\Particle\Eat\EatParticle.h" />
+    <ClInclude Include="Game\GameElement\Particle\Jump\JumpParticle.h" />
     <ClInclude Include="Game\GameElement\Player\Player.h" />
     <ClInclude Include="Game\GameElement\ResultUI\ResultUI.h" />
     <ClInclude Include="Game\GameElement\Score\Score.h" />
