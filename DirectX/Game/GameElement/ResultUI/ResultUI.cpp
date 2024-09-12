@@ -182,11 +182,11 @@ void ResultUI::Create()
 {
 	TextureManager* texMa = TextureManager::GetInstance();
 	textures_.resize(8);
-	textures_[0] = texMa->LoadTexture("restartUi.png");
+	textures_[0] = texMa->LoadTexture("retryUi.png");
 	textures_[1] = texMa->LoadTexture("notRestartUi.png");
 	textures_[2] = texMa->LoadTexture("titleUi.png");
 	textures_[3] = texMa->LoadTexture("notTitleUi.png");
-	textures_[4] = texMa->LoadTexture("gameClear.png");
+	textures_[4] = texMa->LoadTexture("result.png");
 	textures_[5] = texMa->LoadTexture("gameOver.png");
 	textures_[6] = texMa->LoadTexture("continueUi.png");
 	textures_[7] = texMa->LoadTexture("notContinueUi.png");
