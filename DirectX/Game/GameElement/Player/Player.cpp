@@ -197,6 +197,9 @@ void Player::Jump()
 		jumpForce -= buttomGravity;
 		object_->model->GetMaterialData()->uvTransform = lookRightMatrix;
 	}
+	else if (input_->PressingKey(DIK_S)) {
+		jumpForce -= buttomDown;
+	}
 
 	jumpForceVec.Length();
 
@@ -264,6 +267,7 @@ void Player::SetGlobalVariables()
 	global->AddItem("ジャンプ力", kJumpForce, "ジャンプ");
 	global->AddItem("重力", gravity, "ジャンプ");
 	global->AddItem("ボタンを押した時にかかる力", buttomGravity, "ジャンプ");
+	global->AddItem("下ボタンを押した時にかかる力", buttomDown, "ジャンプ");
 	global->AddItem("横移動の大きさ", kJumpForceX, "ジャンプ");
 	global->AddItem("ジャンプのインターバル", kJumpInterval, "ジャンプ");
 
@@ -283,6 +287,7 @@ void Player::ApplyGlobalVariables()
 	kJumpForce = global->GetFloatValue("ジャンプ力", "ジャンプ");
 	gravity = global->GetFloatValue("重力", "ジャンプ");
 	buttomGravity = global->GetFloatValue("ボタンを押した時にかかる力", "ジャンプ");
+	buttomDown = global->GetFloatValue("下ボタンを押した時にかかる力", "ジャンプ");
 	kJumpForceX = global->GetFloatValue("横移動の大きさ", "ジャンプ");
 	kJumpInterval = global->GetFloatValue("ジャンプのインターバル", "ジャンプ");
 
