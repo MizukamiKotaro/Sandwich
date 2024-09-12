@@ -34,6 +34,7 @@ void Game::Initialize()
 
 	customer_ = std::make_unique<Customer>();
 	customer_->Init(player_.get());
+	customer_->isDraw = false;
 	
 	eatParticle_ = std::make_unique<EatParticle>();
 
@@ -51,6 +52,7 @@ void Game::ResetInitialize()
 
 	customer_ = std::make_unique<Customer>();
 	customer_->Init(player_.get());
+	customer_->isDraw = false;
 }
 
 void Game::Update()
@@ -59,7 +61,7 @@ void Game::Update()
 		gameManager_->ChangeScene(GameManager::kGame);
 		// これ仮置き
 		gameManager_->CompletedTransition();
-		customer_->isDraw = true;
+ 		customer_->isDraw = true;
 	}
 
 	eatParticle_->Update();
