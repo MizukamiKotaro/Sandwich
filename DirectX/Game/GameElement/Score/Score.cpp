@@ -14,9 +14,10 @@ void Score::FirstInitialize()
 	num_ = 0;
 	maxNum_ = 100;
 	addNum_ = 0;
+	screenPos_ = WindowsInfo::GetInstance()->GetWindowSize() * 0.5f;
 
 	post_ = std::make_unique<PostEffect>();
-	sprite_ = std::make_unique<Sprite>(WindowsInfo::GetInstance()->GetWindowSize() * 0.5f);
+	sprite_ = std::make_unique<Sprite>(screenPos_);
 	sprite_->SetSRVGPUDescriptorHandle_(post_->GetSRVGPUDescriptorHandle());
 
 	CreateSprites();
@@ -95,6 +96,9 @@ void Score::CreateSprites()
 	sprites_.resize(SpriteNames::kMaxSpriteNames);
 	baseDatas_.resize(SpriteNames::kMaxSpriteNames);
 
+	arrow_ = std::make_unique<Sprite>("bounusArrow.png", pos);
+	arrow_->SetIsFlipX(true);
+
 	sprites_[SpriteNames::kFrame] = std::make_unique<Sprite>("gameFram.png", pos);
 	sprites_[SpriteNames::kBonus] = std::make_unique<Sprite>("bounusUi.png", pos);
 	sprites_[SpriteNames::kOutSideFrameAdd] = std::make_unique<Sprite>("outsideFram.png", pos);
@@ -104,6 +108,7 @@ void Score::CreateSprites()
 	sprites_[SpriteNames::kMaxFrame] = std::make_unique<Sprite>("maxFram.png", pos);
 	sprites_[SpriteNames::kMax] = std::make_unique<Sprite>("maxUi.png", pos);
 	sprites_[SpriteNames::kLine] = std::make_unique<Sprite>("equipmentsNumberLine.png", pos);
+	sprites_[SpriteNames::kArrow] = std::make_unique<Sprite>("bounusArrow.png", pos);
 	sprites_[SpriteNames::kCustomerNum] = std::make_unique<Sprite>("nowCustomerNumber.png", pos);
 
 	for (int32_t i = 0; i < SpriteNames::kMaxSpriteNames; i++) {
@@ -123,6 +128,7 @@ void Score::CreateSprites()
 	names_[SpriteNames::kMax] = "最大";
 	names_[SpriteNames::kLine] = "分数の棒";
 	names_[SpriteNames::kCustomerNum] = "人目";
+	names_[SpriteNames::kArrow] = "ボーナスライン";
 }
 
 void Score::SetGlobalVariables()
@@ -146,6 +152,11 @@ void Score::ApplyGlobalVariables()
 		sprites_[i]->size_ = baseDatas_[i].baseScale * baseDatas_[i].scale;
 		sprites_[i]->Update();
 	}
+
+	arrow_->pos_ = sprites_[SpriteNames::kArrow]->pos_;
+	arrow_->pos_.x += (screenPos_.x - arrow_->pos_.x) * 2.0f;
+	arrow_->size_ = sprites_[SpriteNames::kArrow]->size_;
+	arrow_->Update();
 }
 
 void Score::DrawSprite()
@@ -154,6 +165,7 @@ void Score::DrawSprite()
 	for (int32_t i = 0; i < SpriteNames::kMaxSpriteNames; i++) {
 		sprites_[i]->Draw();
 	}
+	arrow_->Draw();
 	drawNum_->Draw(num_);
 	drawMaxNum_->Draw(maxNum_);
 	drawAddNum_->Draw(addNum_);

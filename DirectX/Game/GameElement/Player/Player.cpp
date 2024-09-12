@@ -55,7 +55,7 @@ void Player::Update()
 	panTop->Move(Vector3{ 0.0f,topLimit ,0.0f });
 	panBottom->Move(Vector3{ 0.0f,bottomLimit ,0.0f });
 #endif
-
+	Vector3 prePos = object_->model->transform_.translate_;
 
 	//天井に当たった時の処理
 	if (isHitCeiling) {
@@ -126,7 +126,9 @@ void Player::Update()
 
 	object_->Update();
 
-	ColliderUpdate();
+	prePos = object_->model->transform_.translate_ - prePos;
+
+	ColliderUpdate(prePos);
 
 	//パンの更新
 	panTop->Update();
@@ -197,6 +199,9 @@ void Player::Jump()
 		jumpForce -= buttomGravity;
 		object_->model->GetMaterialData()->uvTransform = lookRightMatrix;
 	}
+	else if (input_->PressingKey(DIK_S)) {
+		jumpForce -= buttomDown;
+	}
 
 	jumpForceVec.Length();
 
@@ -240,9 +245,9 @@ void Player::HitBottom()
 	panBottom->Move(Vector3{ 0.0f,object_->model->transform_.translate_.y,0.0f } - Vector3{ 0.0f,4.0f,0.0f });
 }
 
-void Player::ColliderUpdate()
+void Player::ColliderUpdate(const Vector3& move)
 {
-	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_);
+	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_, move);
 	SetCollider();
 }
 
@@ -264,6 +269,7 @@ void Player::SetGlobalVariables()
 	global->AddItem("ジャンプ力", kJumpForce, "ジャンプ");
 	global->AddItem("重力", gravity, "ジャンプ");
 	global->AddItem("ボタンを押した時にかかる力", buttomGravity, "ジャンプ");
+	global->AddItem("下ボタンを押した時にかかる力", buttomDown, "ジャンプ");
 	global->AddItem("横移動の大きさ", kJumpForceX, "ジャンプ");
 	global->AddItem("ジャンプのインターバル", kJumpInterval, "ジャンプ");
 
@@ -283,6 +289,7 @@ void Player::ApplyGlobalVariables()
 	kJumpForce = global->GetFloatValue("ジャンプ力", "ジャンプ");
 	gravity = global->GetFloatValue("重力", "ジャンプ");
 	buttomGravity = global->GetFloatValue("ボタンを押した時にかかる力", "ジャンプ");
+	buttomDown = global->GetFloatValue("下ボタンを押した時にかかる力", "ジャンプ");
 	kJumpForceX = global->GetFloatValue("横移動の大きさ", "ジャンプ");
 	kJumpInterval = global->GetFloatValue("ジャンプのインターバル", "ジャンプ");
 

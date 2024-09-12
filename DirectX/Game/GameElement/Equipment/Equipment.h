@@ -11,7 +11,7 @@ class Equipment : public Collider{
 public:
 	static void SetPlayer(const Player* player);
 	static void StaticInitialize();
-	static void StaticUpdate();
+	static void StaticUpdate(const float& deltaTime);
 
 	Equipment(const Vector3& pos, const Vector3& scale, const int32_t& tex, const int32_t& division, const Vector3& vect, const float& speed = -1.0f);
 	~Equipment();
@@ -60,6 +60,9 @@ private:
 		Vector2 bonusLineScale;
 		float bonusFirstX;
 		int32_t bonusLineNum;
+
+		float seTime_;
+		float seMaxTime_;
 	};
 	static std::unique_ptr<StaticData> staticData_;
 

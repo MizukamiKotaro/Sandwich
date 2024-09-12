@@ -43,7 +43,7 @@ private://プライベート関数
 	//床に当たったら
 	void HitBottom();
 	//当たり判定の更新
-	void ColliderUpdate();
+	void ColliderUpdate(const Vector3& move);
 	//当たった時の処理
 	void OnCollision(const Collider& collider)override;
 	//Globalvariables
@@ -72,6 +72,8 @@ private://プライベート変数
 	float gravity = 0.1f;
 	//ボタンを押したときにかかる力
 	float buttomGravity = 0.05f;
+	//下ボタンを押したときにかかる力
+	float buttomDown = 0.05f;
 	//ジャンプの力
 	Vector3 jumpForceVec;
 	//ジャンプのフラグ
@@ -111,6 +113,7 @@ private://プライベート変数
 	float bottomDropLimit = -15.0f;
 	//プレイヤーをパンの上に戻す
 	bool isPlayerBackFlag = false;
+
 
 	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;

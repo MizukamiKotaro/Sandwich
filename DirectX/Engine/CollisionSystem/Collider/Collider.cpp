@@ -53,9 +53,9 @@ void Collider::SetCircle(const Vector3& position, const float& radius)
 	shapeCircle_->SetParameter(position, radius);
 }
 
-void Collider::SetBox2D(const Vector3& position, const Vector3& scale)
+void Collider::SetBox2D(const Vector3& position, const Vector3& scale, const Vector3& moveVector)
 {
-	shapeBox2D_->SetParameter(position, scale);
+	shapeBox2D_->SetParameter(position, scale, moveVector);
 }
 
 void Collider::SetSimpleLineY(const float& y)

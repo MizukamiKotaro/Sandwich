@@ -38,6 +38,18 @@ void Game::Initialize()
 	gameManager_->CompletedTransition();
 }
 
+void Game::ResetInitialize()
+{
+	equipmentManager_->Initialize();
+	player_ = std::make_unique<Player>();
+	player_->Init();
+	equipmentManager_->SetPlayer(player_.get());
+	Score::GetInstance()->SetPlayer(player_.get());
+
+	customer_ = std::make_unique<Customer>();
+	customer_->Init(player_.get());
+}
+
 void Game::Update()
 {
 	if (player_->GetIsDrop() && gameManager_->GetScene() == GameManager::kTitle) {

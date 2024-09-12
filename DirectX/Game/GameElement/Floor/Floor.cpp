@@ -73,14 +73,17 @@ void Floor::ApplyGlobalVariables()
 
 void Floor::ColliderUpdate()
 {
-	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_);
+	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_, Vector3{});
 	SetCollider();
 }
 
 void Floor::OnCollision(const Collider& collider)
 {
-	if (collider.GetMask() == ColliderMask::PAN) {
-		if (isuseCollider == false) { return; };
+	if (collider.GetMask() == ColliderMask::PAN || collider.GetMask() == ColliderMask::EQUIPMENT) {
+		//if (isuseCollider == false) { return; };
+		if (!player_->GetIsDrop()) {
+			return;
+		}
 		object_->model->transform_.translate_.y = player_->GetTlanslate().y - 2.0f;
 	}
 	if (collider.GetMask() == ColliderMask::PLAYER) {

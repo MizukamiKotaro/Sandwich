@@ -42,8 +42,8 @@ void EquipmentManager::Update(const float& deltaTime)
 	}
 #ifdef _DEBUG
 	ApplyGlobalVariables();
-	Equipment::StaticUpdate();
 #endif // _DEBUG
+	Equipment::StaticUpdate(deltaTime);
 	if (gameManager_->GetScene() != GameManager::kGame || gameManager_->GetIsTransition()) {
 		return;
 	}

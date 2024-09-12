@@ -40,6 +40,7 @@ private:
 		kMaxFrame,
 		kMax,
 		kLine,
+		kArrow,
 		kMaxSpriteNames,
 	};
 	std::vector<std::string> names_;
@@ -48,6 +49,8 @@ private:
 	std::unique_ptr<DrawNumbers> drawMaxNum_;
 	std::unique_ptr<DrawNumbers> drawCustomerNum_;
 	std::unique_ptr<DrawNumbers> drawAddNum_;
+
+	std::unique_ptr<Sprite> arrow_;
 
 	std::unique_ptr<PostEffect> post_;
 	std::unique_ptr<Sprite> sprite_;
@@ -67,4 +70,6 @@ private:
 	int32_t maxNum_;
 	int32_t addNum_;
 	bool preDrop_;
+
+	Vector2 screenPos_;
 };

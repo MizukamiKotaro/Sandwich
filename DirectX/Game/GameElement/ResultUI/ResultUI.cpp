@@ -33,6 +33,7 @@ ResultUI::ResultUI()
 void ResultUI::Initialize(const bool& isClear)
 {
 	isTran_ = false;
+	isTranHalf_ = false;
 	isClear_ = isClear;
 	yesNoSpriteNum_ = 0;
 	if (isClear_) {
@@ -86,25 +87,6 @@ void ResultUI::Update(const float& deltaTime)
 			plane_->Update();
 #endif // _DEBUG
 		}
-		else {
-			time_ = std::clamp(time_ + deltaTime, 0.0f, maxTime_);
-			float t = time_ / maxTime_;
-			plane_->transform_.translate_.x = (1.0f - t) * pos_.x - t * pos_.x;
-			plane_->transform_.rotate_.z += rotate_ * deltaTime;
-			plane_->Update();
-
-			if (t >= 1.0f) {
-				if (isTitle_) {
-					gameManager_->ChangeScene(GameManager::kTitle);
-					gameManager_->CompletedTransition();
-				}
-				else if (isGame_) {
-					gameManager_->ChangeScene(GameManager::kGame);
-					gameManager_->CompletedTransition();
-				}
-				Initialize();
-			}
-		}
 	}
 #ifdef _DEBUG
 	else {
@@ -113,11 +95,33 @@ void ResultUI::Update(const float& deltaTime)
 	}
 #endif // _DEBUG
 
+	if(isTran_) {
+		time_ = std::clamp(time_ + deltaTime, 0.0f, maxTime_);
+		float t = time_ / maxTime_;
+		plane_->transform_.translate_.x = (1.0f - t) * pos_.x - t * pos_.x;
+		plane_->transform_.rotate_.z += rotate_ * deltaTime;
+		plane_->Update();
+
+		if (t >= 1.0f) {
+			Initialize();
+		}
+		else if (t >= 0.5f) {
+			isTranHalf_ = true;
+			if (isTitle_) {
+				gameManager_->ChangeScene(GameManager::kTitle);
+				gameManager_->CompletedTransition();
+			}
+			else if (isGame_) {
+				gameManager_->ChangeScene(GameManager::kGame);
+				gameManager_->CompletedTransition();
+			}
+		}
+	}
 }
 
 void ResultUI::Draw()
 {
-	if (gameManager_->GetScene() == GameManager::kResult) {
+	if (gameManager_->GetScene() == GameManager::kResult && !isTranHalf_) {
 		if (isClear_) {
 			for (size_t i = 0; i < sprites_.size() - 1; i++) {
 				sprites_[i]->Draw();
@@ -136,6 +140,21 @@ void ResultUI::DrawPlane(const Camera& camera)
 	plane_->Draw(camera);
 }
 
+const bool& ResultUI::GetIsTranHalf() const
+{
+	return isTranHalf_;
+}
+
+const bool& ResultUI::GetIsTitle() const
+{
+	return isTitle_;
+}
+
+const bool& ResultUI::GetIsGame() const
+{
+	return isGame_;
+}
+
 void ResultUI::ClearInitialize()
 {
 	yesNoSpriteMaxNum_ = 1;
@@ -144,6 +163,14 @@ void ResultUI::ClearInitialize()
 	plane_->SetTexture(equipmentTeses_[texNum_]);
 	plane_->transform_.translate_ = pos_;
 	plane_->Update();
+	for (int32_t i = 0; i < yesNoSpriteMaxNum_ + 1; i++) {
+		if (i == yesNoSpriteNum_) {
+			sprites_[i]->SetTexture(textures_[i * 2], false);
+		}
+		else {
+			sprites_[i]->SetTexture(textures_[i * 2 + 1], false);
+		}
+	}
 }
 
 void ResultUI::GameOverInitialize()

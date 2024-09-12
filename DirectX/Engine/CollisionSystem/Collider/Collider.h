@@ -34,7 +34,7 @@ public:
 	ShapeLine* GetLine() const { return shapeSimpleLineY_.get(); }
 
 	void SetCircle(const Vector3& position, const float& radius);
-	void SetBox2D(const Vector3& position, const Vector3& scale);
+	void SetBox2D(const Vector3& position, const Vector3& scale, const Vector3& moveVector);
 	void SetSimpleLineY(const float& y);
 
 private:
