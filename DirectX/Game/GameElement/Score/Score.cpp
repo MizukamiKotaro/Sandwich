@@ -1,6 +1,8 @@
 #include "Score.h"
 #include "WindowsInfo/WindowsInfo.h"
 #include "GameElement/Player/Player.h"
+#include "GameElement/GameManager/GameManager.h"
+#include "Ease/Ease.h"
 
 Score* Score::GetInstance()
 {
@@ -10,6 +12,7 @@ Score* Score::GetInstance()
 
 void Score::FirstInitialize()
 {
+	gameManager_ = GameManager::GetInstance();
 	customerNum_ = 1;
 	num_ = 0;
 	maxNum_ = 100;
@@ -19,6 +22,14 @@ void Score::FirstInitialize()
 	post_ = std::make_unique<PostEffect>();
 	sprite_ = std::make_unique<Sprite>(screenPos_);
 	sprite_->SetSRVGPUDescriptorHandle_(post_->GetSRVGPUDescriptorHandle());
+
+	post1_ = std::make_unique<PostEffect>();
+	sprite1_ = std::make_unique<Sprite>(screenPos_);
+	sprite1_->SetSRVGPUDescriptorHandle_(post1_->GetSRVGPUDescriptorHandle());
+
+	post2_ = std::make_unique<PostEffect>();
+	sprite2_ = std::make_unique<Sprite>(screenPos_);
+	sprite2_->SetSRVGPUDescriptorHandle_(post2_->GetSRVGPUDescriptorHandle());
 
 	CreateSprites();
 
@@ -43,6 +54,11 @@ void Score::Initialize()
 	num_ = 0;
 	addNum_ = 0;
 	preDrop_ = false;
+	sprite1_->pos_.x = 0.0f;
+	sprite2_->pos_.x = screenPos_.x + screenPos_.x;
+	sprite1_->Update();
+	sprite2_->Update();
+	easeTime_ = 0.0f;
 }
 
 void Score::Update(const float& deltaTime)
@@ -54,6 +70,19 @@ void Score::Update(const float& deltaTime)
 	drawCustomerNum_->Update();
 	drawMaxNum_->Update();
 #endif // _DEBUG
+
+	if (gameManager_->GetScene() == GameManager::kGame) {
+		float a = 0.5f;
+		if (easeTime_ != a) {
+			easeTime_ = std::clamp(easeTime_ + deltaTime, 0.0f, a);
+			float t = easeTime_ / a;
+			sprite1_->pos_.x = t * screenPos_.x;
+			sprite1_->Update();
+			sprite2_->pos_.x = (1.0f - t) * (screenPos_.x + screenPos_.x) + t * screenPos_.x;
+			sprite2_->Update();
+		}
+	}
+
 	if (player_) {
 		if (player_->GetIsDrop()) {
 			preDrop_ = true;
@@ -63,6 +92,7 @@ void Score::Update(const float& deltaTime)
 			AddNum();
 		}
 	}
+
 	deltaTime;
 	DrawSprite();
 }
@@ -161,14 +191,28 @@ void Score::ApplyGlobalVariables()
 
 void Score::DrawSprite()
 {
-	post_->PreDrawScene();
-	for (int32_t i = 0; i < SpriteNames::kMaxSpriteNames; i++) {
-		sprites_[i]->Draw();
-	}
-	arrow_->Draw();
+	post1_->PreDrawScene();
+	sprites_[SpriteNames::kOutSideFrameAdd]->Draw();
+	sprites_[SpriteNames::kOutSideFrame]->Draw();
+	sprites_[SpriteNames::kPlus]->Draw();
+	sprites_[SpriteNames::kLine]->Draw();
 	drawNum_->Draw(num_);
 	drawMaxNum_->Draw(maxNum_);
 	drawAddNum_->Draw(addNum_);
+	post1_->PostDrawScene();
+
+	post2_->PreDrawScene();
+	sprites_[SpriteNames::kOutSideFrameCustomer]->Draw();
+	sprites_[SpriteNames::kCustomerNum]->Draw();
 	drawCustomerNum_->Draw(customerNum_);
+	post2_->PostDrawScene();
+
+	post_->PreDrawScene();
+	sprites_[SpriteNames::kFrame]->Draw();
+	sprites_[SpriteNames::kBonus]->Draw();
+	sprites_[SpriteNames::kArrow]->Draw();
+	arrow_->Draw();
+	sprite1_->Draw();
+	sprite2_->Draw();
 	post_->PostDrawScene();
 }
