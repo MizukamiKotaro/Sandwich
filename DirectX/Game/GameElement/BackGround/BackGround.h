@@ -64,4 +64,5 @@ private:
 	Vector2 move_;
 	Vector2 screenSize_;
 	float firstPos;
+	bool preResult_;
 };

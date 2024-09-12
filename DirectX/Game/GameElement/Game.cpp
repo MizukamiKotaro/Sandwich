@@ -50,7 +50,9 @@ void Game::Update()
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	equipmentManager_->Update(deltaTime);
 
-	player_->Update();
+	if (gameManager_->GetScene() != GameManager::kResult) {
+		player_->Update();
+	}
 
 	customer_->Update();
 

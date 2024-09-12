@@ -6,11 +6,14 @@
 #include "Sprite.h"
 #include "GlobalVariables/GlobalVariableUser.h"
 #include <vector>
+#include "Input.h"
+
+class GameManager;
 
 class ResultUI {
 public:
 	ResultUI();
-	void Initialize(const bool& isClear);
+	void Initialize(const bool& isClear = true);
 	void Update(const float& deltaTime);
 	void Draw();
 
@@ -23,6 +26,8 @@ private:
 	void ApplyGlobalVariables();
 
 private:
+	Input* input_;
+	GameManager* gameManager_;
 	Vector2 screenSize_;
 
 	enum SpriteNameEnum

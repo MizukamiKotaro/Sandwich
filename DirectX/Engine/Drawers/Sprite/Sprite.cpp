@@ -208,13 +208,15 @@ void Sprite::LoadTexture(const std::string& filePath)
 	SetTexture(textureManager_->LoadTexture(filePath));
 }
 
-void Sprite::SetTexture(const Texture* texture)
+void Sprite::SetTexture(const Texture* texture, const bool& isSizeSet)
 {
 	texture_ = texture;
 
 	srvGPUDescriptorHandle_ = texture_->handles_->gpuHandle;
 
-	AdjustTextureSize();
+	if (isSizeSet) {
+		AdjustTextureSize();
+	}
 }
 
 void Sprite::SetAnchorPoint(const Vector2& anchorpoint)
