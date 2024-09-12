@@ -108,7 +108,7 @@ private://プライベート変数
 	//下側のパンの位置(Y)
 	float bottomLimit = -12.0f;
 	//下のパン出現条件
-	float bottomPanReset = -7.0f;
+	float bottomPanReset = -8.0f;
 	//どこまで落下するか
 	float bottomDropLimit = -15.0f;
 	//プレイヤーをパンの上に戻す
