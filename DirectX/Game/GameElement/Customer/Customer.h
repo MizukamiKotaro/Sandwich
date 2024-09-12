@@ -3,6 +3,7 @@
 #include "GlobalVariables/GlobalVariableUser.h"
 #include "RandomGenerator/RandomGenerator.h"
 
+class Player;
 enum class Behavior {
 	kRoot,
 	kBlink,
@@ -13,7 +14,7 @@ class Customer
 {
 public:
 
-	void Init();
+	void Init(Player* player);
 	void Update();
 	void Draw(const Camera* camera);
 
@@ -39,6 +40,8 @@ private:
 
 	std::vector<std::string> customerTexture;
 
+	Player* player_;
+
 	Vector3 scale_ = { 19.0f,2.0f,1.0f };
 	Vector3 translate_ = { 0.0f,-20.0f,0.0f };
 
@@ -49,13 +52,14 @@ private:
 	int persent = 100;
 	//ランダムで抽選した結果
 	int raffleResult;
-
+	//現在のテクスチャ番号
+	int currentTexture;
 	//瞬きの間隔
 	float kBlinkInterval;
 	float kBlinkMinInterval = 0.5f;
 	float kBlinkMaxInterval = 1.0f;
 	float blinkFrame;
-	int currentTexture;
+
 	int countBlink;
 	int kcountBlink;
 	int blinkMinTime = 1;
@@ -63,5 +67,15 @@ private:
 
 	std::unique_ptr<GlobalVariableUser> global;
 	RandomGenerator* random;
+
+	//事前のフラグ
+	bool isPreEatFlag;
+	//本フラグ
+	bool isEatFlag;
+	//食べる動きの間隔
+	float kEatInterval = 0.5f;
+	float EatFrame;
+	int countEat;
+	int kcountEat = 3;
 };
 

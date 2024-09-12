@@ -6,7 +6,7 @@
 class Player;
 class Floor : public Collider {
 public:
-	Floor(const std::string& textureName,Vector3 position, Vector3 scale,Player* player,ColliderMask ColliderMask = ColliderMask::FLOOR);
+	Floor(const std::string& textureName,Vector3 position, Vector3 scale,Player* player,ColliderMask ColliderMask = ColliderMask::FLOOR,bool isColliderUse = true);
 	//void Init();
 	void Update();
 	void Draw(const Camera* camera);
@@ -31,5 +31,8 @@ private:
 	bool IsStepOnFlag = false;
 	//経過フレーム
 	float stepOnrlame;
+	//コライダーを使うかどうか
+	bool useCollider;
 
+	Vector3 prePos;
 };
