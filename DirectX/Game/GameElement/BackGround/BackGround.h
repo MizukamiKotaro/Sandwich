@@ -32,7 +32,8 @@ private:
 	void Ps0Update(const float& deltaTime);
 	void Ps1Update(const float& deltaTIme);
 	void Ps2Update(const float& deltaTime);
-
+	void Ps3Update(const float& deltaTime);
+	void Ps4Update(const float& deltaTime);
 private:
 	Input* input_;
 	GameManager* gameManager_;
@@ -63,6 +64,7 @@ private:
 	bool ps1Bool_;
 	bool ps1Active_;
 	float ps2Time_;
+	float ps4Time_;
 
 	std::unique_ptr<Timer> timer_;
 

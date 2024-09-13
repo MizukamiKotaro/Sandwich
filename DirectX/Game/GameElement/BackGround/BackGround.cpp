@@ -34,6 +34,7 @@ BackGround::BackGround()
 	ps2_ = std::make_unique<PostSprite>(screenSize_ * 0.5f);
 	ps3_ = std::make_unique<PostSprite>(screenSize_ * 0.5f);
 	ps0Time_ = 0.0f;
+	ps4Time_ = 0.0f;
 
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "BackGround");
 	SetGlobalVariables();
@@ -100,6 +101,7 @@ void BackGround::Update(const float& deltaTime)
 	}
 	else if (gameManager_->GetScene() == GameManager::kTitle) {
 		Ps0Update(deltaTime);
+		Ps4Update(deltaTime);
 		if (input_->PressedKey(DIK_SPACE)) {
 			ps1Time_ = 0.0f;
 			ps1Active_ = true;
@@ -162,6 +164,12 @@ void BackGround::DrawSprites()
 	sprites_[SpriteNames::kTitle]->Draw();
 	ps2_->PostDrawScene();
 
+	ps3_->PreDrawScene();
+	if (gameManager_->GetScene() != GameManager::kTitle) {
+		timer_->Draw();
+	}
+	ps3_->PostDrawScene();
+
 	postEffect2_->PreDrawScene();
 	back_->Draw();
 	for (const std::unique_ptr<Sprite>& sp : verticals_) {
@@ -172,10 +180,7 @@ void BackGround::DrawSprites()
 	}
 
 	ps2_->Draw();
-
-	if (gameManager_->GetScene() != GameManager::kTitle) {
-		timer_->Draw();
-	}
+	ps3_->Draw();
 	
 	postEffect2_->PostDrawScene();
 
@@ -327,6 +332,31 @@ void BackGround::Ps2Update(const float& deltaTime)
 		float h = screenSize_.y * 0.5f;
 		ps2_->sprite_->pos_.y = t * (h + screenSize_.y) + (1.0f - t) * h;
 		ps2_->Update();
+		ps3_->sprite_->pos_.y = t * (h) + (1.0f - t) * (-h * 0.5f);
+		ps3_->Update();
 	}
+}
+
+void BackGround::Ps3Update(const float& deltaTime)
+{
+	float a = 1.0f;
+	if (ps3_->time_ < a) {
+		ps3_->time_ = std::clamp(ps3_->time_ + deltaTime, 0.0f, a);
+		float t = ps3_->time_ / a;
+		float h = screenSize_.y * 0.5f;
+		ps3_->sprite_->pos_.y = t * (h) + (1.0f - t) * (-h);
+		ps3_->Update();
+	}
+}
+
+void BackGround::Ps4Update(const float& deltaTime)
+{
+	float a = 4.0f;
+	float r = 0.1f;
+	ps4Time_ = std::fmodf(ps4Time_ + deltaTime, a);
+	float t = ps4Time_ / a * 6.28f;
+	sprites_[SpriteNames::kTitle]->size_ = putDatas_[SpriteNames::kTitle].baseScale * putDatas_[SpriteNames::kTitle].scale *
+		(1.0f + r * std::sinf(t));
+	sprites_[SpriteNames::kTitle]->Update();
 }
 

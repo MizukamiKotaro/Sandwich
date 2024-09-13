@@ -17,4 +17,5 @@ public:
 public:
 	std::unique_ptr<Sprite> sprite_;
 	std::unique_ptr<PostEffect> post_;
+	float time_;
 };

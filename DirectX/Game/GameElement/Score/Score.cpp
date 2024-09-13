@@ -82,7 +82,7 @@ void Score::Update(const float& deltaTime)
 #endif // _DEBUG
 
 	if (gameManager_->GetScene() == GameManager::kGame) {
-		float a = 0.5f;
+		float a = 1.0f;
 		if (easeTime_ != a) {
 			easeTime_ = std::clamp(easeTime_ + deltaTime, 0.0f, a);
 			float t = easeTime_ / a;
