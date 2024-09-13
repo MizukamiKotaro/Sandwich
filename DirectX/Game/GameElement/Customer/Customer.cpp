@@ -49,6 +49,8 @@ void Customer::Init(Player* player)
 	//SE
 	EatSE = std::make_unique<Audio>();
 	EatSE->Load("eat.mp3", "お客様が食べる音");
+
+	ChangeInit();
 }
 
 void Customer::Update()
@@ -56,6 +58,27 @@ void Customer::Update()
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 #endif
+
+	if (isFerst && player_->GetIsDrop()) {
+		changeFrame += FrameInfo::GetInstance()->GetDeltaTime() * ratio;
+
+		changeFrame = std::min(changeFrame, 1.0f);
+
+			object_->model->transform_.translate_ = Ease::UseEase(targetPos, prePos, changeFrame, Ease::EaseIn);
+
+			object_->Update();
+			//終了条件
+			if (changeFrame >= 1.0f) {
+				changeFrame = 0.0f;
+				isEatFlag = false;
+				isFerst = false;
+				//Rootにする
+				behaviorRequest_ = Behavior::kRoot;
+			}
+
+		return;
+	}
+
 	//番号が違ったらお客さんが変わってる
 	//フラグをtrueにする
 	currentCustomerNum = Score::GetInstance()->GetCustomer();
@@ -206,8 +229,6 @@ void Customer::BlinkUpdate()
 
 void Customer::EatInit()
 {
-
-
 	EatFrame = kEatInterval;
 	currentTexture = 0;
 	countEat = 0;

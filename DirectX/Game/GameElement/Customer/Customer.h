@@ -94,7 +94,7 @@ private:
 	//
 	bool eatSEPlayFlag = true;
 	//食べる動き制御
-	bool canEatFlag = true;
+	bool canEatFlag = false;
 	float controllEatFrame;
 	float kcontrollEatFrame = 1.0f;
 #pragma endregion 食べる動き
@@ -107,7 +107,7 @@ private:
 	//過去のお客様番号
 	int preCustomerNum;
 	//0.5f超えたら
-	bool IsFrameOver;
+	bool IsFrameOver = true;
 	//経過フレーム
 	float changeFrame;
 	//踏んだ時の戻る速度
@@ -118,6 +118,8 @@ private:
 	Vector3 prePos;
 	Vector3 targetPos;
 
+	//はじめて来る
+	bool isFerst = true;
 
 	//パーティクル
 	std::unique_ptr<EatParticle> eatParticle_;
