@@ -2,6 +2,7 @@
 #include "GameElement/DrawNumbers/DrawNumbers.h"
 #include "PostEffect/PostEffect.h"
 #include "Audio.h"
+#include "Drawers/PostSprite/PostSprite.h"
 class Player;
 class GameManager;
 class Score
@@ -30,9 +31,13 @@ private:
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
 	void DrawSprite();
+	void Ps0Update(const float& deltaTime);
 
 private:
+	std::unique_ptr<PostSprite> ps0_;
 	std::unique_ptr<Audio> seSatisfaction_;
+	std::unique_ptr<Audio> seMax_;
+	bool isPreMax_;
 	GameManager* gameManager_;
 	const Player* player_;
 	enum SpriteNames {
