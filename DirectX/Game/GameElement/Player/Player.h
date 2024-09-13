@@ -160,7 +160,7 @@ private://プライベート変数
 	std::unique_ptr<Floor> panTop;
 	std::unique_ptr<Floor> panBottom;
 	//パンのサイズ
-	Vector3 panSize = { 20.0f,1.0f,1.0f };
+	Vector3 panSize = { 20.0f,1.0f,0.1f };
 
 	//パーティクル
 	std::unique_ptr<JumpParticle> jumpParticle_;

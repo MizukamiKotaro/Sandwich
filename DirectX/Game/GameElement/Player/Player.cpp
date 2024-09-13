@@ -31,7 +31,6 @@ void Player::Init()
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 #pragma endregion ジャンプ
 	
-
 	button_ = std::make_unique<Object>("button.png");
 	button_->model->UnUsedLight();
 	button_->model->transform_.scale_ = { 18.5f,1.2f,1.0f };
@@ -50,7 +49,7 @@ void Player::Init()
 	AddTargetMask(ColliderMask::FLOOR);
 	AddTargetMask(ColliderMask::PAN);
 
-	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,-1.0f }, panSize, this, ColliderMask::PAN);
+	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, this, ColliderMask::PAN);
 
 	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize, this);
 	//予測線
