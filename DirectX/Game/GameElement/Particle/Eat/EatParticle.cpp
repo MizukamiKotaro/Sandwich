@@ -15,7 +15,7 @@ void EatParticle::Update()
 	ApplyGlobalVariable();
 	ImGui::Begin("Eat");
 	if (ImGui::Button("Create")) {
-		Create(pos_);
+		Create();
 	}
 	ImGui::End();
 #endif
@@ -35,13 +35,13 @@ void EatParticle::Draw()
 	}
 }
 
-void EatParticle::Create(Vector3 pos)
+void EatParticle::Create()
 {
 	for (int It = 0; It <= createNumber_; It++) {
 
 		RandomGenerator* rand = RandomGenerator::GetInstance();
 		Data data{};
-		data.pos = pos;
+		data.pos = pos_;
 		data.vel = { rand->RandFloat(velsityXmin,velsityXmax), rand->RandFloat(velsityYmin,velsityYmax),0.0f };
 		data.color = color_;
 		data.time = 0.0f;
@@ -60,10 +60,10 @@ void EatParticle::ParticleUpdate(){
 
 		(*it).pos += (*it).vel * time_;
 		//下に落とす
-		//if ((*it).time > 0.5f) {
-		//	
-		//}
-		(*it).pos.y -= downForce_ * time_ ;
+		if ((*it).time > 0.5f) {
+		(*it).vel.y -= downForce_ * time_ ;		
+		}
+	
 		
 		(*it).alpha -= 0.01f;
 		//特定の時間になったら
