@@ -27,6 +27,8 @@ private:
 	};
 	//初期位置
 	Vector3 pos_ = {0.0f,0.0f,1.0f};
+	float posXoffsetMin = -10;
+	float posXoffsetMax = 10;
 	//サイズ
 	Vector3 size_ = { 1.0f,1.0f,1.0f };
 	float time_;
@@ -44,6 +46,8 @@ private:
 
 	float velsityYmin = -3.0f;
 	float velsityYmax = 1.5f;
+
+	float dropTime_ = 0.5f;
 
 	std::list<Data> particleData_;
 	//パーティクルオブジェクト
