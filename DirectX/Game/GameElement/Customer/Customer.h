@@ -32,6 +32,8 @@ private:
 	void ChangeInit();
 	void ChangeUpdate();
 
+	int randomTextureSelect(int PreTextture);
+
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
 
@@ -42,7 +44,7 @@ private:
 	//3Dモデル
 	std::unique_ptr<Object> object_;
 
-	std::vector<std::string> customerTexture;
+	std::vector<std::vector<std::string>> customerTexture;
 
 	Player* player_;
 
@@ -58,6 +60,10 @@ private:
 	int raffleResult;
 	//現在のテクスチャ番号
 	int currentTexture;
+	//ひとつ前で選択されたテクスチャ
+	int preCoustomerNumber = 0;
+	//現在のお客様番号
+	int customerNumber = 0;
 
 #pragma region
 	//瞬きの間隔
@@ -97,6 +103,7 @@ private:
 	float changeFrame;
 	//踏んだ時の戻る速度
 	float ratio = 2.0f;
+
 #pragma endregion お客様切り替え
 
 	Vector3 prePos;
