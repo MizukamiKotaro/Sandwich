@@ -229,6 +229,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Drawers\PostEffect\SpotLightAndOutline\SpotLightAndOutline.cpp" />
     <ClCompile Include="Engine\Drawers\PostEffect\Vignette\Vignette.cpp" />
     <ClCompile Include="Engine\Drawers\PostEffect\WaterOutline\WaterOutline.cpp" />
+    <ClCompile Include="Engine\Drawers\PostSprite\PostSprite.cpp" />
     <ClCompile Include="Engine\Drawers\Skybox\Skybox.cpp" />
     <ClCompile Include="Engine\Drawers\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\Editor\IEditor.cpp" />
@@ -400,6 +401,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Drawers\PostEffect\SpotLightAndOutline\SpotLightAndOutline.h" />
     <ClInclude Include="Engine\Drawers\PostEffect\Vignette\Vignette.h" />
     <ClInclude Include="Engine\Drawers\PostEffect\WaterOutline\WaterOutline.h" />
+    <ClInclude Include="Engine\Drawers\PostSprite\PostSprite.h" />
     <ClInclude Include="Engine\Drawers\Skybox\Skybox.h" />
     <ClInclude Include="Engine\Drawers\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Editor\IEditor.h" />

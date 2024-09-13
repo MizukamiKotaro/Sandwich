@@ -7,6 +7,7 @@
 #include "GlobalVariables/GlobalVariableUser.h"
 #include <vector>
 #include "GameElement/Timer/Timer.h"
+#include "Drawers/PostSprite/PostSprite.h"
 
 class GameManager;
 
@@ -26,6 +27,8 @@ private:
 	void DrawSprites();
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
+
+	void Ps2Update(const float& deltaTime);
 
 private:
 	GameManager* gameManager_;
@@ -48,6 +51,11 @@ private:
 	std::vector<PutData> putDatas_;
 
 private:
+	std::unique_ptr<PostSprite> ps0_;
+	std::unique_ptr<PostSprite> ps1_;
+	std::unique_ptr<PostSprite> ps2_;
+	float ps2Time_;
+
 	std::unique_ptr<Timer> timer_;
 
 	std::unique_ptr<Model> model_;
