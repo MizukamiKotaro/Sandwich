@@ -2,6 +2,7 @@
 #include "GameElement/Object/Object.h"
 #include "GlobalVariables/GlobalVariableUser.h"
 #include "RandomGenerator/RandomGenerator.h"
+#include "Game/GameElement/Particle/Eat/EatParticle.h"
 
 class Player;
 enum class Behavior {
@@ -54,6 +55,8 @@ private:
 	int raffleResult;
 	//現在のテクスチャ番号
 	int currentTexture;
+
+#pragma region
 	//瞬きの間隔
 	float kBlinkInterval;
 	float kBlinkMinInterval = 0.5f;
@@ -64,10 +67,9 @@ private:
 	int kcountBlink;
 	int blinkMinTime = 1;
 	int blinkMaxTime = 5;
+#pragma endregion 瞬き
 
-	std::unique_ptr<GlobalVariableUser> global;
-	RandomGenerator* random;
-
+#pragma region
 	//事前のフラグ
 	bool isPreEatFlag;
 	//本フラグ
@@ -77,5 +79,13 @@ private:
 	float EatFrame;
 	int countEat;
 	int kcountEat = 3;
+#pragma endregion 食べる動き
+
+	//パーティクル
+	std::unique_ptr<EatParticle> eatParticle_;
+
+	std::unique_ptr<GlobalVariableUser> global;
+	RandomGenerator* random;
+
 };
 
