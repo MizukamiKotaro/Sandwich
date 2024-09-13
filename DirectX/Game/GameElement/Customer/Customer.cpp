@@ -89,12 +89,12 @@ void Customer::Update()
 }
 
 void Customer::Draw(const Camera* camera)
-{
+{	//パーティクル
+	eatParticle_->Draw();
 	if (isDraw) {
 		object_->Draw(*camera);
 	}
-	//パーティクル
-	eatParticle_->Draw();
+
 }
 
 void Customer::RootInit()

@@ -4,7 +4,7 @@ EatParticle::EatParticle()
 {
 	global = std::make_unique<GlobalVariableUser>("Particle", "Eat");
 
-	tex_ = ParticleManager::GetInstance()->GetDrawData("cheese.png", BlendMode::kBlendModeNormal);
+	tex_ = ParticleManager::GetInstance()->GetDrawData("white.png", BlendMode::kBlendModeNone);
 
 	SetGlobalVariable();
 }
@@ -42,6 +42,16 @@ void EatParticle::Create()
 		RandomGenerator* rand = RandomGenerator::GetInstance();
 		Data data{};
 		data.pos = pos_;
+		data.pos.x = pos_.x + rand->RandFloat(posXoffsetMin, posXoffsetMax);
+		//右側
+		if(0 <= data.pos.x){
+			data.vel = { rand->RandFloat(1.0f,velsityXmax), rand->RandFloat(velsityYmin,velsityYmax),0.0f };
+		}
+		//左側
+		if(data.pos.x > 0){
+			data.vel = { rand->RandFloat(velsityXmin,1.0f), rand->RandFloat(velsityYmin,velsityYmax),0.0f };	
+		}
+
 		data.vel = { rand->RandFloat(velsityXmin,velsityXmax), rand->RandFloat(velsityYmin,velsityYmax),0.0f };
 		data.color = color_;
 		data.time = 0.0f;
@@ -60,12 +70,10 @@ void EatParticle::ParticleUpdate(){
 
 		(*it).pos += (*it).vel * time_;
 		//下に落とす
-		if ((*it).time > 0.5f) {
+		if ((*it).time > dropTime_) {
 		(*it).vel.y -= downForce_ * time_ ;		
 		}
-	
-		
-		(*it).alpha -= 0.01f;
+
 		//特定の時間になったら
 		if ((*it).time >= deleteTime_) {
 			it = particleData_.erase(it);
@@ -79,6 +87,8 @@ void EatParticle::ParticleUpdate(){
 void EatParticle::SetGlobalVariable()
 {
 	global->AddItem("座標", pos_, "Eat");
+	global->AddItem("座標のオフセット最小値", posXoffsetMin, "Eat");
+	global->AddItem("座標のオフセット最大値", posXoffsetMax, "Eat");
 	global->AddItem("サイズ", size_, "Eat");
 	global->AddItem("色", color_, "Eat");
 	global->AddItem("削除までの時間", deleteTime_, "Eat");
@@ -90,12 +100,16 @@ void EatParticle::SetGlobalVariable()
 	global->AddItem("Y軸の幅最小値", velsityYmin, "Eat");
 	global->AddItem("Y軸の幅最大値", velsityYmax, "Eat");
 
+	global->AddItem("落ちるまでの時間", dropTime_, "Eat");
+
 	ApplyGlobalVariable();
 }
 
 void EatParticle::ApplyGlobalVariable()
 {
 	pos_ = global->GetVector3Value("座標", "Eat");
+	posXoffsetMin = global->GetFloatValue("座標のオフセット最小値", "Eat");
+	posXoffsetMax = global->GetFloatValue("座標のオフセット最大値", "Eat");
 	size_ = global->GetVector3Value("サイズ", "Eat");
 	color_ = global->GetVector4Value("色", "Eat");
 	deleteTime_ = global->GetFloatValue("削除までの時間", "Eat");
@@ -106,4 +120,6 @@ void EatParticle::ApplyGlobalVariable()
 	velsityXmax = global->GetFloatValue("X軸の幅最大値", "Eat");
 	velsityYmin = global->GetFloatValue("Y軸の幅最小値", "Eat");
 	velsityYmax = global->GetFloatValue("Y軸の幅最大値", "Eat");
+
+	dropTime_ = global->GetFloatValue("落ちるまでの時間", "Eat");
 }
