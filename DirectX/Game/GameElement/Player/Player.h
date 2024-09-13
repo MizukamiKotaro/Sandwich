@@ -21,6 +21,7 @@ public://パブリック関数
 	Vector3 GetTlanslate() { return object_->model->transform_.translate_; };
 	//trueなら落下中
 	bool GetIsDrop() const { return isHitCeiling; };
+	bool GetIsPlayerBack() const { return isPlayerBackFlag; };
 	float GetIsDropSpeed()const { return dropSpeed_; };
 #pragma endregion
 public://パブリック変数
