@@ -17,11 +17,11 @@ Timer::Timer()
 	drawNum_ = std::make_unique<DrawNumbers>("TimeNumbers.png", "Timer", "背景", Vector2{ 192.0f,240.0f });
 	glo_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Timer");
 
-	drawTrop_ = std::make_unique<DrawNumbers>("TimeNumbers.png", "Timer", "テロップ", Vector2{ 192.0f,240.0f });
+	drawTrop_ = std::make_unique<DrawNumbers>("restTimeNumber.png", "Timer", "テロップ", Vector2{ 72.0f,82.0f });
 	ps_ = std::make_unique<PostSprite>(screenPos_);
 	sps_.resize(2);
-	sps_[0] = std::make_unique<Sprite>(screenPos_);
-	sps_[1] = std::make_unique<Sprite>(screenPos_);
+	sps_[0] = std::make_unique<Sprite>("rest.png", screenPos_);
+	sps_[1] = std::make_unique<Sprite>("seconds.png", screenPos_);
 	poses_.resize(2);
 	poses_[0] = sps_[0]->size_;
 	poses_[1] = sps_[1]->size_;
@@ -63,7 +63,7 @@ void Timer::DrowTrop()
 	/*if (isD_) {
 		ps_->Draw();
 	}*/
-	ps_->Draw();
+	//ps_->Draw();
 }
 
 void Timer::UpdateToGame(const float& deltaTime)
