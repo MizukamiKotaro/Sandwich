@@ -44,6 +44,9 @@ private://プライベート関数
 	void HitCeiling();
 	//床に当たったら
 	void HitBottom();
+	//ボタンの動き
+	void ButtonAction();
+
 	//当たり判定の更新
 	void ColliderUpdate(const Vector3& move);
 	//当たった時の処理
@@ -56,6 +59,8 @@ private://プライベート変数
 #pragma region
 	//3Dモデル
 	std::unique_ptr<Object> object_;
+	//提供ボタン
+	std::unique_ptr<Object> button_;
 	//床をまとめた物
 	std::list<std::unique_ptr<Floor>> cheese_;
 	float sizeY = 0.1f;
@@ -115,7 +120,7 @@ private://プライベート変数
 	float kDropSpeed = 50.0f;
 	float dropSpeed_;
 	//上側のパンの位置(Y)
-	float topLimit = 20.0f;
+	float topLimit = 23.0f;
 	float panTopY;
 	//下側のパンの位置(Y)
 	float bottomLimit = -12.0f;
@@ -130,6 +135,21 @@ private://プライベート変数
 
 	float prePanPos;
 #pragma endregion パンと落下に関して
+
+#pragma region
+	//踏まれたかどうかのフラグ
+	bool IsPushButtonFlag = false;
+	//0.5f超えたら
+	bool IsFrameOver = false;
+	//経過フレーム
+	float pushButtonFrame;
+
+	//踏んだ時の戻る速度
+	float ratio = 5.0f;
+
+	Vector3 buttonPrePos;
+	Vector3 targetPos;
+#pragma endregion
 
 	//チーズとの当たりを制限
 	bool isFloorCollider = true;
