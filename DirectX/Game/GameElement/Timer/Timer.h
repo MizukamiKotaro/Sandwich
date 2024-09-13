@@ -1,6 +1,7 @@
 #pragma once
 #include "GameElement/DrawNumbers/DrawNumbers.h"
 #include "PostEffect/PostEffect.h"
+#include "Drawers/PostSprite/PostSprite.h"
 
 class Timer
 {
@@ -10,6 +11,8 @@ public:
 	void Initialize();
 	void Update(const float& deltaTime);
 	void Draw();
+
+	void DrowTrop();
 
 	void UpdateToGame(const float& deltaTime);
 
@@ -22,7 +25,16 @@ private:
 	void ApplyGlobalVariables();
 	void DrawSprite();
 
+	void PsUpdate();
+
 private:
+	std::unique_ptr<PostSprite> ps_;
+	std::unique_ptr<DrawNumbers> drawTrop_;
+	std::vector<std::unique_ptr<Sprite>> sps_;
+	std::vector<Vector2> poses_;
+	float s_;
+	bool isD_;
+
 	std::unique_ptr<DrawNumbers> drawNum_;
 	std::unique_ptr<PostEffect> post_;
 	std::unique_ptr<Sprite> sprite_;

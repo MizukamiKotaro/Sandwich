@@ -20,6 +20,8 @@ public:
 	void Update(const float& deltaTime);
 	void Draw(const Camera& camera);
 
+	void DrawTrop();
+
 	const bool GetIsTimeUp() const;
 	const bool& GetIsReset() const;
 
