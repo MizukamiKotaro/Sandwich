@@ -52,20 +52,29 @@ void EquipmentManager::Update(const float& deltaTime)
 	
 	DropEquipment(deltaTime);
 
+	bool isReset = false;
 	for (std::list<std::unique_ptr<Equipment>>::iterator it = equipments_.begin(); it != equipments_.end();) {
 		if ((*it)->GetIsDelete()) {
-			(*it).reset(nullptr);
-			it = equipments_.erase(it);
+			isReset = true;
 		}
 		else {
 			(*it)->Update(deltaTime);
 			if ((*it)->GetIsDelete()) {
-				(*it).reset(nullptr);
-				it = equipments_.erase(it);
+				isReset = true;
 			}
-			else {
-				it++;
-			}
+		}
+		it++;
+	}
+	if (isReset) {
+		for (std::list<std::unique_ptr<Equipment>>::iterator it = equipments_.begin(); it != equipments_.end();) {
+			(*it).reset(nullptr);
+			it = equipments_.erase(it);
+		}
+	}
+	else {
+		for (std::list<std::unique_ptr<Equipment>>::iterator it = equipments_.begin(); it != equipments_.end();) {
+			(*it)->ColliderUpdate();
+			it++;
 		}
 	}
 }
