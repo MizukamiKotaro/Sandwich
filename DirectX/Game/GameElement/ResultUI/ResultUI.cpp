@@ -43,8 +43,8 @@ ResultUI::ResultUI()
 	seCursor_->Load("cursor.mp3", "カーソルの操作音");
 
 	Vector2 a = screenSize_ * 0.5f;
-	spr0_ = std::make_unique<Sprite>("gameOver.png", a);
-	spr1_ = std::make_unique<Sprite>("gameOver.png", a);
+	spr0_ = std::make_unique<Sprite>("goodUi.png", a);
+	spr1_ = std::make_unique<Sprite>("notGoodUi.png", a);
 	putSpr0_.basePos = a;
 	putSpr0_.baseScale = spr0_->size_;
 	putSpr0_.scale = 1.0f;
