@@ -44,6 +44,9 @@ private://プライベート関数
 	void HitCeiling();
 	//床に当たったら
 	void HitBottom();
+	//ボタンの動き
+	void ButtonAction();
+
 	//当たり判定の更新
 	void ColliderUpdate(const Vector3& move);
 	//当たった時の処理
@@ -132,6 +135,21 @@ private://プライベート変数
 
 	float prePanPos;
 #pragma endregion パンと落下に関して
+
+#pragma region
+	//踏まれたかどうかのフラグ
+	bool IsPushButtonFlag = false;
+	//0.5f超えたら
+	bool IsFrameOver = false;
+	//経過フレーム
+	float pushButtonFrame;
+
+	//踏んだ時の戻る速度
+	float ratio = 5.0f;
+
+	Vector3 buttonPrePos;
+	Vector3 targetPos;
+#pragma endregion
 
 	//チーズとの当たりを制限
 	bool isFloorCollider = true;

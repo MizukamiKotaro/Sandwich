@@ -36,7 +36,8 @@ void Player::Init()
 	button_->model->UnUsedLight();
 	button_->model->transform_.scale_ = { 18.5f,1.2f,1.0f };
 	button_->model->transform_.translate_ = { 0.0f,topLimit-0.2f ,0.0f };
-	button_->model->color_ = {1.0f,1.0f,1.0f,1.0f};
+	buttonPrePos = { 0.0f,topLimit - 0.2f ,0.0f };
+	targetPos = { buttonPrePos.x,buttonPrePos.y + 1.0f,buttonPrePos.z };
 
 	random = RandomGenerator::GetInstance();
 
@@ -49,7 +50,7 @@ void Player::Init()
 	AddTargetMask(ColliderMask::FLOOR);
 	AddTargetMask(ColliderMask::PAN);
 
-	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,0.0f }, panSize, this, ColliderMask::PAN);
+	panTop = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,topLimit ,-1.0f }, panSize, this, ColliderMask::PAN);
 
 	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize, this);
 	//予測線
@@ -76,8 +77,12 @@ void Player::Update()
 
 	Vector3 prePos = object_->model->transform_.translate_;
 
+	ButtonAction();
+	button_->Update();
+
 	//天井に当たった時の処理
 	if (isHitCeiling) {
+
 		HitCeiling();
 		//プレイヤーがパンの位置に到達
 		if (object_->model->transform_.translate_.y <= bottomLimit) {
@@ -165,7 +170,7 @@ void Player::Update()
 	predictionLine->Update();
 
 	object_->Update();
-	button_->Update();
+
 
 	prePos = object_->model->transform_.translate_ - prePos;
 
@@ -281,6 +286,7 @@ void Player::HitCeiling()
 	if (dropSEPlayFlag) {
 		dropSEPlayFlag = false;
 		DropSE->Play();
+		IsPushButtonFlag = true;
 	}
 
 	if (isPlayerBackFlag == false) {
@@ -304,6 +310,32 @@ void Player::HitBottom()
 	cheese_.clear();
 
 
+}
+
+void Player::ButtonAction()
+{
+	if (IsPushButtonFlag) {
+		pushButtonFrame += FrameInfo::GetInstance()->GetDeltaTime() * ratio;
+
+		pushButtonFrame = std::min(pushButtonFrame, 1.0f);
+
+		if (IsFrameOver == false) {
+			button_->model->transform_.translate_ = Ease::UseEase(buttonPrePos, targetPos, pushButtonFrame, Ease::EaseIn);
+		}
+		else {
+			button_->model->transform_.translate_ = Ease::UseEase(targetPos, buttonPrePos, pushButtonFrame, Ease::EaseIn);
+		}
+		//終了条件
+		if (pushButtonFrame >= 1.0f && IsFrameOver) {
+			IsPushButtonFlag = false;
+			pushButtonFrame = 0.0f;
+		}
+		//折り返し
+		if (IsFrameOver == false && pushButtonFrame >= 1.0f) {
+			IsFrameOver = true;
+			pushButtonFrame = 0.0f;
+		}
+	}
 }
 
 void Player::ColliderUpdate(const Vector3& move)
