@@ -24,7 +24,11 @@ void Customer::Init(Player* player)
 
 	global = std::make_unique<GlobalVariableUser>("Character", "Customer");
 
+	//パーティクル
+	eatParticle_ = std::make_unique<EatParticle>();
+
 	SetGlobalVariables();
+
 }
 
 void Customer::Update()
@@ -75,6 +79,8 @@ void Customer::Update()
 	if (player_->GetIsDrop()) {
 		isPreEatFlag = true;
 	}
+	//パーティクル
+	eatParticle_->Update();
 
 	object_->model->transform_.scale_ = scale_;
 	object_->model->transform_.translate_ = translate_;
@@ -87,7 +93,8 @@ void Customer::Draw(const Camera* camera)
 	if (isDraw) {
 		object_->Draw(*camera);
 	}
-
+	//パーティクル
+	eatParticle_->Draw();
 }
 
 void Customer::RootInit()
@@ -185,6 +192,8 @@ void Customer::EatUpdate()
 
 			EatFrame = 0.0f;
 			if (currentTexture == 0) {
+				//パーティクル生成
+				eatParticle_->Create();
 				currentTexture = 2;
 				countEat++;
 			}

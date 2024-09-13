@@ -9,7 +9,7 @@
 
 #include "RandomGenerator/RandomGenerator.h"
 #include "Audio/Audio.h"
-#include "Game/GameElement/Particle/Eat/EatParticle.h"
+#include "Game/GameElement/Particle/Jump/JumpParticle.h"
 
 class Player : public Collider {
 public://パブリック関数
@@ -132,7 +132,7 @@ private://プライベート変数
 	Vector3 panSize = { 20.0f,1.0f,1.0f };
 
 	//パーティクル
-	std::unique_ptr<EatParticle> eatParticle_;
+	std::unique_ptr<JumpParticle> jumpParticle_;
 	
 	//上のパンを描画
 #ifdef _DEBUG

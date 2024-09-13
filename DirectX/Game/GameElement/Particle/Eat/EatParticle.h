@@ -14,7 +14,7 @@ public:
 	void Update();
 	void Draw();
 
-	void Create(Vector3 pos);
+	void Create();
 private:
 	void ParticleUpdate();
 

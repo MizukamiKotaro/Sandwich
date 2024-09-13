@@ -21,10 +21,10 @@ public:
 	const bool& GetIsDelete() const;
 	static void DrawBonusLine();
 
+	void ColliderUpdate();
 private:
 	void MoveUpdate(const float& deltaTime);
 	void DropUpdate();
-	void ColliderUpdate();
 	void OnCollision(const Collider& collider)override;
 	void NotDropCollision(const Collider& collider);
 	void DropCollision(const Collider& collider);

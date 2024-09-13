@@ -61,6 +61,7 @@ void ResultUI::Initialize(const bool& isClear)
 	else {
 		GameOverInitialize();
 	}
+	
 }
 
 void ResultUI::Update(const float& deltaTime)
@@ -333,13 +334,8 @@ void ResultUI::ApplyGlobalVariables()
 			putData_[i].scale = global_->GetFloatValue(scaleNames_[i] + "のスケール", "スケール");
 		}
 
-		if (!isClear_) {
-			sprites_[i]->pos_ = gameOverBasePoses_[i];
-		}
-		else {
-			if (i <= SpriteNameEnum::kMaxNameEnum - 2) {
-				sprites_[i]->pos_ = clearBasePoses_[i];
-			}
+		if (i <= SpriteNameEnum::kMaxNameEnum - 2) {
+			sprites_[i]->pos_ = clearBasePoses_[i];
 		}
 	}
 
@@ -348,12 +344,7 @@ void ResultUI::ApplyGlobalVariables()
 			sprites_[i]->size_ = putData_[SpriteScaleEnum::kOthers].baseScale * putData_[SpriteScaleEnum::kOthers].scale;
 		}
 		else {
-			if (isClear_) {
-				sprites_[i]->size_ = putData_[SpriteScaleEnum::kClear].baseScale * putData_[SpriteScaleEnum::kClear].scale;
-			}
-			else {
-				sprites_[i]->size_ = putData_[SpriteScaleEnum::kGameOver].baseScale * putData_[SpriteScaleEnum::kGameOver].scale;
-			}
+			sprites_[i]->size_ = putData_[SpriteScaleEnum::kClear].baseScale * putData_[SpriteScaleEnum::kClear].scale;
 		}
 		sprites_[i]->Update();
 	}

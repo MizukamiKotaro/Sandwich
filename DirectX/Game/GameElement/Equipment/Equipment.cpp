@@ -125,9 +125,6 @@ void Equipment::Update(const float& deltaTime)
 	if (data_->isSand && !player_->GetIsDrop()) {
 		data_->isDelete = true;
 	}
-	else {
-		ColliderUpdate();
-	}
 }
 
 void Equipment::Draw()
@@ -261,7 +258,9 @@ void Equipment::NotDropCollision(const Collider& collider)
 		Vector3 translate = data_->position;
 
 		if (IsCollision(box->position_, box->scale_, data_->position - data_->move, data_->scale)) {
-			data_->reflecteNum++;
+			if (data_->division < staticData_->divisionNum) {
+				data_->reflecteNum++;
+			}
 
 			if (staticData_->isBoundFlag_) {
 				if (translate.y >= box->position_.y) {
@@ -282,6 +281,45 @@ void Equipment::NotDropCollision(const Collider& collider)
 					data_->vect.y *= -1;
 				}
 				data_->position.y = box->position_.y + box->scale_.y + data_->scale.y + data_->vect.y;
+			}
+
+			if (data_->reflecteNum >= staticData_->reflectNum) {
+				//反射の分裂の処理
+				data_->reflecteNum = 0;
+
+				Vector3 rp = data_->position - data_->vect;
+
+				data_->scale *= staticData_->divisionScale;
+				data_->division++;
+
+				Vector3 v = {};
+				float speed = data_->moveSpeed;
+
+				if (y >= staticData_->bonusHeight) {
+					// 4 つに分裂
+					Rotate(v, 0.263f, data_->vect);
+					eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
+
+					Rotate(v, 0.785f, data_->vect);
+					eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
+
+					Rotate(v, -0.263f, data_->vect);
+					eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
+
+					Rotate(v, -0.785f, data_->vect);
+					data_->position = rp + v * speed;
+					data_->vect = v;
+
+				}
+				else {
+					// 2つに分裂
+					Rotate(v, 0.526f, data_->vect);
+					eMana->AddEquipment(rp + v * speed, data_->texNum, data_->division, data_->scale, v, data_->speed);
+
+					Rotate(v, -0.526f, data_->vect);
+					data_->position = rp + v * speed;
+					data_->vect = v;
+				}
 			}
 			return;
 		}

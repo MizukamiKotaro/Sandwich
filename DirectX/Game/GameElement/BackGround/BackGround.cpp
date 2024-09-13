@@ -2,6 +2,7 @@
 #include "WindowsInfo/WindowsInfo.h"
 #include <cmath>
 #include "GameElement/GameManager/GameManager.h"
+#include "Ease/Ease.h"
 
 const Texture* texture;
 
@@ -9,6 +10,7 @@ BackGround::BackGround()
 {
 	gameManager_ = GameManager::GetInstance();
 	screenSize_ = WindowsInfo::GetInstance()->GetWindowSize();
+	input_ = Input::GetInstance();
 
 	postEffect_ = std::make_unique<PostEffect>();
 	postEffect2_ = std::make_unique<PostEffect>();
@@ -28,17 +30,37 @@ BackGround::BackGround()
 	timer_ = std::make_unique<Timer>();
 
 	Create();
+	ps0_ = std::make_unique<PostSprite>(screenSize_ * 0.5f);
+	ps2_ = std::make_unique<PostSprite>(screenSize_ * 0.5f);
+	ps3_ = std::make_unique<PostSprite>(screenSize_ * 0.5f);
+	ps0Time_ = 0.0f;
+	ps4Time_ = 0.0f;
 
 	global_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "BackGround");
 	SetGlobalVariables();
 	DrawSprites();
 	preResult_ = false;
+
 }
 
 void BackGround::Initialise()
 {
 	timer_->Initialize();
 	preResult_ = false;
+	int32_t scene = gameManager_->GetScene();
+
+	ps2Time_ = 0.0f;
+	ps1Time_ = 0.0f;
+	ps1Bool_ = false;
+	ps1Active_ = false;
+	if (scene == GameManager::kTitle) {
+		ps2_->sprite_->pos_ = screenSize_ * 0.5f;
+		ps2_->Update();
+	}
+	else if (scene == GameManager::kGame) {
+		ps2_->sprite_->pos_.x = -screenSize_.x ;
+		ps2_->Update();
+	}
 }
 
 void BackGround::Update(const float& deltaTime)
@@ -74,6 +96,18 @@ void BackGround::Update(const float& deltaTime)
 		if (timer_->GetIsTimeUp()) {
 			gameManager_->ChangeScene(GameManager::kResult);
 			preResult_ = true;
+		}
+		Ps2Update(deltaTime);
+	}
+	else if (gameManager_->GetScene() == GameManager::kTitle) {
+		Ps0Update(deltaTime);
+		Ps4Update(deltaTime);
+		if (input_->PressedKey(DIK_SPACE)) {
+			ps1Time_ = 0.0f;
+			ps1Active_ = true;
+		}
+		if (ps1Active_) {
+			Ps1Update(deltaTime);
 		}
 	}
 
@@ -120,6 +154,22 @@ void BackGround::Create()
 
 void BackGround::DrawSprites()
 {
+	ps0_->PreDrawScene();
+	sprites_[SpriteNames::kStartUI]->Draw();
+	ps0_->PostDrawScene();
+
+	ps2_->PreDrawScene();
+	ps0_->Draw();
+	sprites_[SpriteNames::kSpaceUI]->Draw();
+	sprites_[SpriteNames::kTitle]->Draw();
+	ps2_->PostDrawScene();
+
+	ps3_->PreDrawScene();
+	if (gameManager_->GetScene() != GameManager::kTitle) {
+		timer_->Draw();
+	}
+	ps3_->PostDrawScene();
+
 	postEffect2_->PreDrawScene();
 	back_->Draw();
 	for (const std::unique_ptr<Sprite>& sp : verticals_) {
@@ -129,14 +179,9 @@ void BackGround::DrawSprites()
 		sp->Draw();
 	}
 
-	if (gameManager_->GetScene() == GameManager::kTitle) {
-		for (const std::unique_ptr<Sprite>& sp : sprites_) {
-			sp->Draw();
-		}
-	}
-	else {
-		timer_->Draw();
-	}
+	ps2_->Draw();
+	ps3_->Draw();
+	
 	postEffect2_->PostDrawScene();
 
 	postEffect_->PreDrawScene();
@@ -246,5 +291,72 @@ void BackGround::ApplyGlobalVariables()
 		sprites_[i]->size_ = putDatas_[i].baseScale * putDatas_[i].scale;
 		sprites_[i]->Update();
 	}
+}
+
+void BackGround::Ps0Update(const float& deltaTime)
+{
+	float a = 1.5f;
+	float r = 5.0f;
+	ps0Time_ = std::fmodf(ps0Time_ + deltaTime, a);
+	float t = ps0Time_ / a * 6.28f;
+	ps0_->sprite_->pos_.y = r * std::sinf(t) + screenSize_.y * 0.5f;
+	ps0_->Update();
+}
+
+void BackGround::Ps1Update(const float& deltaTIme)
+{
+	float a = 0.15f;
+	float b = 0.2f;
+	float c = 1.3f;
+	ps1Time_ = std::clamp(ps1Time_ + deltaTIme, 0.0f, a + b);
+	float t = ps1Time_;
+	if (t < a) {
+		t /= a;
+		sprites_[SpriteNames::kSpaceUI]->size_ = Ease::UseEase(1.0f, c, t, Ease::EaseIn) * 
+			putDatas_[SpriteNames::kSpaceUI].baseScale * putDatas_[SpriteNames::kSpaceUI].scale;
+	}
+	else {
+		t = (t - a) / b;
+		sprites_[SpriteNames::kSpaceUI]->size_ = Ease::UseEase(c, 1.0f, t, Ease::EaseIn) *
+			putDatas_[SpriteNames::kSpaceUI].baseScale * putDatas_[SpriteNames::kSpaceUI].scale;
+	}
+	sprites_[SpriteNames::kSpaceUI]->Update();
+}
+
+void BackGround::Ps2Update(const float& deltaTime)
+{
+	float a = 1.0f;
+	if (ps2Time_ < a) {
+		ps2Time_ = std::clamp(ps2Time_ + deltaTime, 0.0f, a);
+		float t = ps2Time_ / a;
+		float h = screenSize_.y * 0.5f;
+		ps2_->sprite_->pos_.y = t * (h + screenSize_.y) + (1.0f - t) * h;
+		ps2_->Update();
+		ps3_->sprite_->pos_.y = t * (h) + (1.0f - t) * (-h * 0.5f);
+		ps3_->Update();
+	}
+}
+
+void BackGround::Ps3Update(const float& deltaTime)
+{
+	float a = 1.0f;
+	if (ps3_->time_ < a) {
+		ps3_->time_ = std::clamp(ps3_->time_ + deltaTime, 0.0f, a);
+		float t = ps3_->time_ / a;
+		float h = screenSize_.y * 0.5f;
+		ps3_->sprite_->pos_.y = t * (h) + (1.0f - t) * (-h);
+		ps3_->Update();
+	}
+}
+
+void BackGround::Ps4Update(const float& deltaTime)
+{
+	float a = 4.0f;
+	float r = 0.1f;
+	ps4Time_ = std::fmodf(ps4Time_ + deltaTime, a);
+	float t = ps4Time_ / a * 6.28f;
+	sprites_[SpriteNames::kTitle]->size_ = putDatas_[SpriteNames::kTitle].baseScale * putDatas_[SpriteNames::kTitle].scale *
+		(1.0f + r * std::sinf(t));
+	sprites_[SpriteNames::kTitle]->Update();
 }
 

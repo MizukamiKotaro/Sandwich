@@ -52,7 +52,7 @@ void Player::Init()
 	SetGlobalVariables();
 
 	//パーティクル
-	eatParticle_ = std::make_unique<EatParticle>();
+	jumpParticle_ = std::make_unique<JumpParticle>();
 }
 
 void Player::Update()
@@ -151,7 +151,7 @@ void Player::Update()
 	ColliderUpdate(prePos);
 
 	//パーティクル
-	eatParticle_->Update();
+	jumpParticle_->Update();
 
 	//パンの更新
 	panTop->Update();
@@ -182,7 +182,7 @@ void Player::Draw(const Camera* camera)
 		panBottom->Draw(camera);
 	}
 	//パーティクル
-	eatParticle_->Draw();
+	jumpParticle_->Draw();
 	//予測線描画
 	predictionLine->Draw(camera);
 }
@@ -207,7 +207,7 @@ void Player::CommonJumpInit()
 	//jumpSEを再生
 	jumpSE->Play();
 	//パーティクルを生成
-	eatParticle_->Create({ object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f ,object_->model->transform_.translate_.z });
+	jumpParticle_->Create({ object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f ,object_->model->transform_.translate_.z });
 }
 
 void Player::Jump()
