@@ -39,6 +39,10 @@ void Floor::Update()
 
 	object_->Update();
 
+	if (player_->GetIsDrop()) {
+		isuseCollider = true;
+	}
+
 	if (isuseCollider) {
 		ColliderUpdate(object_->model->transform_.translate_ - prePos_);
 	}
