@@ -4,7 +4,7 @@ JumpParticle::JumpParticle()
 {
 	global = std::make_unique<GlobalVariableUser>("Particle", "Jump");
 
-	tex_ = ParticleManager::GetInstance()->GetDrawData("cheese.png", BlendMode::kBlendModeNormal);
+	tex_ = ParticleManager::GetInstance()->GetDrawData("cheeseParticle.png", BlendMode::kBlendModeNormal);
 
 	SetGlobalVariable();
 }
