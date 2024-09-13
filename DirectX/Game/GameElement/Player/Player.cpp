@@ -3,6 +3,7 @@
 #include "ImGuiManager/ImGuiManager.h"
 void Player::Init()
 {
+#pragma region
 	//ジャンプのテクスチャ
 	jumpTexture.push_back("player1.png");
 	jumpTexture.push_back("player2.png");
@@ -12,20 +13,26 @@ void Player::Init()
 		TextureManager::GetInstance()->LoadTexture(tex);
 	}
 
+	//板ポリに画像を貼り付ける
+	object_ = std::make_unique<Object>(jumpTexture[0]);
+
+	//右と左のアフィン行列
+	lookLeftMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,3.14f,0.0f }, Vector3{});
+	lookRightMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,0.0f,0.0f }, Vector3{});
+
 	jumpSE = std::make_unique<Audio>();
 	jumpSE->Load("jump.mp3", "プレイヤーのジャンプの音");
 
+	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
+
+	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
+#pragma endregion ジャンプ
+	
 	random = RandomGenerator::GetInstance();
 
 	input_ = Input::GetInstance();
 
 	global = std::make_unique<GlobalVariableUser>("Character", "Player");
-
-	//板ポリに画像を貼り付ける
-	object_ = std::make_unique<Object>(jumpTexture[0]);
-	//右と左のアフィン行列
-	lookLeftMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,3.14f,0.0f }, Vector3{});
-	lookRightMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,0.0f,0.0f }, Vector3{});
 
 	//当たり判定
 	CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask::PLAYER);
@@ -39,14 +46,13 @@ void Player::Init()
 	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_ }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this, ColliderMask::PREDICTIONLINE);
 	predictionLine->object_->model->color_ = { 1.0f,1.0f,1.0f,0.5f };
 
-	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
-
-	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
-
 	//キャラクターのサイズ変更
 	object_->model->transform_.scale_ = { 2.0f,2.0f,1.0f };
 	object_->Update();
 	SetGlobalVariables();
+
+	//パーティクル
+	eatParticle_ = std::make_unique<EatParticle>();
 }
 
 void Player::Update()
@@ -144,6 +150,9 @@ void Player::Update()
 
 	ColliderUpdate(prePos);
 
+	//パーティクル
+	eatParticle_->Update();
+
 	//パンの更新
 	panTop->Update();
 	if (isDrawbottomPanFlag) {
@@ -172,7 +181,8 @@ void Player::Draw(const Camera* camera)
 	if (isDrawbottomPanFlag) {
 		panBottom->Draw(camera);
 	}
-
+	//パーティクル
+	eatParticle_->Draw();
 	//予測線描画
 	predictionLine->Draw(camera);
 }
@@ -196,6 +206,8 @@ void Player::CommonJumpInit()
 	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(jumpTexture[currentTexture]));
 	//jumpSEを再生
 	jumpSE->Play();
+	//パーティクルを生成
+	eatParticle_->Create({ object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f ,object_->model->transform_.translate_.z });
 }
 
 void Player::Jump()

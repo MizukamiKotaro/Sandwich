@@ -7,7 +7,7 @@
 #include "Player/Player.h"
 #include "Equipment/EquipmentManager.h"
 #include "Customer/Customer.h"
-#include "Particle/Eat/EatParticle.h"
+
 
 class GameManager;
 
@@ -24,7 +24,7 @@ public:
 
 private:
 	std::unique_ptr<Player> player_;
-	std::unique_ptr<EatParticle> eatParticle_;
+
 	//お客さんクラス
 	std::unique_ptr<Customer> customer_;
 	EquipmentManager* equipmentManager_;
