@@ -18,12 +18,13 @@ Floor::Floor(const std::string& textureName, Vector3 position, Vector3 scale, Pl
 	if (useCollider) {
 		CreateCollider(ColliderShape::BOX2D, ColliderType::COLLIDER, ColliderMask);
 		AddTargetMask(ColliderMask::PAN);
-		AddTargetMask(ColliderMask::PLAYER);
 	}
 
 	global = std::make_unique<GlobalVariableUser>("Character", "cheese");
 
 	SetGlobalVariables();
+
+	prePos_ = object_->model->transform_.translate_;
 }
 
 void Floor::Update()
@@ -36,11 +37,13 @@ void Floor::Update()
 		StepOn();
 	}
 
+	object_->Update();
+
 	if (isuseCollider) {
-		ColliderUpdate();
+		ColliderUpdate(object_->model->transform_.translate_ - prePos_);
 	}
 
-	object_->Update();
+	prePos_ = object_->model->transform_.translate_;
 }
 
 void Floor::Draw(const Camera* camera)
@@ -71,9 +74,9 @@ void Floor::ApplyGlobalVariables()
 	ratio = global->GetFloatValue("速度の倍率", "踏みつけ");
 }
 
-void Floor::ColliderUpdate()
+void Floor::ColliderUpdate(const Vector3& move)
 {
-	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_, Vector3{});
+	SetBox2D(object_->GetWorldTransform().translate_, object_->GetWorldTransform().scale_, move);
 	SetCollider();
 }
 

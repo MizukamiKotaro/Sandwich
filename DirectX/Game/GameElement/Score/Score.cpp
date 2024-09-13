@@ -33,6 +33,8 @@ void Score::FirstInitialize()
 
 	CreateSprites();
 
+	ps0_ = std::make_unique<PostSprite>(screenPos_);
+
 	Vector2 size = { 36.0f,36.0f };
 	drawNum_ = std::make_unique<DrawNumbers>("equipmentsNumbers.png", "Frame", "食べた数字", size);
 	drawMaxNum_ = std::make_unique<DrawNumbers>("equipmentsNumbers.png", "Frame", "最大の数字", size);
@@ -50,6 +52,8 @@ void Score::FirstInitialize()
 
 	seSatisfaction_ = std::make_unique<Audio>();
 	seSatisfaction_->Load("waveClear.mp3", "満足した時の音");
+	seMax_ = std::make_unique<Audio>();
+	seMax_->Load("decision.mp3", "マックスを示す音");
 }
 
 void Score::SetPlayer(const Player* player)
@@ -69,6 +73,10 @@ void Score::Initialize()
 	sprite1_->Update();
 	sprite2_->Update();
 	easeTime_ = 0.0f;
+	ps0_->time_ = 0.0f;
+	ps0_->sprite_->pos_.x = 0.0f;
+	ps0_->Update();
+	isPreMax_ = false;
 }
 
 void Score::Update(const float& deltaTime)
@@ -102,6 +110,8 @@ void Score::Update(const float& deltaTime)
 			AddNum();
 		}
 	}
+
+	Ps0Update(deltaTime);
 
 	deltaTime;
 	DrawSprite();
@@ -235,6 +245,11 @@ void Score::ApplyGlobalVariables()
 
 void Score::DrawSprite()
 {
+	ps0_->PreDrawScene();
+	sprites_[SpriteNames::kMaxFrame]->Draw();
+	sprites_[SpriteNames::kMax]->Draw();
+	ps0_->PostDrawScene();
+
 	post1_->PreDrawScene();
 	sprites_[SpriteNames::kOutSideFrameAdd]->Draw();
 	sprites_[SpriteNames::kOutSideFrame]->Draw();
@@ -243,10 +258,7 @@ void Score::DrawSprite()
 	drawNum_->Draw(num_);
 	drawMaxNum_->Draw(maxNum_);
 	drawAddNum_->Draw(addNum_);
-	if (num_ + addNum_ >= maxNum_) {
-		sprites_[SpriteNames::kMaxFrame]->Draw();
-		sprites_[SpriteNames::kMax]->Draw();
-	}
+	ps0_->Draw();
 	post1_->PostDrawScene();
 
 	post2_->PreDrawScene();
@@ -263,4 +275,30 @@ void Score::DrawSprite()
 	sprite1_->Draw();
 	sprite2_->Draw();
 	post_->PostDrawScene();
+}
+
+void Score::Ps0Update(const float& deltaTime)
+{
+	float a = 0.5f;
+	if (num_ + addNum_ >= maxNum_) {
+		if (!isPreMax_) {
+			seMax_->Play();
+			isPreMax_ = true;
+		}
+		if (ps0_->time_ < a) {
+			ps0_->time_ = std::clamp(ps0_->time_ + deltaTime, 0.0f, a);
+			float t = ps0_->time_ / a;
+			ps0_->sprite_->pos_.x = t * screenPos_.x;
+			ps0_->Update();
+		}
+	}
+	else {
+		isPreMax_ = false;
+		if (ps0_->time_ > 0.0f) {
+			ps0_->time_ = std::clamp(ps0_->time_ - deltaTime, 0.0f, a);
+			float t = ps0_->time_ / a;
+			ps0_->sprite_->pos_.x = t * screenPos_.x;
+			ps0_->Update();
+		}
+	}
 }
