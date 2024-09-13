@@ -8,6 +8,7 @@
 #include <vector>
 #include "GameElement/Timer/Timer.h"
 #include "Drawers/PostSprite/PostSprite.h"
+#include "Input.h"
 
 class GameManager;
 
@@ -28,9 +29,12 @@ private:
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
 
+	void Ps0Update(const float& deltaTime);
+	void Ps1Update(const float& deltaTIme);
 	void Ps2Update(const float& deltaTime);
 
 private:
+	Input* input_;
 	GameManager* gameManager_;
 
 	enum SpriteNames {
@@ -52,8 +56,12 @@ private:
 
 private:
 	std::unique_ptr<PostSprite> ps0_;
-	std::unique_ptr<PostSprite> ps1_;
 	std::unique_ptr<PostSprite> ps2_;
+	std::unique_ptr<PostSprite> ps3_;
+	float ps0Time_;
+	float ps1Time_;
+	bool ps1Bool_;
+	bool ps1Active_;
 	float ps2Time_;
 
 	std::unique_ptr<Timer> timer_;
