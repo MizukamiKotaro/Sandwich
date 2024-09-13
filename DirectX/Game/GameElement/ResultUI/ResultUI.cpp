@@ -52,6 +52,8 @@ ResultUI::ResultUI()
 	putSpr1_.baseScale = spr1_->size_;
 	putSpr1_.scale = 1.0f;
 
+	ps0_ = std::make_unique<PostSprite>(a);
+
 	SetGlobalVariables();
 }
 
@@ -64,6 +66,9 @@ void ResultUI::Initialize(const bool& isClear)
 	isClear_ = isClear;
 	yesNoSpriteNum_ = 0;
 	postTime_ = 0.0f;
+	ps0_->time_ = 0.0f;
+	ps0_->sprite_->pos_.y = screenSize_.y * 0.5f;
+	ps0_->Update();
 
 	if (isClear_) {
 		ClearInitialize();
@@ -97,10 +102,16 @@ void ResultUI::Update(const float& deltaTime)
 			if (input_->PressedKey(DIK_DOWN) || input_->PressedKey(DIK_S)) {
 				yesNoSpriteNum_--;
 				seCursor_->Play();
+				ps0_->time_ = 0.0f;
+				ps0_->sprite_->pos_.y = screenSize_.y * 0.5f;
+				ps0_->Update();
 			}
 			else if (input_->PressedKey(DIK_UP) || input_->PressedKey(DIK_W)) {
 				yesNoSpriteNum_++;
 				seCursor_->Play();
+				ps0_->time_ = 0.0f;
+				ps0_->sprite_->pos_.y = screenSize_.y * 0.5f;
+				ps0_->Update();
 			}
 			if (yesNoSpriteNum_ < 0) {
 				yesNoSpriteNum_ = yesNoSpriteMaxNum_;
@@ -116,6 +127,8 @@ void ResultUI::Update(const float& deltaTime)
 					sprites_[i]->SetTexture(textures_[i * 2 + 1], false);
 				}
 			}
+
+			Ps0Update(deltaTime);
 
 			if (input_->PressedKey(DIK_SPACE)) {
 				if (yesNoSpriteNum_ == SpriteNameEnum::kRestart) {
@@ -196,6 +209,10 @@ const bool& ResultUI::GetIsGame() const
 
 void ResultUI::DrawSp()
 {
+	ps0_->PreDrawScene();
+	sprites_[yesNoSpriteNum_]->Draw();
+	ps0_->PostDrawScene();
+
 	postEf_->PreDrawScene();
 	if (gameManager_->GetScene() == GameManager::kResult && !isTranHalf_) {
 		for (int32_t i = 0; i < SpsNames::kEnd; i++) {
@@ -204,13 +221,8 @@ void ResultUI::DrawSp()
 		int32_t cus = score_->GetCustomer() - 1;
 		drawNum_->Draw(cus);
 
-		if (isClear_) {
-			for (size_t i = 0; i < sprites_.size() - 1; i++) {
-				sprites_[i]->Draw();
-			}
-		}
-		else {
-			for (size_t i = 0; i < sprites_.size(); i++) {
+		for (size_t i = 0; i < sprites_.size() - 1; i++) {
+			if (yesNoSpriteNum_ != i) {
 				sprites_[i]->Draw();
 			}
 		}
@@ -221,6 +233,7 @@ void ResultUI::DrawSp()
 		else {
 			spr1_->Draw();
 		}
+		ps0_->Draw();
 	}
 	postEf_->PostDrawScene();
 }
@@ -399,4 +412,14 @@ void ResultUI::ApplyGlobalVariables()
 	spr1_->pos_ = putSpr0_.basePos;
 	spr1_->size_ = putSpr1_.baseScale * putSpr1_.scale;
 	spr1_->Update();
+}
+
+void ResultUI::Ps0Update(const float& deltaTime)
+{
+	float a = 1.5f;
+	float r = 5.0f;
+	ps0_->time_ = std::fmodf(ps0_->time_ + deltaTime, a);
+	float t = ps0_->time_ / a * 6.28f;
+	ps0_->sprite_->pos_.y = r * std::sinf(t) + screenSize_.y * 0.5f;
+	ps0_->Update();
 }

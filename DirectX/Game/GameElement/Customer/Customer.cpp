@@ -194,7 +194,7 @@ void Customer::BlinkUpdate()
 
 void Customer::EatInit()
 {
-	EatFrame = 0;
+	EatFrame = kEatInterval;
 	currentTexture = 0;
 	countEat = 0;
 	//テクスチャを変える
@@ -203,7 +203,7 @@ void Customer::EatInit()
 
 void Customer::EatUpdate()
 {
-	if (player_->GetIsDrop() == false) {
+	if (player_->GetIsPlayerBack()) {
 		isPreEatFlag = false;
 		isEatFlag = true;
 
