@@ -9,6 +9,7 @@
 #include "Input.h"
 #include "GameElement/DrawNumbers/DrawNumbers.h"
 #include "Audio.h"
+#include "Drawers/PostSprite/PostSprite.h"
 
 class GameManager;
 class Score;
@@ -32,12 +33,15 @@ private:
 	void Create();
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
+	void Ps0Update(const float& deltaTime);
 
 private:
 	Input* input_;
 	GameManager* gameManager_;
 	Score* score_;
 	Vector2 screenSize_;
+
+	std::unique_ptr<PostSprite> ps0_;
 
 	std::unique_ptr<PostEffect> postEf_;
 	std::unique_ptr<Sprite> postSp_;
