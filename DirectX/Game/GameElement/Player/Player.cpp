@@ -22,6 +22,8 @@ void Player::Init()
 
 	jumpSE = std::make_unique<Audio>();
 	jumpSE->Load("jump.mp3", "プレイヤーのジャンプの音");
+	DropSE = std::make_unique<Audio>();
+	DropSE->Load("finish.mp3", "プレイヤーの落下の音");
 
 	jumpXmovement = jumpXCenter - object_->model->transform_.translate_.x;
 
@@ -94,6 +96,8 @@ void Player::Update()
 				isHitCeiling = false;
 				panTop->Move(Vector3{ 0.0f,topLimit ,0.0f });
 				panBottom->Move(Vector3{ 0.0f,bottomLimit ,0.0f });
+
+				dropSEPlayFlag = true;
 			}
 		}
 		object_->Update();
@@ -263,6 +267,11 @@ void Player::HitCeiling()
 {
 	const float deltaTime = FrameInfo::GetInstance()->GetDeltaTime();
 	dropSpeed_ = kDropSpeed * deltaTime;
+
+	if (dropSEPlayFlag) {
+		dropSEPlayFlag = false;
+		DropSE->Play();
+	}
 
 	if (isPlayerBackFlag == false) {
 		object_->model->transform_.translate_.y -= dropSpeed_;

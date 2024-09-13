@@ -46,6 +46,9 @@ void Customer::Init(Player* player)
 
 	object_->model->transform_.scale_ = scale_;
 	object_->model->transform_.translate_ = translate_;
+	//SE
+	EatSE = std::make_unique<Audio>();
+	EatSE->Load("eat.mp3", "お客様が食べる音");
 }
 
 void Customer::Update()
@@ -107,9 +110,18 @@ void Customer::Update()
 	}
 #pragma endregion BehaviorTree
 
-	if (player_->GetIsDrop()) {
-		isPreEatFlag = true;
+	if (canEatFlag) {
+		if (player_->GetIsDrop()) {
+			isPreEatFlag = true;
+		}
 	}
+	else {
+		controllEatFrame += FrameInfo::GetInstance()->GetDeltaTime();
+		if (controllEatFrame > kcontrollEatFrame) {
+			canEatFlag = true;
+		}
+	}
+
 	//パーティクル
 	eatParticle_->Update();
 
@@ -194,6 +206,8 @@ void Customer::BlinkUpdate()
 
 void Customer::EatInit()
 {
+
+
 	EatFrame = kEatInterval;
 	currentTexture = 0;
 	countEat = 0;
@@ -214,6 +228,8 @@ void Customer::EatUpdate()
 
 			if (countEat >= kcountEat) {
 				isEatFlag = false;
+				canEatFlag = false;
+				controllEatFrame = 0.0f;
 				behaviorRequest_ = Behavior::kRoot;
 				return;
 			}
@@ -223,6 +239,7 @@ void Customer::EatUpdate()
 				//パーティクル生成
 				eatParticle_->Create();
 				currentTexture = 2;
+				EatSE->Play();
 				countEat++;
 			}
 			else {
@@ -258,6 +275,8 @@ void Customer::ChangeUpdate()
 	//終了条件
 	if (changeFrame >= 1.0f && IsFrameOver) {
 		changeFrame = 0.0f;
+		EatInit();
+		isEatFlag = false;
 		//Rootにする
 		behaviorRequest_ = Behavior::kRoot;
 	}
@@ -267,6 +286,7 @@ void Customer::ChangeUpdate()
 		changeFrame = 0.0f;
 		customerNumber = randomTextureSelect(preCoustomerNumber);
 		preCoustomerNumber = customerNumber;
+		currentTexture = 0;
 		object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[customerNumber][currentTexture]));
 	}
 }

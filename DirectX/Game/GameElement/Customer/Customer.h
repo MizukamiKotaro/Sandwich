@@ -3,6 +3,7 @@
 #include "GlobalVariables/GlobalVariableUser.h"
 #include "RandomGenerator/RandomGenerator.h"
 #include "Game/GameElement/Particle/Eat/EatParticle.h"
+#include "Audio/Audio.h"
 
 class Player;
 enum class Behavior {
@@ -88,6 +89,14 @@ private:
 	float EatFrame;
 	int countEat;
 	int kcountEat = 3;
+	//食べる時のSE
+	std::unique_ptr<Audio> EatSE;
+	//
+	bool eatSEPlayFlag = true;
+	//食べる動き制御
+	bool canEatFlag = true;
+	float controllEatFrame;
+	float kcontrollEatFrame = 1.0f;
 #pragma endregion 食べる動き
 
 #pragma region
