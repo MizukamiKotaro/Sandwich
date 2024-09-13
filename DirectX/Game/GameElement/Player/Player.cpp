@@ -43,7 +43,7 @@ void Player::Init()
 
 	panBottom = std::make_unique<Floor>("bread.png", Vector3{ 0.0f,bottomLimit ,0.0f }, panSize, this);
 	//予測線
-	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_ }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this, ColliderMask::PREDICTIONLINE);
+	predictionLine = std::make_unique<Floor>("cheese.png", Vector3{ object_->model->transform_.translate_.x, object_->model->transform_.translate_.y - 2.0f, object_->model->transform_.translate_.z }, Vector3{ std::abs(jumpXmovement),0.1f,1.0f }, this, ColliderMask::PREDICTIONLINE);
 	predictionLine->object_->model->color_ = { 1.0f,1.0f,1.0f,0.5f };
 
 	//キャラクターのサイズ変更
@@ -122,7 +122,15 @@ void Player::Update()
 	if (jumpFlag) {
 		Jump();
 	}
+	//連続でジャンプしないように
+	if (isFloorCollider == false) {
+		floorColliderFrame += FrameInfo::GetInstance()->GetDeltaTime();
 
+		if (floorColliderFrame > kFloorColliderFrame) {
+			floorColliderFrame = 0;
+			isFloorCollider = true;
+		}
+	}
 
 	object_->model->transform_.translate_ += jumpForceVec * deltaTime;
 	jumpForce -= gravity;
@@ -288,8 +296,10 @@ void Player::ColliderUpdate(const Vector3& move)
 void Player::OnCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::FLOOR) {
-
-		CommonJumpInit();
+		if (isFloorCollider) {
+			CommonJumpInit();
+			isFloorCollider = false;
+		}
 	}
 	if (collider.GetMask() == ColliderMask::PAN) {
 		isHitCeiling = true;

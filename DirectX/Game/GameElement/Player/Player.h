@@ -127,6 +127,11 @@ private://プライベート変数
 	float prePanPos;
 #pragma endregion パンと落下に関して
 
+	//チーズとの当たりを制限
+	bool isFloorCollider = true;
+	float floorColliderFrame;
+	float kFloorColliderFrame = 0.6f;
+
 	//パンのインスタンス
 	std::unique_ptr<Floor> panTop;
 	std::unique_ptr<Floor> panBottom;
