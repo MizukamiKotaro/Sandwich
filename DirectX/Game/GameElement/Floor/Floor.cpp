@@ -36,6 +36,15 @@ void Floor::Update()
 	if (IsStepOnFlag) {
 		StepOn();
 	}
+	if (isPlayerCollider == false) {
+		playerColliderFrame += FrameInfo::GetInstance()->GetDeltaTime();
+
+		if (playerColliderFrame > kPlayerColliderFrame) {
+			playerColliderFrame = 0;
+			isPlayerCollider = true;
+		}
+	}
+
 
 	object_->Update();
 
@@ -87,7 +96,6 @@ void Floor::ColliderUpdate(const Vector3& move)
 void Floor::OnCollision(const Collider& collider)
 {
 	if (collider.GetMask() == ColliderMask::PAN || collider.GetMask() == ColliderMask::EQUIPMENT) {
-		//if (isuseCollider == false) { return; };
 		if (!player_->GetIsDrop()) {
 			return;
 		}
@@ -97,10 +105,15 @@ void Floor::OnCollision(const Collider& collider)
 		if (player_->GetIsDrop()) { return; };
 		if (GetMask() == ColliderMask::PAN) { return; };
 		if (GetMask() == ColliderMask::PREDICTIONLINE) { return; };
-		prePos = object_->model->transform_.translate_;
-		targetPos = { prePos.x,prePos.y - 0.5f,prePos.z };
-		IsFrameOver = false;
-		IsStepOnFlag = true;
+
+		if (isPlayerCollider) {
+			prePos = object_->model->transform_.translate_;
+			targetPos = { prePos.x,prePos.y - 0.5f,prePos.z };
+			IsFrameOver = false;
+			IsStepOnFlag = true;
+			isPlayerCollider = false;
+		}
+
 	}
 }
 

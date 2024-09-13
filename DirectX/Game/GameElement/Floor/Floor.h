@@ -49,6 +49,11 @@ private:
 	Vector3 prePos;
 	Vector3 targetPos;
 
+	//プレイヤーとの当たりを制限
+	bool isPlayerCollider = true;
+	float playerColliderFrame;
+	float kPlayerColliderFrame = 0.6f;
+	
 	std::unique_ptr<GlobalVariableUser> global;
 
 	// 移動量を求めるよう
