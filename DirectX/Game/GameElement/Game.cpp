@@ -50,7 +50,7 @@ void Game::ResetInitialize()
 
 	customer_ = std::make_unique<Customer>();
 	customer_->Init(player_.get());
-	customer_->isDraw = false;
+	customer_->isDraw = true;
 }
 
 void Game::Update()

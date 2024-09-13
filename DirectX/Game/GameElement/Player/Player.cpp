@@ -248,7 +248,7 @@ void Player::CreateFloor()
 
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 
-	cheese_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", { object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f,object_->model->transform_.translate_.z }, { std::abs(jumpXmovement),0.1f,1.0f }, this)));
+	cheese_.push_back(std::unique_ptr<Floor>(new Floor("cheese.png", { object_->model->transform_.translate_.x,object_->model->transform_.translate_.y - 2.0f,object_->model->transform_.translate_.z }, { std::abs(jumpXmovement),sizeY,1.0f }, this)));
 }
 
 void Player::HitCeiling()
@@ -313,6 +313,8 @@ void Player::SetGlobalVariables()
 	global->AddItem("下のパンの位置", bottomLimit, "パン");
 	global->AddItem("下のパン再出現位置", bottomPanReset, "パン");
 
+	global->AddItem("Yのサイズ", sizeY, "チーズ");
+
 	ApplyGlobalVariables();
 }
 
@@ -330,4 +332,6 @@ void Player::ApplyGlobalVariables()
 	topLimit = global->GetFloatValue("上のパンの位置", "パン");
 	bottomLimit = global->GetFloatValue("下のパンの位置", "パン");
 	bottomPanReset = global->GetFloatValue("下のパン再出現位置", "パン");
+
+	sizeY = global->GetFloatValue("Yのサイズ", "チーズ");
 }

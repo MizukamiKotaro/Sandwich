@@ -57,6 +57,7 @@ private://プライベート変数
 	std::unique_ptr<Object> object_;
 	//床をまとめた物
 	std::list<std::unique_ptr<Floor>> cheese_;
+	float sizeY = 0.1f;
 	std::unique_ptr<Floor> predictionLine;
 
 #pragma region
