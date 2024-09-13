@@ -4,7 +4,7 @@ EatParticle::EatParticle()
 {
 	global = std::make_unique<GlobalVariableUser>("Particle", "Eat");
 
-	tex_ = ParticleManager::GetInstance()->GetDrawData("cheese.png", BlendMode::kBlendModeNone);
+	tex_ = ParticleManager::GetInstance()->GetDrawData("cheese.png", BlendMode::kBlendModeNormal);
 
 	SetGlobalVariable();
 }
@@ -60,15 +60,15 @@ void EatParticle::ParticleUpdate(){
 
 		(*it).pos += (*it).vel * time_;
 		//下に落とす
-		(*it).vel.y -= downForce_ * time_;
+		//if ((*it).time > 0.5f) {
+		//	
+		//}
+		(*it).pos.y -= downForce_ * time_ ;
+		
+		(*it).alpha -= 0.01f;
 		//特定の時間になったら
 		if ((*it).time >= deleteTime_) {
-			//アルファを薄く
-			(*it).alpha -= 0.1f;
-			if ((*it).alpha < 0.0f) {
-				//アルファが0なら削除
-				it = particleData_.erase(it);
-			}
+			it = particleData_.erase(it);
 		}
 		else {
 			it++;
