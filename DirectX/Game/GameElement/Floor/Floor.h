@@ -23,7 +23,7 @@ private:
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
 	//当たり判定の更新
-	void ColliderUpdate();
+	void ColliderUpdate(const Vector3& move);
 	//当たり判定
 	void OnCollision(const Collider& collider)override;
 	void StepOn();
@@ -50,4 +50,7 @@ private:
 	Vector3 targetPos;
 
 	std::unique_ptr<GlobalVariableUser> global;
+
+	// 移動量を求めるよう
+	Vector3 prePos_;
 };
