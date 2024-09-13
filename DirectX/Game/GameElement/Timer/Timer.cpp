@@ -17,7 +17,7 @@ Timer::Timer()
 	drawNum_ = std::make_unique<DrawNumbers>("TimeNumbers.png", "Timer", "背景", Vector2{ 192.0f,240.0f });
 	glo_ = std::make_unique<GlobalVariableUser>("AdjustmentItems", "Timer");
 
-	drawTrop_ = std::make_unique<DrawNumbers>("restTimeNumber.png", "Timer", "テロップ", Vector2{ 72.0f,82.0f });
+	drawTrop_ = std::make_unique<DrawNumbers>("restTimeNumber.png", "Timer", "テロップ", Vector2{ 80.0f,82.0f });
 	ps_ = std::make_unique<PostSprite>(screenPos_);
 	sps_.resize(2);
 	sps_[0] = std::make_unique<Sprite>("rest.png", screenPos_);
@@ -60,10 +60,9 @@ void Timer::Draw()
 
 void Timer::DrowTrop()
 {
-	/*if (isD_) {
+	if (isD_) {
 		ps_->Draw();
-	}*/
-	//ps_->Draw();
+	}
 }
 
 void Timer::UpdateToGame(const float& deltaTime)
@@ -138,15 +137,10 @@ void Timer::DrawSprite()
 void Timer::PsUpdate()
 {
 	int32_t hn = maxTime_ / 2;
-	ps_->PreDrawScene();
-	sps_[0]->Draw();
-	sps_[1]->Draw();
-	drawTrop_->Draw(hn);
-	ps_->PostDrawScene();
 	if (time_ <= float(hn + 1) && time_ >= float(hn - 1)) {
 		float t = std::powf(time_ - float(hn), 3.0f);
 		ps_->sprite_->pos_.x = screenPos_.x * 2.0f * t + screenPos_.x;
-		//ps_->Update();
+		ps_->Update();
 
 		ps_->PreDrawScene();
 		sps_[0]->Draw();
@@ -156,9 +150,9 @@ void Timer::PsUpdate()
 		isD_ = true;
 	}
 	else if (time_ <= 21.0f && time_ >= 19.0f) {
-		float t = std::powf(time_ - float(hn), 3.0f);
+		float t = std::powf(time_ - float(20.0f), 3.0f);
 		ps_->sprite_->pos_.x = screenPos_.x * 2.0f * t + screenPos_.x;
-		//ps_->Update();
+		ps_->Update();
 		ps_->PreDrawScene();
 		sps_[0]->Draw();
 		sps_[1]->Draw();
