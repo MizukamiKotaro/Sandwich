@@ -16,6 +16,7 @@ void Player::Init()
 	//板ポリに画像を貼り付ける
 	object_ = std::make_unique<Object>(jumpTexture[0]);
 
+
 	//右と左のアフィン行列
 	lookLeftMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,3.14f,0.0f }, Vector3{});
 	lookRightMatrix = Matrix4x4::MakeAffinMatrix(Vector3{ 1.0f,1.0f,1.0 }, Vector3{ 0.0f,0.0f,0.0f }, Vector3{});
@@ -30,6 +31,13 @@ void Player::Init()
 	jumpXmovement = (std::max)(1.0f, std::abs(jumpXmovement));
 #pragma endregion ジャンプ
 	
+
+	button_ = std::make_unique<Object>("button.png");
+	button_->model->UnUsedLight();
+	button_->model->transform_.scale_ = { 18.5f,1.2f,1.0f };
+	button_->model->transform_.translate_ = { 0.0f,topLimit-0.2f ,0.0f };
+	button_->model->color_ = {1.0f,1.0f,1.0f,1.0f};
+
 	random = RandomGenerator::GetInstance();
 
 	input_ = Input::GetInstance();
@@ -157,6 +165,7 @@ void Player::Update()
 	predictionLine->Update();
 
 	object_->Update();
+	button_->Update();
 
 	prePos = object_->model->transform_.translate_ - prePos;
 
@@ -175,6 +184,7 @@ void Player::Update()
 void Player::Draw(const Camera* camera)
 {
 	object_->Draw(*camera);
+	button_->Draw(*camera);
 
 	//床描画
 	for (std::list<std::unique_ptr<Floor>>::iterator it = cheese_.begin(); it != cheese_.end(); it++)

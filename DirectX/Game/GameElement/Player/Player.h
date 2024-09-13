@@ -56,6 +56,8 @@ private://プライベート変数
 #pragma region
 	//3Dモデル
 	std::unique_ptr<Object> object_;
+	//提供ボタン
+	std::unique_ptr<Object> button_;
 	//床をまとめた物
 	std::list<std::unique_ptr<Floor>> cheese_;
 	float sizeY = 0.1f;
@@ -115,7 +117,7 @@ private://プライベート変数
 	float kDropSpeed = 50.0f;
 	float dropSpeed_;
 	//上側のパンの位置(Y)
-	float topLimit = 20.0f;
+	float topLimit = 23.0f;
 	float panTopY;
 	//下側のパンの位置(Y)
 	float bottomLimit = -12.0f;
