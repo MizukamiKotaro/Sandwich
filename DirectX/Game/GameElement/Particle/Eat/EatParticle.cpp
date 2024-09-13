@@ -4,7 +4,7 @@ EatParticle::EatParticle()
 {
 	global = std::make_unique<GlobalVariableUser>("Particle", "Eat");
 
-	tex_ = ParticleManager::GetInstance()->GetDrawData("white.png", BlendMode::kBlendModeNone);
+	tex_ = ParticleManager::GetInstance()->GetDrawData("eatParticle.png", BlendMode::kBlendModeNone);
 
 	SetGlobalVariable();
 }
