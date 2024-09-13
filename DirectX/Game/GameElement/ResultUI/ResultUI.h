@@ -83,6 +83,12 @@ private:
 
 	std::unique_ptr<DrawNumbers> drawNum_;
 
+	std::unique_ptr<Sprite> spr0_;
+	std::unique_ptr<Sprite> spr1_;
+	PutData putSpr0_;
+	PutData putSpr1_;
+	int32_t evaluationNum_;
+
 	enum SpsNames
 	{
 		kBack,
