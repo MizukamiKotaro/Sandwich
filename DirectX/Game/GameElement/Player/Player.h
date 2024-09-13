@@ -96,6 +96,10 @@ private://プライベート変数
 	float Xlimit = 18.0f;
 	//ジャンプのSE
 	std::unique_ptr<Audio> jumpSE;
+	//落ちる時のSE
+	std::unique_ptr<Audio> DropSE;
+	//
+	bool dropSEPlayFlag = true;
 	//ひとつ前で選択されたテクスチャ
 	int preTexture = 0;
 	//現在のテクスチャ

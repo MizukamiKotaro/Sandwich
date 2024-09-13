@@ -46,6 +46,11 @@ void Customer::Init(Player* player)
 
 	object_->model->transform_.scale_ = scale_;
 	object_->model->transform_.translate_ = translate_;
+	//SE
+	EatSE = std::make_unique<Audio>();
+	EatSE->Load("eat.mp3", "お客様が食べる音");
+
+	ChangeInit();
 }
 
 void Customer::Update()
@@ -53,6 +58,27 @@ void Customer::Update()
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 #endif
+
+	if (isFerst && player_->GetIsDrop()) {
+		changeFrame += FrameInfo::GetInstance()->GetDeltaTime() * ratio;
+
+		changeFrame = std::min(changeFrame, 1.0f);
+
+			object_->model->transform_.translate_ = Ease::UseEase(targetPos, prePos, changeFrame, Ease::EaseIn);
+
+			object_->Update();
+			//終了条件
+			if (changeFrame >= 1.0f) {
+				changeFrame = 0.0f;
+				isEatFlag = false;
+				isFerst = false;
+				//Rootにする
+				behaviorRequest_ = Behavior::kRoot;
+			}
+
+		return;
+	}
+
 	//番号が違ったらお客さんが変わってる
 	//フラグをtrueにする
 	currentCustomerNum = Score::GetInstance()->GetCustomer();
@@ -107,9 +133,18 @@ void Customer::Update()
 	}
 #pragma endregion BehaviorTree
 
-	if (player_->GetIsDrop()) {
-		isPreEatFlag = true;
+	if (canEatFlag) {
+		if (player_->GetIsDrop()) {
+			isPreEatFlag = true;
+		}
 	}
+	else {
+		controllEatFrame += FrameInfo::GetInstance()->GetDeltaTime();
+		if (controllEatFrame > kcontrollEatFrame) {
+			canEatFlag = true;
+		}
+	}
+
 	//パーティクル
 	eatParticle_->Update();
 
@@ -214,6 +249,8 @@ void Customer::EatUpdate()
 
 			if (countEat >= kcountEat) {
 				isEatFlag = false;
+				canEatFlag = false;
+				controllEatFrame = 0.0f;
 				behaviorRequest_ = Behavior::kRoot;
 				return;
 			}
@@ -223,6 +260,7 @@ void Customer::EatUpdate()
 				//パーティクル生成
 				eatParticle_->Create();
 				currentTexture = 2;
+				EatSE->Play();
 				countEat++;
 			}
 			else {
@@ -258,6 +296,8 @@ void Customer::ChangeUpdate()
 	//終了条件
 	if (changeFrame >= 1.0f && IsFrameOver) {
 		changeFrame = 0.0f;
+		EatInit();
+		isEatFlag = false;
 		//Rootにする
 		behaviorRequest_ = Behavior::kRoot;
 	}
@@ -267,6 +307,7 @@ void Customer::ChangeUpdate()
 		changeFrame = 0.0f;
 		customerNumber = randomTextureSelect(preCoustomerNumber);
 		preCoustomerNumber = customerNumber;
+		currentTexture = 0;
 		object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[customerNumber][currentTexture]));
 	}
 }
