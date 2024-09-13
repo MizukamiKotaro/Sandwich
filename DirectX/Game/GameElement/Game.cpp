@@ -50,7 +50,13 @@ void Game::ResetInitialize()
 
 	customer_ = std::make_unique<Customer>();
 	customer_->Init(player_.get());
-	customer_->isDraw = true;
+
+	if (gameManager_->GetScene() == GameManager::kTitle) {
+		customer_->isDraw = false;
+	}
+	else {
+		customer_->isDraw = true;
+	}
 }
 
 void Game::Update()
