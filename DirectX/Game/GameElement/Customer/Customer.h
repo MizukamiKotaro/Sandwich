@@ -8,7 +8,8 @@ class Player;
 enum class Behavior {
 	kRoot,
 	kBlink,
-	kEat
+	kEat,
+	kChange
 };
 
 class Customer
@@ -28,6 +29,8 @@ private:
 	void BlinkUpdate();
 	void EatInit();
 	void EatUpdate();
+	void ChangeInit();
+	void ChangeUpdate();
 
 	void SetGlobalVariables();
 	void ApplyGlobalVariables();
@@ -44,7 +47,7 @@ private:
 	Player* player_;
 
 	Vector3 scale_ = { 19.0f,2.0f,1.0f };
-	Vector3 translate_ = { 0.0f,-20.0f,0.0f };
+	Vector3 translate_ = { 0.0f,-16.820f,0.0f };
 
 	//抽選をするフレーム
 	float raffleInterval = 10.0f;
@@ -80,6 +83,25 @@ private:
 	int countEat;
 	int kcountEat = 3;
 #pragma endregion 食べる動き
+
+#pragma region
+	//お客様を切り替えるフラグ
+	bool isChangeFlag;
+	//現在のお客様番号
+	int currentCustomerNum = 0;
+	//過去のお客様番号
+	int preCustomerNum;
+	//0.5f超えたら
+	bool IsFrameOver;
+	//経過フレーム
+	float changeFrame;
+	//踏んだ時の戻る速度
+	float ratio = 2.0f;
+#pragma endregion お客様切り替え
+
+	Vector3 prePos;
+	Vector3 targetPos;
+
 
 	//パーティクル
 	std::unique_ptr<EatParticle> eatParticle_;

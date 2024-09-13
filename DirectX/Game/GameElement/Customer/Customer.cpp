@@ -1,6 +1,7 @@
 #include "Customer.h"
 #include "FrameInfo/FrameInfo.h"
 #include "Game/GameElement/Player/Player.h"
+#include "Game/GameElement/Score/Score.h"
 
 void Customer::Init(Player* player)
 {
@@ -19,8 +20,7 @@ void Customer::Init(Player* player)
 	//ランダム生成器のインスタンスを生成
 	random = RandomGenerator::GetInstance();
 
-	object_->model->transform_.scale_ = scale_;
-	object_->model->transform_.translate_ = translate_;
+
 
 	global = std::make_unique<GlobalVariableUser>("Character", "Customer");
 
@@ -29,6 +29,8 @@ void Customer::Init(Player* player)
 
 	SetGlobalVariables();
 
+	object_->model->transform_.scale_ = scale_;
+	object_->model->transform_.translate_ = translate_;
 }
 
 void Customer::Update()
@@ -36,7 +38,15 @@ void Customer::Update()
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 #endif
+	//番号が違ったらお客さんが変わってる
+	//フラグをtrueにする
+	currentCustomerNum = Score::GetInstance()->GetCustomer();
 
+	if (currentCustomerNum != preCustomerNum) {
+		behaviorRequest_ = Behavior::kChange;
+	}
+
+	preCustomerNum = currentCustomerNum;
 
 #pragma region
 	//初期化
@@ -56,6 +66,9 @@ void Customer::Update()
 		case Behavior::kEat:
 			EatInit();
 			break;
+		case Behavior::kChange:
+			ChangeInit();
+			break;
 		}
 
 		behaviorRequest_ = std::nullopt;
@@ -73,6 +86,9 @@ void Customer::Update()
 	case Behavior::kEat:
 		EatUpdate();
 		break;
+	case Behavior::kChange:
+		ChangeUpdate();
+		break;
 	}
 #pragma endregion BehaviorTree
 
@@ -81,9 +97,6 @@ void Customer::Update()
 	}
 	//パーティクル
 	eatParticle_->Update();
-
-	object_->model->transform_.scale_ = scale_;
-	object_->model->transform_.translate_ = translate_;
 
 	object_->Update();
 }
@@ -203,6 +216,40 @@ void Customer::EatUpdate()
 		}
 		//テクスチャを変える
 		object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
+	}
+}
+
+void Customer::ChangeInit()
+{
+	changeFrame = 0;
+	prePos = object_->model->transform_.translate_;
+	targetPos = { prePos.x,prePos.y - 4.0f,prePos.z };
+	IsFrameOver = false;
+
+}
+
+void Customer::ChangeUpdate()
+{
+	changeFrame += FrameInfo::GetInstance()->GetDeltaTime() * ratio;
+
+	changeFrame = std::min(changeFrame, 1.0f);
+
+	if (IsFrameOver == false) {
+		object_->model->transform_.translate_ = Ease::UseEase(prePos, targetPos, changeFrame, Ease::EaseIn);
+	}
+	else {
+		object_->model->transform_.translate_ = Ease::UseEase(targetPos, prePos, changeFrame, Ease::EaseIn);
+	}
+	//終了条件
+	if (changeFrame >= 1.0f && IsFrameOver) {
+		changeFrame = 0.0f;
+		//Rootにする
+		behaviorRequest_ = Behavior::kRoot;
+	}
+	//折り返し
+	if (IsFrameOver == false && changeFrame >= 1.0f) {
+		IsFrameOver = true;
+		changeFrame = 0.0f;
 	}
 }
 
