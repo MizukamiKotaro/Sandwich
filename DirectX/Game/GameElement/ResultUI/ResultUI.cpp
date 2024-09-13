@@ -42,6 +42,16 @@ ResultUI::ResultUI()
 	seCursor_ = std::make_unique<Audio>();
 	seCursor_->Load("cursor.mp3", "カーソルの操作音");
 
+	Vector2 a = screenSize_ * 0.5f;
+	spr0_ = std::make_unique<Sprite>("goodUi.png", a);
+	spr1_ = std::make_unique<Sprite>("notGoodUi.png", a);
+	putSpr0_.basePos = a;
+	putSpr0_.baseScale = spr0_->size_;
+	putSpr0_.scale = 1.0f;
+	putSpr1_.basePos = a;
+	putSpr1_.baseScale = spr1_->size_;
+	putSpr1_.scale = 1.0f;
+
 	SetGlobalVariables();
 }
 
@@ -191,7 +201,8 @@ void ResultUI::DrawSp()
 		for (int32_t i = 0; i < SpsNames::kEnd; i++) {
 			sps_[i]->Draw();
 		}
-		drawNum_->Draw(score_->GetCustomer() - 1);
+		int32_t cus = score_->GetCustomer() - 1;
+		drawNum_->Draw(cus);
 
 		if (isClear_) {
 			for (size_t i = 0; i < sprites_.size() - 1; i++) {
@@ -202,6 +213,13 @@ void ResultUI::DrawSp()
 			for (size_t i = 0; i < sprites_.size(); i++) {
 				sprites_[i]->Draw();
 			}
+		}
+
+		if (cus >= evaluationNum_) {
+			spr0_->Draw();
+		}
+		else {
+			spr1_->Draw();
 		}
 	}
 	postEf_->PostDrawScene();
@@ -320,6 +338,11 @@ void ResultUI::SetGlobalVariables()
 		global_->AddItem(spsNames_[i] + "のスケール", putSps_[i].scale, spsNames_[i]);
 	}
 
+	global_->AddItem("評価文の位置", putSpr0_.basePos, "評価文");
+	global_->AddItem("いいねのスケール", putSpr0_.scale, "評価文");
+	global_->AddItem("もう少しのスケール", putSpr1_.scale, "評価文");
+	global_->AddItem("いいねになる数", 2, "評価文");
+
 	ApplyGlobalVariables();
 }
 
@@ -364,4 +387,16 @@ void ResultUI::ApplyGlobalVariables()
 		sps_[i]->size_ = putSps_[i].baseScale * putSps_[i].scale;
 		sps_[i]->Update();
 	}
+
+	putSpr0_.basePos = global_->GetVector2Value("評価文の位置", "評価文");
+	putSpr0_.scale = global_->GetFloatValue("いいねのスケール", "評価文");
+	putSpr1_.scale = global_->GetFloatValue("もう少しのスケール", "評価文");
+	evaluationNum_ = global_->GetIntValue("いいねになる数", "評価文");
+
+	spr0_->pos_ = putSpr0_.basePos;
+	spr0_->size_ = putSpr0_.baseScale * putSpr0_.scale;
+	spr0_->Update();
+	spr1_->pos_ = putSpr0_.basePos;
+	spr1_->size_ = putSpr1_.baseScale * putSpr1_.scale;
+	spr1_->Update();
 }

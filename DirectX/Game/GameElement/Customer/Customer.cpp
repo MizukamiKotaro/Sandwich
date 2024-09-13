@@ -1,26 +1,41 @@
 #include "Customer.h"
 #include "FrameInfo/FrameInfo.h"
 #include "Game/GameElement/Player/Player.h"
+#include "Game/GameElement/Score/Score.h"
 
 void Customer::Init(Player* player)
 {
-	customerTexture.push_back("customer.png");
-	customerTexture.push_back("customerClose.png");
-	customerTexture.push_back("customerEat.png");
+	customerNumber = 0;
+	customerTexture.resize(3);
 
-	for (std::string tex : customerTexture) {
+	customerTexture[0].push_back("customer.png");
+	customerTexture[0].push_back("customerClose.png");
+	customerTexture[0].push_back("customerEat.png");
+	
+	customerTexture[1].push_back("customer2.png");
+	customerTexture[1].push_back("customerClose2.png");
+	customerTexture[1].push_back("customerEat2.png");
+	
+	customerTexture[2].push_back("customer3.png");
+	customerTexture[2].push_back("customerClose3.png");
+	customerTexture[2].push_back("customerEat3.png");
+
+	for (std::string tex : customerTexture[0]) {
+		TextureManager::GetInstance()->LoadTexture(tex);
+	}
+	for (std::string tex : customerTexture[1]) {
+		TextureManager::GetInstance()->LoadTexture(tex);
+	}
+	for (std::string tex : customerTexture[2]) {
 		TextureManager::GetInstance()->LoadTexture(tex);
 	}
 
-	object_ = std::make_unique<Object>(customerTexture[0]);
+	object_ = std::make_unique<Object>(customerTexture[0][0]);
 
 	player_ = player;
 	
 	//ランダム生成器のインスタンスを生成
 	random = RandomGenerator::GetInstance();
-
-	object_->model->transform_.scale_ = scale_;
-	object_->model->transform_.translate_ = translate_;
 
 	global = std::make_unique<GlobalVariableUser>("Character", "Customer");
 
@@ -29,6 +44,8 @@ void Customer::Init(Player* player)
 
 	SetGlobalVariables();
 
+	object_->model->transform_.scale_ = scale_;
+	object_->model->transform_.translate_ = translate_;
 }
 
 void Customer::Update()
@@ -36,7 +53,15 @@ void Customer::Update()
 #ifdef _DEBUG
 	ApplyGlobalVariables();
 #endif
+	//番号が違ったらお客さんが変わってる
+	//フラグをtrueにする
+	currentCustomerNum = Score::GetInstance()->GetCustomer();
 
+	if (currentCustomerNum != preCustomerNum) {
+		behaviorRequest_ = Behavior::kChange;
+	}
+
+	preCustomerNum = currentCustomerNum;
 
 #pragma region
 	//初期化
@@ -56,6 +81,9 @@ void Customer::Update()
 		case Behavior::kEat:
 			EatInit();
 			break;
+		case Behavior::kChange:
+			ChangeInit();
+			break;
 		}
 
 		behaviorRequest_ = std::nullopt;
@@ -73,6 +101,9 @@ void Customer::Update()
 	case Behavior::kEat:
 		EatUpdate();
 		break;
+	case Behavior::kChange:
+		ChangeUpdate();
+		break;
 	}
 #pragma endregion BehaviorTree
 
@@ -81,9 +112,6 @@ void Customer::Update()
 	}
 	//パーティクル
 	eatParticle_->Update();
-
-	object_->model->transform_.scale_ = scale_;
-	object_->model->transform_.translate_ = translate_;
 
 	object_->Update();
 }
@@ -102,7 +130,7 @@ void Customer::RootInit()
 	raffleFlame = 0.0f;
 
 	currentTexture = 0;
-	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
+	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[customerNumber][currentTexture]));
 }
 
 void Customer::RootUpdate()
@@ -159,7 +187,7 @@ void Customer::BlinkUpdate()
 		}
 	}
 	//テクスチャを変える
-	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
+	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[customerNumber][currentTexture]));
 	
 
 }
@@ -170,7 +198,7 @@ void Customer::EatInit()
 	currentTexture = 0;
 	countEat = 0;
 	//テクスチャを変える
-	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
+	object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[customerNumber][currentTexture]));
 }
 
 void Customer::EatUpdate()
@@ -202,8 +230,54 @@ void Customer::EatUpdate()
 			}
 		}
 		//テクスチャを変える
-		object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[currentTexture]));
+		object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[customerNumber][currentTexture]));
 	}
+}
+
+void Customer::ChangeInit()
+{
+	changeFrame = 0;
+	prePos = object_->model->transform_.translate_;
+	targetPos = { prePos.x,prePos.y - 4.0f,prePos.z };
+	IsFrameOver = false;
+
+}
+
+void Customer::ChangeUpdate()
+{
+	changeFrame += FrameInfo::GetInstance()->GetDeltaTime() * ratio;
+
+	changeFrame = std::min(changeFrame, 1.0f);
+
+	if (IsFrameOver == false) {
+		object_->model->transform_.translate_ = Ease::UseEase(prePos, targetPos, changeFrame, Ease::EaseIn);
+	}
+	else {
+		object_->model->transform_.translate_ = Ease::UseEase(targetPos, prePos, changeFrame, Ease::EaseIn);
+	}
+	//終了条件
+	if (changeFrame >= 1.0f && IsFrameOver) {
+		changeFrame = 0.0f;
+		//Rootにする
+		behaviorRequest_ = Behavior::kRoot;
+	}
+	//折り返し
+	if (IsFrameOver == false && changeFrame >= 1.0f) {
+		IsFrameOver = true;
+		changeFrame = 0.0f;
+		customerNumber = randomTextureSelect(preCoustomerNumber);
+		preCoustomerNumber = customerNumber;
+		object_->model->SetTexture(TextureManager::GetInstance()->LoadTexture(customerTexture[customerNumber][currentTexture]));
+	}
+}
+
+int Customer::randomTextureSelect(int PreTextture)
+{
+	currentTexture = random->RandInt(0, 3);
+	if (currentTexture == PreTextture) {
+		currentTexture = randomTextureSelect(PreTextture);
+	}
+	return currentTexture;
 }
 
 void Customer::SetGlobalVariables()
