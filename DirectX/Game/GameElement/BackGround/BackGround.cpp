@@ -119,6 +119,11 @@ void BackGround::Draw(const Camera& camera)
 	model_->Draw(camera);
 }
 
+void BackGround::DrawTrop()
+{
+	timer_->DrowTrop();
+}
+
 const bool BackGround::GetIsTimeUp() const
 {
 	return timer_->GetIsTimeUp();
