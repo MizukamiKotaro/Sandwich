@@ -168,10 +168,12 @@ ID3D12Resource* DirectXBase::CreateBufferResource(size_t sizeInBytes, D3D12_RESO
 		heapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
 	}
 
+	size_t alignedSizeInBytes = (sizeInBytes + 255) & ~255;
+
 	// リソースの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resourceDesc.Width = sizeInBytes;
+	resourceDesc.Width = alignedSizeInBytes;
 	resourceDesc.Height = 1;
 	resourceDesc.DepthOrArraySize = 1;
 	resourceDesc.MipLevels = 1;
